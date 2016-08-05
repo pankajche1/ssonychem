@@ -1,0 +1,69 @@
+.view-slide-in.ng-enter {
+	//transition: all 1s ease;
+	transition: opacity 1s ease;
+	-webkit-transition:opacity 1s ease;
+	-moz-transition: opacity 1s ease;
+	-o-transition: opacity 1s ease;
+
+	opacity:0.5;
+	position:relative;
+	opacity:0;
+	//top:10px;
+	//left:20px;
+}
+.view-slide-in.ng-enter {
+	opacity: 0;
+}
+.view-slide-in.ng-enter.ng-enter-active {
+	//top:0;
+	//left:0;
+	opacity: 1;
+	//background-color:red;
+}
+.view-slide-in.ng-leave.ng-leave-active{
+	//top:5px;
+	//left:5px;
+	opacity:1;
+}
+.view-slide-in.ng-leave{
+	//top:0;
+	//left:0;
+	opacity:0;
+}
+.hide-fade.ng-hide-add, .hide-fade.ng-hide-remove {
+	-webkit-transition:all linear 1s;
+	-moz-transition:all linear 1s;
+	-o-transition:all linear 1s;
+	transition:all linear 1s;
+	display:block!important;
+}
+.hide-fade.ng-hide-add.ng-hide-add-active,
+.hide-fade.ng-hide-remove {
+	opacity:0;
+	//height:0;
+}
+.hide-fade.ng-hide-add,
+.hide-fade.ng-hide-remove.ng-hide-remove-active {
+	opacity:1;
+	//height:100%;
+}
+.animate-hide {
+	transition: all linear 0.1s;
+	line-height: 20px;
+	opacity: 1;
+	padding: 10px;
+	border: 1px solid black;
+	background: white;
+}
+
+.animate-hide.ng-hide {
+	line-height: 0;
+	opacity: 0;
+	padding: 0 10px;
+}
+
+.check-element {
+	padding: 10px;
+	border: 1px solid black;
+	background: cyan;
+}

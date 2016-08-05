@@ -1,0 +1,351 @@
+/**
+This file is just saved in case you need some css. but actually this file is not needed 
+all these codes have been put in less form and the file is navbar.less
+:by Pankaj 11 feb 16
+ **/
+.collapse {
+  //display: none;
+}
+
+
+/* navbar for mobile first */
+
+.navbar .navbar-default {
+    margin:0 -15px;
+
+}
+.navbar-collapse {
+    margin:0 -15px;
+    //padding:5px 0;
+    background-color:@navbar-mobile-collapse-bg;
+    //container is hiding the shadow TODO
+    //box-shadow: 0px 10px 5px blue;
+    //border-bottom:1px solid @navbar-mobile-collapse-border-bottom-color;
+    //z-index:100;
+}
+
+.navbar-nav{
+	margin: 0;
+	padding: 0;
+}
+.navbar-nav li{
+	list-style-type: none;
+
+}
+.navbar-nav > li > a{
+	color: #111;
+	display: block;
+	line-height: 56px;
+	padding: 0 24px;
+	text-decoration: none;
+}
+.navbar-nav > li.active > a{
+	//border-bottom:2px solid red;
+	//background-color: rgb( 47, 47, 47 );
+	//color:  red;
+
+}
+
+/* mobile */
+.navbar .navbar-header{
+	margin:0 -15px;
+	padding:5px 0px;
+	background-color: @navbar-mobile-bg;
+}
+.navbar .navbar-header .navbar-brand{
+	margin:5px 10px;
+	font-size:16px;
+	font-weight:bold;
+	color:@navbar-mobile-color;
+	text-decoration:none;
+}
+
+.navbar-collapse.collapse {
+	//desktop
+	@media (min-width: @grid-float-breakpoint) {
+		//display: block !important;
+		height: auto !important;
+		padding-bottom: 0;
+		overflow: visible !important;
+		& > div{ 
+		    overflow:hidden;
+		    padding-bottom:5px;
+		    background-color:@container-bg;
+		    & > ul{
+
+			    background-color:@navbar-bg;
+			    .box-shadow(0 2px 4px rgba(0,0,0,0.75));
+		    }
+	    }
+
+    }//desktop
+    //mobile
+    @media (max-width: @grid-float-breakpoint-max) {
+	    & > div{ 
+		    overflow:hidden;
+		    padding-bottom:5px;
+		    & > ul{
+			    background-color:@navbar-bg;
+			    .box-shadow(0 2px 4px rgba(0,0,0,0.75));
+		    }
+	    }
+    }//mobile
+  }
+
+
+//for desktop
+@media (min-width: @grid-float-breakpoint) {
+ 
+
+
+	.navbar-nav{
+		margin: 0;
+		padding: 0;
+	}
+	.navbar-nav li{
+		list-style-type: none;
+		display: inline-block;
+ 
+	}
+
+	.navbar-nav > li > a{
+		color:@navbar-navitem-color; 
+		display: block;
+		line-height: 56px;
+		padding: 0 24px;
+		text-decoration: none;
+		border-bottom:4px solid transparent;
+		/// calling the function in mixins/vendor-prefixes.less
+		.transition(~"border-bottom-color ease-in-out 0.15s, color ease-out 0.15s");
+		font-weight:bold;
+	}
+	.navbar-nav > li.active > a{
+		border-bottom:4px solid @navbar-navitem-active-color;
+		//background-color: rgb( 47, 47, 47 );
+		//color:  rgb( 200, 200, 200 );
+		color:@navbar-navitem-active-color;//#999;
+		cursor:default;
+		//@navbar-navitem-active-bg: rgb( 47, 47, 47 );
+		//: rgb( 200, 200, 200 );
+
+	}
+	.navbar .navbar-header{
+		display:none
+
+
+	}
+	.navbar-nav  > li:hover{
+		//background-color: rgb( 40, 44, 47 );
+	}
+	.navbar-nav  > li:hover > a{
+		border-bottom:4px solid @navbar-navitem-hover-color;
+		color: @navbar-navitem-hover-color;
+	}
+	.navbar-nav > li.active:hover > a{
+		border-bottom:4px solid @navbar-navitem-active-color;
+		//background-color: rgb( 47, 47, 47 );
+		//color:  rgb( 200, 200, 200 );
+		color:@navbar-navitem-active-color;
+		cursor:default;
+
+	}
+
+
+
+}
+
+// Navbar toggle
+//
+// Custom button for toggling the `.navbar-collapse`, powered by the collapse
+// JavaScript plugin.
+
+.navbar-toggle {
+  position: relative;
+  float: right;
+  margin-right: @navbar-padding-horizontal;
+  padding: 9px 10px;
+  //.navbar-vertical-align(34px);
+  background-color: transparent;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  border-radius: @border-radius-base;
+
+  // We remove the `outline` here, but later compensate by attaching `:hover`
+  // styles to `:focus`.
+  &:focus {
+    outline: 0;
+  }
+
+  // Bars
+  .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+  }
+  .icon-bar + .icon-bar {
+    margin-top: 4px;
+  }
+
+  //desktop
+  @media (min-width: @grid-float-breakpoint) {
+    display: none;
+  }
+}
+// Alternate navbars
+// --------------------------------------------------
+
+// Default navbar
+.navbar-default {
+  //background-color: @navbar-default-bg;
+  //border-color: @navbar-default-border;
+
+  .navbar-brand {
+    color: @navbar-default-brand-color;
+    &:hover,
+    &:focus {
+      color: @navbar-default-brand-hover-color;
+      background-color: @navbar-default-brand-hover-bg;
+    }
+  }
+
+  .navbar-text {
+    color: @navbar-default-color;
+  }
+
+  .navbar-toggle {
+    border-color: @navbar-default-toggle-border-color;
+    &:hover,
+    &:focus {
+      background-color: @navbar-default-toggle-hover-bg;
+    }
+    .icon-bar {
+      background-color: @navbar-default-toggle-icon-bar-bg;
+    }
+  }
+
+
+    
+  }
+
+
+
+
+//menu toggle button
+.menu-toggle{
+	position: relative;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	width: 96px;
+	height: 96px;
+	font-size: 0;
+	text-indent: -9999px;
+	appearance: none;
+	box-shadow: none;
+	border-radius: none;
+	border: none;
+	cursor: pointer;
+	transition: background 0.3s;
+	//display:none;
+}
+
+.menu-toggle:focus {
+	outline: none;
+}
+.menu-toggle span {
+	display: block;
+	position: absolute;
+	top: 44px;
+	left: 18px;
+	right: 18px;
+	height: 8px;
+	background: white;
+}
+
+.menu-toggle span::before,
+.menu-toggle span::after {
+	position: absolute;
+	display: block;
+	left: 0;
+	width: 100%;
+	height: 8px;
+	background-color: #fff;
+	content: "";
+}
+
+.menu-toggle span::before {
+	top: -20px;
+}
+
+.menu-toggle span::after {
+	bottom: -20px;
+}
+.menu-toggle--rot {
+	background-color: #28aadc;
+}
+
+.menu-toggle--rot span {
+	transition: transform 0.3s;
+}
+
+/* active state, i.e. menu open */
+.menu-toggle--rot.is-active {
+	background-color: #166888;
+}
+
+.menu-toggle--rot.is-active span {
+	transform: rotate(90deg);
+}
+	// by pankaj from here:
+@media screen and (min-width: @screen-phone) {
+
+.menu-toggle{
+	display:block;
+}
+
+
+nav ul li{
+    display: block;
+    //list-style-type: none;
+
+}
+}
+@media screen and (min-width: @screen-tablet) {
+.menu-toggle{
+	display:block;
+}
+nav ul li{
+    display: block;
+    //list-style-type: none;
+
+}
+
+}
+@media screen and (min-width: @screen-desktop) {
+.menu-toggle{
+	display:block;
+}
+
+nav ul li{
+    display: inline-block;
+    //list-style-type: none;
+
+}
+
+}
+@media screen and (min-width: @screen-lg-desktop) {
+
+
+.menu-toggle{
+	display:none;
+}
+nav ul li{
+    display: inline-block;
+    //list-style-type: none;
+
+}
+
+}
+
+

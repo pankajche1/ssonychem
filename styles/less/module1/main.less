@@ -1,0 +1,93 @@
+// Core variables and mixins
+@import "variables.less";
+
+// Reset and dependencies
+@import "normalize.less";
+//@import "print.less";
+//@import "glyphicons.less";
+
+
+@import "mixins.less";
+@import "alerts.less";
+@import "navbar1.less";
+@import "mobile-nav.less";
+//@import "responsive-utilities.less";
+@import "ng-animate.less";
+@import "progress-bar.less";
+// Core CSS
+@import "scaffolding.less";
+//@import "type.less";
+//@import "code.less";
+@import "grid.less";
+//@import "tables.less";
+//@import "forms.less";
+//@import "buttons.less";
+// Utility classes
+@import "utilities.less";
+@import "responsive-utilities.less";
+
+//.active{
+
+    //background-color:@gray-darker;
+//}
+.pankaj-box(@bg;@color){
+	width:100px;
+	height:100px;
+	//margin:5px;
+	background-color:@bg;
+	color:@color;
+}
+//panel for keeping boxes:
+.box-panel{
+	width:500px;
+
+}
+.box-wrapper{
+	padding:1px;
+	width:104px;
+		text-align:center;
+		font-family:arial;
+	display:inline-block;
+
+}
+.box1{
+	.pankaj-box(@gray, #fff);
+}
+.box2{
+	.pankaj-box(@gray-light, #fff);
+}
+.box3{
+	.pankaj-box(@gray-lighter, #fff);
+}
+.box4{
+	.pankaj-box(@gray-dark, #fff);
+}
+.box5{
+	.pankaj-box(@gray-darker, #fff);
+}
+.box6{
+	.pankaj-box(@gray-base, #fff);
+}
+.box7{
+	.pankaj-box(@brand-primary, #fff);
+}
+.box8{
+	.pankaj-box(@brand-success, #fff);
+}
+.box9{
+	.pankaj-box(@brand-info, #fff);
+}
+.box10{
+	.pankaj-box(@brand-warning, #fff);
+}
+.box11{
+	.pankaj-box(@brand-danger, #fff);
+}
+a{
+	&:hover {color:darken(@brand-primary, 15%);}
+	&:active {color:@brand-primary;}
+	&:visited {}
+	
+
+
+}

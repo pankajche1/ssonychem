@@ -1,0 +1,177 @@
+
+/* navbar for mobile first */
+.navbar{
+	& .navbar-default{
+		margin:0 -15px;
+	}
+	.navbar-collapse {
+		margin:0 -15px;
+		background-color:@navbar-mobile-collapse-bg;
+		&.collapse{
+			//desktop
+			@media (min-width: @grid-float-breakpoint) {
+				height: auto !important; padding-bottom: 0; overflow: visible !important;
+				& > div{ overflow:hidden; padding-bottom:5px; background-color:@container-bg;
+					& > ul{ background-color:@navbar-bg; 
+						.box-shadow(0 2px 4px rgba(0,0,0,0.75)); }
+				}
+			}//desktop
+			//mobile
+			@media (max-width: @grid-float-breakpoint-max) {
+				& > div{ overflow:hidden; padding-bottom:5px;
+					& > ul{ background-color:@navbar-bg; 
+						.box-shadow(0 2px 4px rgba(0,0,0,0.75)); }
+				}
+			}//mobile
+		}//&.collapse
+		.navbar-nav{
+			margin: 0;
+			padding: 0;
+			li{
+				list-style-type: none;
+				//for desktop
+				@media (min-width: @grid-float-breakpoint) {
+					display: inline-block;
+				}//desktop
+
+			}//li
+			& > li{
+				& > a{
+					color: @navbar-color; display: block; line-height: @navbar-line-height;
+						padding: 0 24px; text-decoration: none;
+						//desktop
+						@media (min-width: @grid-float-breakpoint) {
+							display: inline-block; 
+							border-bottom:4px solid transparent;
+							.transition(~"border-bottom-color ease-in-out 0.15s, color ease-out 0.15s");
+							font-weight:bold;
+						}//desktop
+				}//a
+				&:hover{
+					& > a{
+						border-bottom:4px solid @navbar-navitem-hover-color;
+						color: @navbar-navitem-hover-color;
+					}//a
+				}//li:hover
+				&.active{
+					& > a{
+						//desktop
+						@media (min-width: @grid-float-breakpoint) {
+							border-bottom:4px solid @navbar-navitem-active-color;
+							color:@navbar-navitem-active-color; cursor:default;
+						}//desktop
+
+					}//a
+					&:hover{ 
+						&> a{
+							//desktop
+							@media (min-width: @grid-float-breakpoint) {
+								border-bottom:4px solid @navbar-navitem-active-color;
+								color:@navbar-navitem-active-color; cursor:default;
+							}//desktop
+						}
+					}//&> li.active
+				}//& active
+
+			}//& > li
+		}//.navbar-nav
+	}//.navbar-collapse
+	/* mobile */
+    .navbar-header{
+	//desktop
+	@media (min-width: @grid-float-breakpoint) {
+		display:none;
+	}//desktop
+	margin:0 -15px;
+	padding:5px 0px;
+	background-color: @navbar-mobile-bg;
+	.navbar-brand{
+		margin:5px 10px;
+		font-size:16px;
+		font-weight:bold;
+		color:@navbar-mobile-color;
+		text-decoration:none;
+	}
+    }//.navbar-header
+
+
+// Navbar toggle
+//
+// Custom button for toggling the `.navbar-collapse`, powered by the collapse
+// JavaScript plugin.
+
+.navbar-toggle {
+  position: relative;
+  float: right;
+  margin-right: @navbar-padding-horizontal;
+  padding: 9px 10px;
+  //.navbar-vertical-align(34px);
+  background-color: transparent;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  border-radius: @border-radius-base;
+
+  // We remove the `outline` here, but later compensate by attaching `:hover`
+  // styles to `:focus`.
+  &:focus {
+    outline: 0;
+  }
+
+  // Bars
+  .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+  }
+  .icon-bar + .icon-bar {
+    margin-top: 4px;
+  }
+
+  //desktop
+  @media (min-width: @grid-float-breakpoint) {
+    display: none;
+  }
+}
+
+}//.navbar
+// Alternate navbars
+// --------------------------------------------------
+
+// Default navbar
+.navbar-default {
+  //background-color: @navbar-default-bg;
+  //border-color: @navbar-default-border;
+
+  .navbar-brand {
+    color: @navbar-default-brand-color;
+    &:hover,
+    &:focus {
+      color: @navbar-default-brand-hover-color;
+      background-color: @navbar-default-brand-hover-bg;
+    }
+  }
+
+  .navbar-text {
+    color: @navbar-default-color;
+  }
+
+  .navbar-toggle {
+    border-color: @navbar-default-toggle-border-color;
+    &:hover,
+    &:focus {
+      background-color: @navbar-default-toggle-hover-bg;
+    }
+    .icon-bar {
+      background-color: @navbar-default-toggle-icon-bar-bg;
+    }
+  }
+
+
+    
+  }//navbar-default
+
+
+
+
+

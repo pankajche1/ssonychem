@@ -1,0 +1,17 @@
+# ignore these file and folders:
+/node_modules
+/public/js/lib
+/public/js
+/public/css
+/app/**/alltemplate.js
+*.pyc
+*~
+*.swp
+*.swo
+*.geany
+*.log
+*.jpg
+*.png
+*.jpeg
+*.JPEG
+error.log
