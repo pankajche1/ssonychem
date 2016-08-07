@@ -25,7 +25,6 @@ require('gulp-bash-completion')(gulp);
 //build datestamp for cache busting
 var getStamp = function() {
 	var myDate = new Date();
-
 	var myYear = myDate.getFullYear().toString();
 	var myMonth = ('0' + (myDate.getMonth() + 1)).slice(-2);
 	var myDay = ('0' + myDate.getDate()).slice(-2);
@@ -101,7 +100,7 @@ gulp.task('browserify-guest-dev', function() {
 		del(['./public/css/main.min-*.css']);
 		  gulp.src('./styles/less/module2/main.less')
 		  .pipe(less())
-		  .pipe(minifyCSS())
+		  //.pipe(minifyCSS())
 		  .pipe(rename(filename))
 		  .pipe(gulp.dest('./public/css/'));
 		gulp.src('./public/py/handlers/templates/**/*.html')

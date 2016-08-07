@@ -1,0 +1,46 @@
+.header-top-bar{
+
+
+  position: relative;
+  // Prevent floats from breaking the navbar
+  &:extend(.clearfix all);
+  font-family:"roboto", sans-serif;
+  @media (min-width: @grid-float-breakpoint) {
+
+  }
+
+}//.header-top-bar
+
+// header top bar links
+//
+
+.header-top-bar-nav {
+  margin: (@navbar-padding-vertical / 2) -@navbar-padding-horizontal;
+
+  > li > a {
+    padding-top:    10px;
+    padding-bottom: 10px;
+    line-height: @line-height-computed;
+  }
+  // for mobile
+  // TODO
+
+  // Uncollapse the nav for desktop
+  @media (min-width: @grid-float-breakpoint) {
+    float: right;
+    margin: 0;
+
+    > li {
+      float: right;
+      > a {
+        color:#FFF;
+        padding-top:    @navbar-padding-vertical;
+        padding-bottom: @navbar-padding-vertical;
+        // by pankaj
+        padding: 0 24px;
+        text-decoration:none;
+        line-height:34px;
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@ var app = angular.module('app', ['ngRoute','ngResource','ngAnimate','TemplatesGu
 //controllers:
 //require('./services');
 require('./controllers');
-//require('./directives');
+require('./directives');
 //require('../common/directives');
 app.config(['$routeProvider',function($routeProvider){
 		$routeProvider.when('/welcome',{
