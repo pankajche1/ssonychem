@@ -1,77 +1,94 @@
-
+/* wrapper for the navbar */
+.bottom-navbar-wrapper{
+		background-color:@navbar-mobile-collapse-bg;
+}
 /* navbar for mobile first */
+/* navbars can be of different themes here it is the default navbar */
 .navbar{
-	& .navbar-default{
+	.navbar-default{
 		margin:0 -15px;
 	}
-	.navbar-collapse {
+}
+/* this is the ul element which shows a menu bar on desktop and collapses in mobile */
+.navbar{
+
+	.navbar-collapse {//ul element css class
 		margin:0 -15px;
-		background-color:@navbar-mobile-collapse-bg;
+		//background-color:@navbar-mobile-collapse-bg;
 		&.collapse{
-			//desktop
+			//for the desktop
 			@media (min-width: @grid-float-breakpoint) {
 				height: auto !important; padding-bottom: 0; overflow: visible !important;
-				& > div{ overflow:hidden; padding-bottom:5px; background-color:@container-bg;
-					& > ul{ background-color:@navbar-bg; 
-						.box-shadow(0 2px 4px rgba(0,0,0,0.75)); }
-				}
+				//> div{ overflow:hidden; padding-bottom:5px; background-color:@container-bg;
+				//	 > ul{ background-color:@navbar-bg; 
+				//		.box-shadow(0 2px 4px rgba(0,0,0,0.75)); }
+				//}
 			}//desktop
-			//mobile
+			//for the mobile
 			@media (max-width: @grid-float-breakpoint-max) {
-				& > div{ overflow:hidden; padding-bottom:5px;
-					& > ul{ background-color:@navbar-bg; 
-						.box-shadow(0 2px 4px rgba(0,0,0,0.75)); }
-				}
+                                > ul{  //  background-color:red;
+                                    }
+				// > div{ overflow:hidden; padding-bottom:5px;
+				//	 > ul{ background-color:red;//@navbar-bg; 
+				//		.box-shadow(0 2px 4px rgba(0,0,0,0.75)); }
+				//}
 			}//mobile
-		}//&.collapse
-		.navbar-nav{
+		}//.collapse
+		.navbar-nav{//design of the ul for links
 			margin: 0;
 			padding: 0;
 			li{
 				list-style-type: none;
-				//for desktop
+				//for desktop and for mobile it is done by angular js codes
 				@media (min-width: @grid-float-breakpoint) {
 					display: inline-block;
 				}//desktop
 
 			}//li
-			& > li{
-				& > a{
-					color: @navbar-color; display: block; line-height: @navbar-line-height;
-						padding: 0 24px; text-decoration: none;
-						//desktop
-						@media (min-width: @grid-float-breakpoint) {
-							display: inline-block; 
-							border-bottom:4px solid transparent;
-							.transition(~"border-bottom-color ease-in-out 0.15s, color ease-out 0.15s");
-							font-weight:bold;
+			> li{
+                                // 1 normal link anchor's css
+				 > a{
+				   color: @navbar-color; display: block; line-height: @navbar-line-height;
+				   padding: 0 24px; text-decoration: none;
+				   //desktop
+				   @media (min-width: @grid-float-breakpoint) {
+					display: inline-block; 
+					border-bottom:4px solid transparent;
+					.transition(~"border-bottom-color ease-in-out 0.15s, color ease-out 0.15s");
+					font-weight:bold;
 						}//desktop
 				}//a
+                                // 2 when you hover over the li element
 				&:hover{
-					& > a{
-						border-bottom:4px solid @navbar-navitem-hover-color;
+					 > a{
 						color: @navbar-navitem-hover-color;
+                                    		@media (min-width: @grid-float-breakpoint) {
+						    border-bottom:4px solid @navbar-navitem-hover-color;
+
+                                                }
 					}//a
 				}//li:hover
+                                // 3 when li item has class 'active'
 				&.active{
-					& > a{
+					 > a{
+						color:@navbar-navitem-active-color; cursor:default;
 						//desktop
 						@media (min-width: @grid-float-breakpoint) {
 							border-bottom:4px solid @navbar-navitem-active-color;
-							color:@navbar-navitem-active-color; cursor:default;
+
 						}//desktop
 
 					}//a
-					&:hover{ 
-						&> a{
+					&:hover{// li element is active and hovered 
+						> a{
+							color:@navbar-navitem-active-color; cursor:default;
 							//desktop
 							@media (min-width: @grid-float-breakpoint) {
 								border-bottom:4px solid @navbar-navitem-active-color;
-								color:@navbar-navitem-active-color; cursor:default;
 							}//desktop
 						}
 					}//&> li.active
-				}//& active
+				}// active
 
 			}//& > li
 		}//.navbar-nav
