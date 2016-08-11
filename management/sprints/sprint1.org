@@ -1,7 +1,0 @@
-* Product backlog item: basic home page
-** Acceptance Stories
-*** AS1:
-    Scenario:
-    Given: A user comes to the web site
-    When: he opens the main page
-    Then: he should be able to the basic home page of the site

@@ -4,16 +4,16 @@
 //require('angular-resource');
 
 require('./templates');
-require('../common/templates');
+//require('../common/templates');
 
-var app = angular.module('app', ['ngRoute','ngResource','ngAnimate','TemplatesGuest','TemplatesCommon'], 
+var app = angular.module('app', ['ngRoute','ngResource','ngAnimate','TemplatesGuest'], 
 	['$interpolateProvider',function($interpolateProvider){
 		$interpolateProvider.startSymbol('<%');
 		$interpolateProvider.endSymbol('%>');
 }]);
 //console.log('came here2');
 //controllers:
-//require('./services');
+require('./services');
 require('./controllers');
 require('./directives');
 //require('../common/directives');

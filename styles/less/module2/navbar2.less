@@ -99,11 +99,12 @@
 	@media (min-width: @grid-float-breakpoint) {
 		display:none;
 	}//desktop
-	margin:0 -15px;
+	//margin:0 -15px;
 	padding:5px 0px;
-	background-color: @navbar-mobile-bg;
+	background-color:@top-header-bg ;
 	.navbar-brand{
-		margin:5px 10px;
+		padding:5px 15px;
+                float:left;
 		font-size:16px;
 		font-weight:bold;
 		color:@navbar-mobile-color;
@@ -161,12 +162,14 @@
   //border-color: @navbar-default-border;
 
   .navbar-brand {
+/*
     color: @navbar-default-brand-color;
     &:hover,
     &:focus {
       color: @navbar-default-brand-hover-color;
       background-color: @navbar-default-brand-hover-bg;
     }
+*/
   }
 
   .navbar-text {

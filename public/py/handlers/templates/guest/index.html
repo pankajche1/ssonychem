@@ -8,18 +8,51 @@
         <title>SSonyChem Private Limited</title>
 	<!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"></link>-->
 
-       <link rel="stylesheet" href="css/main.min-201608085048.css" type="text/css"></link> 
+       <link rel="stylesheet" href="css/main.min-201608105836.css" type="text/css"></link> 
 <!--  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"></link> -->
 
        <!--<script src='js/lib/angular-animate/angular-animate.js'> </script>--> 
 	<script src="/js/lib.js"></script>
-	<script src="/js/main-guest.js?201608084356"></script>
+	<script src="/js/main-guest201608105236.js"></script>
 
 
-    </head>
+</head>
+<body>
+    <!-- header -->
+   <div class="top-header">
 
-<html>
-        <body ng-view>
+    <headertopbar></headertopbar>
+    <header-middle-bar></header-middle-bar>
+    <div class="bottom-navbar-wrapper">
+        <pnav></pnav>  
+    </div>
+
+
+
+    </div><!-- top header -->
+
+
+
+    <div  class='container content-main'>
+     <div class='row'>	
+	     <div class='col-lg-8 col-md-7 col-sm-6 col-xs-12'>	
+                 <div ng-view class='main-view'></div>
+	     </div><!-- col-md-6 -->
+	     <div class='col-lg-4 col-md-5 col-sm-6 col-xs-12'>	
+             <!-- side bar -->
+                    <p> this is side bar</p>
+	     </div><!-- col-md-6 -->
+     </div><!-- row div ends here -->
+	
+    </div><!-- container for main content-->
+   <!-- footer section -->
+   <div  class='container'>
+      <div class='row'>
+
+	
+      </div><!-- row of the footer ends here -->
+   </div><!-- container of the row ends here -->
+
 
     </body>
 </html>

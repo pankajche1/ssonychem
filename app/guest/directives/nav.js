@@ -7,7 +7,7 @@ module.exports= [function(){
 
 	    },
 	    transclude: true,
-	    controller:function($scope, $element){
+	    controller:['$scope','$element',function($scope, $element){
 		    var items = $scope.items = [];
 		    $scope.toggle = function(item){
 			    //console.log('in toggle()');
@@ -16,7 +16,6 @@ module.exports= [function(){
 			    else
 				 $scope.isCollapse=false;
 		    };
-		    
 
 		    //console.log('in nav2 controller');
 		    $scope.select = function(item){
@@ -47,7 +46,7 @@ module.exports= [function(){
 			    items.push(item);
 			    item.id=items.length;
 		    };
-	    },//controller
+	    }],//controller
 	    //repeat:false,
 
 	    link: function ($scope, element, attrs) {

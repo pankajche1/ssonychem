@@ -5,8 +5,10 @@
   // Prevent floats from breaking the navbar
   &:extend(.clearfix all);
   font-family:"roboto", sans-serif;
+  // for moible first rule the top bar is not displayed:
+  display:none;
   @media (min-width: @grid-float-breakpoint) {
-
+    display:block;
   }
 
 }//.header-top-bar

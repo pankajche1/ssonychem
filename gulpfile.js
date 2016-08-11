@@ -35,6 +35,43 @@ var getStamp = function() {
 
 	return myFullDate;
 };
+/**
+ * build for production
+ */
+// cache busting
+//browserify makes this file: 'main-guest.js'
+gulp.task('build-guest-prod',[],
+	require('./gulp-tasks/guest-js-prod')(gulp, getStamp,del, browserify,
+                                             source, replace, buffer, uglify, ngAnnotate));
+// prod mode and dev mode
+// in prod mode you don't do cache busting cz in local browser u can do ctrl+f5 to load no cache.,
+// but in dev mode you can use file?bust kind of thing to avoid ctrl+f5 things
+//1 dev mode main.guest.js?bust thing.
+//these kind of scenes can be there: 1: build-guest-prod -> browserify-guest-dev -> build-guest-dev
+//at any time we can have these 1: main-guest.js?1234 or
+//if it is main-guest.js?12345 and can run three commands:1: build-guest-prod OK work
+//2: build-guest-dev OK work 
+//3: browserify-guest-dev ok work
+//Now next: any time you can have this: main-guest12345.js
+//then you can run 1: build-guest-prod ok works
+//or u can run 2:build-guest-dev
+//if it is main-guest12345.js? and can run three commands:1: build-guest-prod OK work
+//2: build-guest-dev ok
+//3: browserify-guest-dev
+gulp.task('build-guest-dev',function(){
+	// you can these formats pre existing:
+	// main-guest234521.js or main-guest.js?22334 
+	var fileName = 'main-guest.js?'+getStamp();
+	del([ 'public/js/main-guest*.js' ]);
+	browserify('./app/guest/app.js')
+	.bundle()
+	.pipe(source('main-guest.js'))
+	.pipe(gulp.dest('./public/js/'));
+	// here you have to change the script tag in html page: 
+	gulp.src('./public/py/handlers/templates/guest/index.html')
+	.pipe(replace(/main-guest([0-9]*).js(\?*[0-9]*)/g, fileName))
+	.pipe(gulp.dest('./public/py/handlers/templates/guest'));
+});
 /* templates */
 gulp.task('template-common',function(){
 	var concat = require('gulp-concat');
@@ -100,7 +137,7 @@ gulp.task('browserify-guest-dev', function() {
 		del(['./public/css/main.min-*.css']);
 		  gulp.src('./styles/less/module2/main.less')
 		  .pipe(less())
-		  //.pipe(minifyCSS())
+		  .pipe(minifyCSS())
 		  .pipe(rename(filename))
 		  .pipe(gulp.dest('./public/css/'));
 		gulp.src('./public/py/handlers/templates/**/*.html')

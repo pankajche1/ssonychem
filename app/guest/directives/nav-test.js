@@ -7,13 +7,15 @@ module.exports= [function(){
 
 	    },
 	    transclude: true,
+	    controller:['$scope','$element',function($scope, $element){
 
+            }],
 	    //repeat:false,
 
 	    link: function ($scope, element, attrs) {
 
 	    },
-	    templateUrl:'/guest/header.html'
+	    templateUrl:'/guest/nav.html'
     };
 
 

@@ -7,13 +7,12 @@ module.exports= [function(){
 
 	    },
 	    transclude: true,
-
 	    //repeat:false,
 
 	    link: function ($scope, element, attrs) {
 
 	    },
-	    templateUrl:'/guest/header.html'
+	    templateUrl:'/guest/header-middle-bar.html'
     };
 
 

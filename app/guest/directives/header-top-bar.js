@@ -7,10 +7,7 @@ module.exports= [function(){
 
 	    },
 	    transclude: true,
-	    controller:function($scope, $element){
 
-	
-	    },//controller
 	    //repeat:false,
 
 	    link: function ($scope, element, attrs) {

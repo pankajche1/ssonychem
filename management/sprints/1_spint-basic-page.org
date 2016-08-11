@@ -1,0 +1,25 @@
+* Product backlog item: basic home page
+** User Story: As a visitor I want to see the header and nav bars so that i can navigate the site easily
+*** Acceptance Stories
+**** AS1:
+     Scenario: A visitor visits the site on mobile
+     Given: A user comes to the web site
+     When: he opens the main page
+     Then: he should be able to the header of the site which contains a humberger button on the right side and it must open the 
+           menu bar
+**** AS2:
+     Scenario: A visitor visits the site on desktop
+     Given: A user comes to the web site on desktop
+     When: he opens the main page
+     Then: he should be able to the header of the site which contains
+          a navbar and which shows the various menu items of the site navigation and also at the top of the header
+          there is a top nav bar which gives sign up and sign in type links 
+
+***** tasks:
+****** DONE task1: for mobile a header which has brand name and a humberger button at the right side.
+       CLOSED: [2016-08-11 Thu 01:04]
+****** DONE task 2: for desktop design a header with company name and at the bottom of the header there is a navbar. and at the  top of the header there is a small navbar which has links like 'sign up' etc.
+       CLOSED: [2016-08-11 Thu 01:05]
+
+
+
