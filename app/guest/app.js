@@ -20,6 +20,15 @@ require('./directives');
 app.config(['$routeProvider',function($routeProvider){
 		$routeProvider.when('/welcome',{
 				templateUrl:'/guest/welcome.html',controller:'WelcomeController'});
+		$routeProvider.when('/products',{
+				templateUrl:'/guest/products.html',
+                                controller:'ProductsController'});
+		$routeProvider.when('/contact-us',{
+				templateUrl:'/guest/contact-us.html',
+                                controller:'ContactUsController'});
+		$routeProvider.when('/about-us',{
+				templateUrl:'/guest/about-us.html',
+                                controller:'AboutUsController'});
 		$routeProvider.otherwise({redirectTo:'/welcome'});
 }]);//config 
 //change here for watch

@@ -1,0 +1,12 @@
+* Product backlog item: basic pages routing 
+** User Story: As a visitor I want to see various pages of the site by navbar navigation
+*** Acceptance Stories
+**** AS1:
+     Scenario: A visitor visits the site on mobile
+     Given: A user comes to the web site
+     When: he clickes links on the navbar
+     Then: he should be able to go to the pages he wants to see 
+
+***** tasks
+****** task1: create four basic pages on the site
+****** task2: edit the links of the navbar to go to various pages
