@@ -8,5 +8,7 @@
      Then: he should be able to go to the pages he wants to see 
 
 ***** tasks
-****** task1: create four basic pages on the site
-****** task2: edit the links of the navbar to go to various pages
+****** DONE task1: create four basic pages on the site
+       CLOSED: [2016-08-11 Thu 22:16]
+****** DONE task2: edit the links of the navbar to go to various pages
+       CLOSED: [2016-08-11 Thu 22:16]

@@ -5,6 +5,10 @@
 /* navbar for mobile first */
 /* navbars can be of different themes here it is the default navbar */
 .navbar{
+    position: relative;
+    margin-bottom:@navbar-margin-bottom;
+    // privent floats from breaking the navbar
+    &:extend(.clearfix all);
 	.navbar-default{
 		margin:0 -15px;
 	}
