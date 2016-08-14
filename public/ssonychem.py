@@ -8,6 +8,8 @@ import jinja2
 import webapp2
 import json
 from py.handlers.mainHandler import MainHandler as MainHandler
+from py.handlers.productsPageHandler import ProductsPageHandler as ProductsPageHandler
+from py.handlers.signinPageHandler import SigninPageHandler as SigninPageHandler
 
 import cgi
 import urllib
@@ -17,6 +19,8 @@ JINJA_ENVIRONMENT = jinja2.Environment( \
                     extensions=['jinja2.ext.autoescape'],autoescape=True)
 
 application = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/products', ProductsPageHandler),
+    ('/signin', SigninPageHandler),
     ], debug=True)
 

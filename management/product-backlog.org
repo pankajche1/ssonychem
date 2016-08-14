@@ -5,4 +5,7 @@
    CLOSED: [2016-08-11 Thu 22:34]
 ** DONE there should be good layout of the page
    CLOSED: [2016-08-12 Fri 13:44]
-
+** INPIPE the products are to be downloaded from the server when needed
+** DONE a slide type of menu is to be developed.
+   CLOSED: [2016-08-14 Sun 19:56]
+** routing for the admin-a section

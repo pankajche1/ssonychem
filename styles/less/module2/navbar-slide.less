@@ -1,0 +1,187 @@
+/* wrapper for the navbar */
+.bottom-navbar-wrapper{
+		background-color:@navbar-mobile-collapse-bg;
+}
+/* navbar for mobile first */
+/* navbars can be of different themes here it is the default navbar */
+.navbar{
+    position: relative;
+
+    margin-bottom:@navbar-margin-bottom;
+    // privent floats from breaking the navbar
+    &:extend(.clearfix all);
+	.navbar-default{
+		margin:0 -15px;
+	}
+}//.navbar
+// navbar header:
+.navbar{
+    .navbar-header{
+        // mobile first rule:
+	padding:5px 0px;
+	background-color:@top-header-bg ;
+	.navbar-brand{
+		padding:5px 15px;
+                float:left;
+		font-size:16px;
+		font-weight:bold;
+		color:@navbar-mobile-color;
+		text-decoration:none;
+	}
+	//desktop
+	@media (min-width: @grid-float-breakpoint) {
+		display:none;
+	}//desktop
+
+    }//.navbar-header
+}//.navbar
+// collapsing navbar for mobile
+.navbar{
+    .navbar-collapse{
+        position:fixed;
+        z-index:200;
+        background-color:#67b5d1;
+        transition: transform 0.3s;
+        transform: translateX(-300px);
+        margin:0 -15px;
+        width: 300px;
+        height: 100%;
+        overflow-y: scroll;
+        // the ul list inside it:
+        .navbar-nav{//ul list
+            li{
+                 list-style:none;
+                 margin:0;
+                 padding:0;
+                display: block;
+                text-align: center;
+                 border-top: solid 1px #b5dbe9;
+                 border-bottom: solid 1px #3184a1;
+                 &:first-child{
+                     border-top:none;
+                 }//first-child
+                 &:last-child{
+                     border-bottom:none;
+                 }//first-child
+                 a {
+                   display: block;
+                   padding: 12px 24px;
+                   color: #fff;
+
+
+                 }//a
+            }//li
+
+        }//.navbar-nav (ul list)
+            &.collapse{
+               &.isActive{
+                   transform: translateX(0);
+               }//.isActive
+           }//.collapse
+    }//.navbar-collapse
+}
+// Navbar toggle
+//
+// Custom button for toggling the `.navbar-collapse`, powered by the collapse
+// JavaScript plugin.
+.navbar{
+.navbar-toggle {
+  position: relative;
+  float: right;
+  margin-right: @navbar-padding-horizontal;
+  padding: 9px 10px;
+  //.navbar-vertical-align(34px);
+  background-color: transparent;
+  // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: @border-radius-base;
+
+  // We remove the `outline` here, but later compensate by attaching `:hover`
+  // styles to `:focus`.
+  &:focus {
+    outline: 0;
+  }
+
+  // Bars
+  .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+  }
+  .icon-bar + .icon-bar {
+    margin-top: 4px;
+  }
+
+  //desktop
+  @media (min-width: @grid-float-breakpoint) {
+    display: none;
+  }
+}
+}//.navbar
+
+// different navbar styles:
+
+// Default navbar
+.navbar-default {
+  //background-color: @navbar-default-bg;
+  //border-color: @navbar-default-border;
+
+  .navbar-brand {
+/*
+    color: @navbar-default-brand-color;
+    &:hover,
+    &:focus {
+      color: @navbar-default-brand-hover-color;
+      background-color: @navbar-default-brand-hover-bg;
+    }
+*/
+  }
+
+  .navbar-text {
+    color: @navbar-default-color;
+  }
+
+  .navbar-toggle {
+    border-color: @navbar-default-toggle-border-color;
+    &:hover,
+    &:focus {
+      background-color: @navbar-default-toggle-hover-bg;
+    }
+    .icon-bar {
+      background-color: @navbar-default-toggle-icon-bar-bg;
+    }
+  }
+
+
+    
+  }//.navbar-default
+
+/**
+ * Mask component
+ */
+
+.menu-mask {
+  position: fixed;
+  z-index: 100;
+  top: 45px;
+  left: 0;
+  overflow: hidden;
+  width: 0;
+  height: 0;
+  background-color: #000;
+  opacity: 0;
+  transition: opacity 0.3s, width 0s 0.3s, height 0s 0.3s;
+}
+
+.menu-mask.isActive {
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+
+
+

@@ -1,0 +1,19 @@
+* Product backlog item: products should be put on server database 
+** User Story: As a visitor I want to see various products of the company
+*** Acceptance Stories
+**** AS1:
+     Scenario: A visitor visits products page
+     Given: A user comes the main page
+     When: when he clicks the 'products' on the navbar
+     Then: he should be able to see the products of the company  
+
+***** tasks
+****** DONE task1: create a server route to get the products from the server
+       CLOSED: [2016-08-13 Sat 14:36]
+******* for this you need to create dao object and model 'product' etc and then a route on the server side to 
+        retrieve products data
+
+****** task2: create a 'service' to get products from the server on angularjs on client side
+
+****** task3: create a login facility for the admin login so that he can create products on the server
+

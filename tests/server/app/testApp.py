@@ -1,0 +1,139 @@
+import unittest
+import webapp2
+import webtest
+import json 
+from google.appengine.api import memcache
+from google.appengine.ext import ndb
+from google.appengine.ext import testbed
+from google.appengine.api import users
+#import rajput
+#from py.dbutils.dao import DAO as DAO
+#from py.dbutils.adminDao import AdminDAO as AdminDAO
+from utils.dbmanager import DbManager as DbManager
+from py.handlers.mainHandler import MainHandler as MainHandler
+from py.handlers.productsPageHandler import ProductsPageHandler as \
+                             ProductsPageHandler
+#from py.handlers.signupPageHandler import SignupPageHandler as SignupPageHandler
+from py.handlers.signinPageHandler import SigninPageHandler as SigninPageHandler
+#@unittest.skip('AppTest Case')
+class AppTest(unittest.TestCase):
+    def setUp(self):
+        # First, create an instance of the Testbed class.
+        self.testbed = testbed.Testbed()
+        # Then activate the testbed, which prepares the service stubs for use.
+        self.testbed.activate()
+        # Next, declare which service stubs you want to use.
+        self.testbed.init_datastore_v3_stub()
+        self.testbed.init_memcache_stub()
+        self.testbed.init_user_stub()
+        # Clear ndb's in-context cache between tests.
+        # This prevents data from leaking between tests.
+        # Alternatively, you could disable caching by
+        # using ndb.get_context().set_cache_policy(False)
+        ndb.get_context().clear_cache()
+        # create a WSGI application:
+        app = webapp2.WSGIApplication([
+            ('/',MainHandler),
+            ('/products', ProductsPageHandler),
+            ('/signin', SigninPageHandler)
+            ])
+        # wrap the app with WebTest's AppTest:
+        self.testApp=webtest.TestApp(app)
+
+    def tearDown(self):
+        self.testbed.deactivate()
+
+        
+    def loginUser(self, email='user@example.com', 
+            id='123', is_admin=False):
+        self.testbed.setup_env(
+            user_email=email,
+            user_id=id,
+            nickname=email,
+            user_is_admin='1' if is_admin else '0',
+            overwrite=True)
+
+
+
+    # test the handler:
+    #@unittest.skip('Test Main Page Handler')
+    def test1_main_pageHandler(self):
+        response=self.testApp.get('/')
+        self.assertEqual(response.status_int, 200)
+        #self.assertEqual(response.normal_body, 'Panku')
+        #print(response.normal_body)
+
+    def test2_get_products_by_cursor(self):
+        DbManager().createProducts();
+        response = self.testApp.get('/products');
+        self.assertEqual(response.status_int, 200)
+        #members = json.load(response.normal_body) 
+        products = json.dumps(response.normal_body) 
+        #members2 = json.loads(members)
+        #print(response.normal_body)
+
+    #@unittest.skip('Test User login')
+    def test3_user_login(self):
+        '''
+          given: user is logged to his gmail in 
+          then: he should be authenticated
+        '''
+        # user data:
+        email = 'pankajche1@gmail.com'
+        id = 'pankaj'
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id)
+        # test the logged in user:
+        assert users.get_current_user().email() == 'pankajche1@gmail.com'
+
+    def test4_signin_page_given_client_not_loggedin(self):
+        '''
+            given: client is not logged in
+            then: he should be redirected to the guest page
+        '''
+        response = self.testApp.get('/signin');
+        # status code 302 is for redirection
+        self.assertEqual(response.status_int, 302)
+        #products = json.dumps(response.normal_body) 
+        #print(response.normal_body)
+
+    def test5_signin_page_given_client_loggedin_and_no_admin(self):
+        '''
+            given: client is logged in
+            and: he is no admin
+            then: he should be redirected to the member page
+        '''
+        # user data:
+        email = 'pankajche1@gmail.com'
+        id = 'pankaj'
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id)
+        response = self.testApp.get('/signin');
+        # status code 302 is for redirection
+        self.assertEqual(response.status_int, 302)
+        #products = json.dumps(response.normal_body) 
+        #print(response.normal_body)
+
+    def test6_signin_page_given_client_loggedin_and_admin(self):
+        '''
+            given: client is logged in
+            and: he is admin
+            then: he should be redirected to the member page
+        '''
+        # user data:
+        email = 'pankajche1@gmail.com'
+        id = 'pankaj'
+        isAdmin = True
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        response = self.testApp.get('/signin');
+        # status code 302 is for redirection
+        self.assertEqual(response.status_int, 200)
+        #products = json.dumps(response.normal_body) 
+        #print(response.normal_body)

@@ -43,6 +43,9 @@ var getStamp = function() {
 gulp.task('build-guest-prod',[],
 	require('./gulp-tasks/guest-js-prod')(gulp, getStamp,del, browserify,
                                              source, replace, buffer, uglify, ngAnnotate));
+gulp.task('build-admin-a-prod',[],
+	require('./gulp-tasks/admin-a-js-prod')(gulp, getStamp,del, browserify,
+                                             source, replace, buffer, uglify, ngAnnotate));
 // prod mode and dev mode
 // in prod mode you don't do cache busting cz in local browser u can do ctrl+f5 to load no cache.,
 // but in dev mode you can use file?bust kind of thing to avoid ctrl+f5 things
@@ -72,6 +75,20 @@ gulp.task('build-guest-dev',function(){
 	.pipe(replace(/main-guest([0-9]*).js(\?*[0-9]*)/g, fileName))
 	.pipe(gulp.dest('./public/py/handlers/templates/guest'));
 });
+gulp.task('build-admin-a-dev',function(){
+	// you can these formats pre existing:
+	// main-guest234521.js or main-guest.js?22334 
+	var fileName = 'main-admin-a.js?'+getStamp();
+	del([ 'public/js/main-admin-a*.js' ]);
+	browserify('./app/admin/a/app.js')
+	.bundle()
+	.pipe(source('main-admin-a.js'))
+	.pipe(gulp.dest('./public/js/'));
+	// here you have to change the script tag in html page: 
+	gulp.src('./public/py/handlers/templates/admin/a/index.html')
+	.pipe(replace(/main-admin-a([0-9]*).js(\?*[0-9]*)/g, fileName))
+	.pipe(gulp.dest('./public/py/handlers/templates/admin/a'));
+});
 /* templates */
 gulp.task('template-common',function(){
 	var concat = require('gulp-concat');
@@ -86,7 +103,7 @@ return gulp.src("./app/common/templates/*.html")
 	.pipe(gulp.dest("./app/common/templates/"));
 
 
-});//template
+});//template common
 gulp.task('template-guest',function(){
 	var concat = require('gulp-concat');
 return gulp.src("./app/guest/templates/*.html")
@@ -100,7 +117,21 @@ return gulp.src("./app/guest/templates/*.html")
 	.pipe(gulp.dest("./app/guest/templates/"));
 
 
-});//template
+});//template guest
+gulp.task('template-admin-a',function(){
+	var concat = require('gulp-concat');
+return gulp.src("./app/admin/a/templates/*.html")
+        .pipe(htmlmin({collapseWhitespace: true}))
+	.pipe(ngHtml2Js({
+		moduleName: "TemplatesAdminA",
+		prefix: "/admin/a/"
+	}))
+	.pipe(concat('alltemplate.js'))
+	.pipe(uglify())
+	.pipe(gulp.dest("./app/admin/a/templates/"));
+
+
+});//template admin a
 /**
 * this is in dev mode
 */
@@ -127,6 +158,20 @@ gulp.task('browserify-guest-dev', function() {
 	gulp.src('./public/py/handlers/templates/guest/index.html')
 	.pipe(replace(/main-guest([0-9]*).js(\?*[0-9]*)/g, 'main-guest.js?' + getStamp()))
 	.pipe(gulp.dest('./public/py/handlers/templates/guest'));
+});
+gulp.task('browserify-admin-a-dev', function() {
+	// Grabs the app.js file
+	browserify('./app/admin/a/app.js')
+	.bundle()
+	.pipe(source('main-admin-a.js'))
+        //.pipe(buffer())// this is imp before ugilfy()
+//         .pipe(ngAnnotate({add:true}))
+//        .pipe(uglify())
+	.pipe(gulp.dest('./public/js/'));
+	//change the html for cache bust in local server:
+	gulp.src('./public/py/handlers/templates/admin/a/index.html')
+	.pipe(replace(/main-admin-a([0-9]*).js(\?*[0-9]*)/g, 'main-admin-a.js?' + getStamp()))
+	.pipe(gulp.dest('./public/py/handlers/templates/admin/a'));
 });
 
 /* Task to compile less */
@@ -167,6 +212,9 @@ gulp.task('watch', function() {
 	//guest module:
 	gulp.watch('app/guest/**/*.js', ['browserify-guest-dev']);
 	gulp.watch('./app/guest/templates/**/*.html', ['template-guest']);
+	//admin a module:
+	gulp.watch('app/admin/a/**/*.js', ['browserify-admin-a-dev']);
+	gulp.watch('./app/admin/a/templates/**/*.html', ['template-admin-a']);
 	//less css
 	gulp.watch('./styles/less/**/*.less', ['less']);
 });
