@@ -1,0 +1,3 @@
+* responsive menu bar for desktop 
+** Note: with 'mobile first' concept a responsive menubar for the mobile has
+    already been developed now the same menubar is to be used for desktop also.

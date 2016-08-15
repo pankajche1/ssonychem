@@ -1,6 +1,6 @@
 /* wrapper for the navbar */
 .bottom-navbar-wrapper{
-		background-color:@navbar-mobile-collapse-bg;
+    background-color:@navbar-mobile-collapse-bg;
 }
 /* navbar for mobile first */
 /* navbars can be of different themes here it is the default navbar */
@@ -38,15 +38,79 @@
 // collapsing navbar for mobile
 .navbar{
     .navbar-collapse{
+
+        // for desktop to make the navbar visible:
+
+       @media (min-width: @grid-float-breakpoint) {//for desktop
+          width: auto;
+          border-top: 0;
+          box-shadow: none;
+          &.collapse {
+             display: block !important;
+             visibility: visible !important;
+             height: auto !important;
+             padding-bottom: 0; // Override default setting
+             overflow: visible !important;
+          }
+          		.navbar-nav{//design of the ul for links
+                   		margin: 0;
+		             	padding: 0;
+			li{
+				list-style-type: none;
+				//for desktop and for mobile it is done by angular js codes
+				display: inline-block;
+			}//li
+			> li{
+                                // 1 normal link anchor's css
+				 > a{
+				   color: @navbar-color; display: block; line-height: @navbar-line-height;
+				   padding: 0 24px; text-decoration: none;
+				   //desktop
+
+					display: inline-block; 
+					border-bottom:4px solid transparent;
+					.transition(~"border-bottom-color ease-in-out 0.15s, color ease-out 0.15s");
+					font-weight:bold;
+
+				}//a
+                                // 2 when you hover over the li element
+				&:hover{
+					 > a{
+						color: @navbar-navitem-hover-color;
+						    border-bottom:4px solid @navbar-navitem-hover-color;
+
+					}//a
+				}//li:hover
+                                // 3 when li item has class 'active'
+				&.active{
+					 > a{
+						color:@navbar-navitem-active-color; cursor:default;
+						border-bottom:4px solid @navbar-navitem-active-color;
+					}//a
+					&:hover{// li element is active and hovered 
+						> a{
+							color:@navbar-navitem-active-color; cursor:default;
+							border-bottom:4px solid @navbar-navitem-active-color;
+
+						}
+					}//&> li.active
+				}// active
+
+			}//& > li
+		}//.navbar-nav ul list design for desktop
+       }//for desktop to make menu visible
+        //for mobile screen:
+         @media (max-width: @grid-float-breakpoint-max) {
         position:fixed;
         z-index:200;
         background-color:#67b5d1;
-        transition: transform 0.3s;
-        transform: translateX(-300px);
+
         margin:0 -15px;
         width: 300px;
         height: 100%;
         overflow-y: scroll;
+             transition: transform 0.3s;
+             transform: translateX(-300px);
         // the ul list inside it:
         .navbar-nav{//ul list
             li{
@@ -74,12 +138,15 @@
 
         }//.navbar-nav (ul list)
             &.collapse{
+                display:block !important;
+                visibility: visible !important;
                &.isActive{
                    transform: translateX(0);
                }//.isActive
            }//.collapse
+       }//for mobile screen
     }//.navbar-collapse
-}
+}//.navbar
 // Navbar toggle
 //
 // Custom button for toggling the `.navbar-collapse`, powered by the collapse
@@ -163,6 +230,7 @@
  */
 
 .menu-mask {
+         @media (max-width: @grid-float-breakpoint-max) {
   position: fixed;
   z-index: 100;
   top: 45px;
@@ -173,13 +241,19 @@
   background-color: #000;
   opacity: 0;
   transition: opacity 0.3s, width 0s 0.3s, height 0s 0.3s;
+}// for mobile
+       @media (min-width: @grid-float-breakpoint) {//for desktop
+          display:none;
+      }//desktop
 }
 
 .menu-mask.isActive {
+         @media (max-width: @grid-float-breakpoint-max) {
   width: 100%;
   height: 100%;
   opacity: 0.7;
   transition: opacity 0.3s;
+  }//for mobile
 }
 
 
