@@ -7,10 +7,19 @@ module.exports= [function(){
 
 	    },
 	    transclude: true,
-	    controller:['$scope','$element',function($scope, $element){
+	    controller:['$scope','$element', '$rootScope', function($scope, $element, $rootScope){
 		    var items = $scope.items = [];
 		    $scope.toggle = function(item){
                             $scope.isActive = !$scope.isActive;
+                            if($scope.isActive){
+                                // this line gives error
+                                //document.body.addClass("has-active-menu");
+                                $rootScope.hasActiveMenu="has-active-menu";
+                                //$element.find(document.querySelector(body)).addClass("has-active-menu");
+                            }else{
+                                $rootScope.hasActiveMenu="no-active-menu";
+                                //$element.find(document.querySelector(body)).removeClass("has-active-menu");
+                            }
 		    };
 
 		    //console.log('in nav2 controller');
