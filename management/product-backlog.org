@@ -12,3 +12,5 @@
    CLOSED: [2016-08-14 Sun 20:30]
 ** DONE there should be a responsive menubar for desktop
    CLOSED: [2016-08-15 Mon 08:10]
+** DONE there should a sliding type menubar for guest section 
+   CLOSED: [2016-08-15 Mon 08:50]

@@ -10,15 +10,16 @@
 			<div class="navbar-brand" href="#">SSonyChem</div>
 		</div>                
 		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" ng-hide="isCollapse">
+		<div class="collapse navbar-collapse" ng-class="{isActive:isActive}">
 			<ul class="nav navbar-nav">
-				<li><a href="#" >Home</a></li>
-				<li><a href="#/products" >Products</a></li>
-				<li><a href="#/about-us" >About Us</a></li>
-				<li><a href="#/contact-us" >Contact Us </a></li>
+				<li ng-click="isActive=!isActive"><a href="#" >Home</a></li>
+				<li ng-click="isActive=!isActive"><a href="#/products" >Products</a></li>
+				<li ng-click="isActive=!isActive"><a href="#/about-us" >About Us</a></li>
+				<li ng-click="isActive=!isActive"><a href="#/contact-us" >Contact Us </a></li>
 			</ul>
 			<div ng-transclude></div>
 		</div><!-- /.navbar-collapse -->
+                <div class='menu-mask' ng-click="toggle()" ng-class="{isActive:isActive}"></div>
 	</div><!-- /.container-fluid -->
 </nav>
 

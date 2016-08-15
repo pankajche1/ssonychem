@@ -10,11 +10,7 @@ module.exports= [function(){
 	    controller:['$scope','$element',function($scope, $element){
 		    var items = $scope.items = [];
 		    $scope.toggle = function(item){
-			    //console.log('in toggle()');
-			    if($scope.isCollapse===false)
-				$scope.isCollapse=true;
-			    else
-				 $scope.isCollapse=false;
+                            $scope.isActive = !$scope.isActive;
 		    };
 
 		    //console.log('in nav2 controller');
@@ -58,11 +54,12 @@ module.exports= [function(){
 
 		    if(isVisible(btn[0])){
 			    //comes here when btn is visible
-			    $scope.isCollapse=true;
+                            // means this the mobile screen
+			    $scope.isActive=false;
 			    return false;
 		    }else{
 			    // comes here when button is not visible
-			    $scope.isCollapse=false;
+			    $scope.isActive=false;
 			    return false;
 		    }
 
