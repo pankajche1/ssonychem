@@ -1,0 +1,25 @@
+* the admin should be able to save the products to the server *
+
+** User Story: As an admin I can save products to the server
+
+*** Acceptance Stories
+
+**** 1:
+     Scenario: Admin wants to save a product
+     Given: admin is logged in as admin to the site
+     When: he clicks the products section
+     Then: he should be able to see the products manipulation section of the site
+**** 2: admin can access the products group page of the site
+**** 3: admin can see the current groups on the server on the groups page
+**** 4: product groups can only be saved if the user is logged in as admin
+
+***** tasks
+***** task1: create a plan of the thing that how you will manage products on the site. Do a complete
+             brain storm for this. then proceed ahead.
+***** task2: admin can go to the product group page of the site
+***** task3: make facility to retrieve current products group on the server side
+             1. put save and retrieve facility in dao object at server side
+***** task4: put the save product group facility on a route of the app and working only when the client is logged in
+             as admin.
+***** task5: now develop client site form to save product group to the db given that the client is logged in as admin
+

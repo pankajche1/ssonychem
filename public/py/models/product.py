@@ -8,14 +8,15 @@ class Product(ndb.Model):
     '''
     This represents the Product
     :param name: name of the product
+    :param groupKey: group in which the product has been put
 
     '''
     name = ndb.StringProperty()
     nameLower = ndb.ComputedProperty(lambda self: self.name.lower())
-    userId = ndb.StringProperty()
     created = ndb.DateTimeProperty( auto_now_add=True)
     edited = ndb.DateTimeProperty(auto_now=True)
     imageKey = ndb.KeyProperty()
+    groupKey = ndb.KeyProperty()
 
     @classmethod
     def getProductsByCursorPagination(cls, prev_cursor_str, next_cursor_str, nItems):

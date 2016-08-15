@@ -10,6 +10,7 @@ import json
 from py.handlers.mainHandler import MainHandler as MainHandler
 from py.handlers.productsPageHandler import ProductsPageHandler as ProductsPageHandler
 from py.handlers.signinPageHandler import SigninPageHandler as SigninPageHandler
+from py.handlers.productGroupHandler import ProductGroupHandler as ProductGroupHandler
 
 import cgi
 import urllib
@@ -22,5 +23,7 @@ application = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/products', ProductsPageHandler),
     ('/signin', SigninPageHandler),
+    ('/product-groups', ProductGroupHandler),
+    ('/save-product-group', ProductGroupHandler)
     ], debug=True)
 

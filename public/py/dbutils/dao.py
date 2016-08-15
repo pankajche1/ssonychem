@@ -3,6 +3,7 @@ import datetime
 import time
 from google.appengine.api import users
 from py.models.product import Product as Product
+from py.models.productGroup import ProductGroup as ProductGroup
 
 class DAO:
     def __init__(self):
@@ -56,4 +57,25 @@ class DAO:
             productsDto.append(productDict)
         res['objects'] = productsDto
         return res  
+
+    def saveProductGroup(self, data):
+        '''
+        saves the product group on the database
+        '''
+        response = {'info':'','error':'true','message':''}
+        productGroup = ProductGroup(name=data['name'])
+        # save the product 
+        productGroup.put()
+        response['error']='false'
+        response['message']='New product Group created successfully'
+        return response
+   
+    def getProductGroups(self):
+        groups = ProductGroup.getProductsGroups()
+        dto = []  
+        for obj in groups:
+            dictObj = self.to_dict(obj)
+            dictObj['key'] = obj.key.urlsafe()
+            dto.append(dictObj)
+        return dto  
 

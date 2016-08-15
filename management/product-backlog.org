@@ -14,3 +14,4 @@
    CLOSED: [2016-08-15 Mon 08:10]
 ** DONE there should a sliding type menubar for guest section 
    CLOSED: [2016-08-15 Mon 08:50]
+** INPIPE the admin should be able to save the products on the site.

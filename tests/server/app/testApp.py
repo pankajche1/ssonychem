@@ -7,7 +7,7 @@ from google.appengine.ext import ndb
 from google.appengine.ext import testbed
 from google.appengine.api import users
 #import rajput
-#from py.dbutils.dao import DAO as DAO
+from py.dbutils.dao import DAO as DAO
 #from py.dbutils.adminDao import AdminDAO as AdminDAO
 from utils.dbmanager import DbManager as DbManager
 from py.handlers.mainHandler import MainHandler as MainHandler
@@ -15,6 +15,7 @@ from py.handlers.productsPageHandler import ProductsPageHandler as \
                              ProductsPageHandler
 #from py.handlers.signupPageHandler import SignupPageHandler as SignupPageHandler
 from py.handlers.signinPageHandler import SigninPageHandler as SigninPageHandler
+from py.handlers.productGroupHandler import ProductGroupHandler as ProductGroupHandler
 #@unittest.skip('AppTest Case')
 class AppTest(unittest.TestCase):
     def setUp(self):
@@ -35,7 +36,9 @@ class AppTest(unittest.TestCase):
         app = webapp2.WSGIApplication([
             ('/',MainHandler),
             ('/products', ProductsPageHandler),
-            ('/signin', SigninPageHandler)
+            ('/signin', SigninPageHandler),
+            ('/product-groups', ProductGroupHandler),
+            ('/save-product-group', ProductGroupHandler)
             ])
         # wrap the app with WebTest's AppTest:
         self.testApp=webtest.TestApp(app)
@@ -137,3 +140,61 @@ class AppTest(unittest.TestCase):
         self.assertEqual(response.status_int, 200)
         #products = json.dumps(response.normal_body) 
         #print(response.normal_body)
+
+    def test7_save_product_group_given_client_is_not_admin(self):
+        '''
+            given: client is logged in
+            and: he is not admin
+            then: he should not be able to save the group
+        '''
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = False
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        #response = self.testApp.post('/save-product-group', {'name':'Cleaning Agent'});
+        response = self.testApp.post_json('/save-product-group', dict(name='Cleaning Agent'));
+        # status code 302 is for redirection
+        self.assertEqual(response.status_int, 302)
+        #products = json.dumps(response.normal_body) 
+        #print(response.normal_body)
+
+    def test8_save_product_group_given_client_is_admin(self):
+        '''
+            given: client is logged in
+            and: he is  admin
+            then: he should be able to save the group
+        '''
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = True
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        #response = self.testApp.post('/save-product-group', {'name':'Cleaning Agent'});
+        response = self.testApp.post_json('/save-product-group', dict(name='Cleaning Agent'));
+        # status code 302 is for redirection and 200 is for good successful response
+        self.assertEqual(response.status_int, 200)
+        #products = json.dumps(response.normal_body) 
+        #print(response.normal_body)
+
+    def test9_get_product_groups_given_no_group_on_db(self):
+        data = self.testApp.get('/product-groups')
+        self.assertEqual(data.status_int, 200)
+        #print data.normal_body
+
+    def test10_get_product_groups_given_there_are_groups_on_db(self):
+        # save some product grups on the db:
+        # first save product groups 
+        data = {'name':'Cleaning Agents'}
+        DAO().saveProductGroup(data)
+        data = {'name':'Speciality Chemicals'}
+        DAO().saveProductGroup(data)
+        data = self.testApp.get('/product-groups')
+        self.assertEqual(data.status_int, 200)
+        #print data.normal_body
