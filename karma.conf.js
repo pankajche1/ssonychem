@@ -7,9 +7,10 @@ module.exports = function (config) {
 		frameworks: ['jasmine'],
 		files: [
             'public/js/lib.js',
-            'public/js/main-member.js',
+            'public/js/main-admin-a.js',
             //'public/js/main-admin-b.js',
             'node_modules/angular-mocks/angular-mocks.js',
+            'tests/js/utils/utils.js',
             'tests/js/unit/**/*.js'
 		],
 		autoWatch: true,
