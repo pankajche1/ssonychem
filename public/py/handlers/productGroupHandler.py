@@ -2,6 +2,7 @@ import os
 import webapp2
 import jinja2
 import json
+from google.appengine.ext import ndb
 from google.appengine.api import users
 from py.dbutils.dao import DAO as DAO
 #from py.data.userData import UserData as UserData
@@ -13,10 +14,33 @@ env = jinja2.Environment(loader=loader, extensions=extensions,autoescape=True)
 
 class ProductGroupHandler(webapp2.RequestHandler):
 
-    def get(self):
-        response = DAO().getProductGroups()
+    def isUserAdmin(self):
+        isAdmin = False
+        # check the status of the client            
+        user = users.get_current_user()
+        if user:
+            isAdmin = users.is_current_user_admin()
+        return isAdmin
+    
+    def deleteGroups(self, key):
+        keyTarget = ndb.Key(urlsafe=key)
+        if self.isUserAdmin() == True:
+            response = DAO().deleteProductGroup(keyTarget)
+        else:
+            response = {'error':True, 'message':'operation not permitted'}
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(response))
+
+
+    def get(self):
+        # get request can come for deleting a product group
+        mode =  self.request.get('mode')
+        if mode == "delete":
+            self.deleteGroups(self.request.get('key'))
+        else:
+            response = DAO().getProductGroups()
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
 
     def post(self):
         response = {'info':'','error':'true','message':''}
@@ -33,22 +57,11 @@ class ProductGroupHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
             return
-        # check the status of the client            
-        user = users.get_current_user()
-        if user:
-            # user is a gmail user
-            # check if the user is a registerd member of the site:
-            userNickName = user.nickname()
-            isUserAdmin = users.is_current_user_admin()
-            # if the user is not an admin then take to the guest page
-            if(isUserAdmin == True):
-                # save the data to datastore
-                data = {'name':uName}
-                response = DAO().saveProductGroup(data)
-                self.response.headers['Content-Type'] = 'application/json'
-                self.response.out.write(json.dumps(response))
-            else:
-                self.redirect('/')
-
+        if self.isUserAdmin() == True:
+            # save the data to datastore
+            data = {'name':uName}
+            response = DAO().saveProductGroup(data)
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
         else:
             self.redirect('/')

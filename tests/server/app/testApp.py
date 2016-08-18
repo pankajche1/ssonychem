@@ -60,13 +60,13 @@ class AppTest(unittest.TestCase):
 
     # test the handler:
     #@unittest.skip('Test Main Page Handler')
-    def test1_main_pageHandler(self):
+    def test001_main_pageHandler(self):
         response=self.testApp.get('/')
         self.assertEqual(response.status_int, 200)
         #self.assertEqual(response.normal_body, 'Panku')
         #print(response.normal_body)
 
-    def test2_get_products_by_cursor(self):
+    def test002_get_products_by_cursor(self):
         DbManager().createProducts();
         response = self.testApp.get('/products');
         self.assertEqual(response.status_int, 200)
@@ -76,7 +76,7 @@ class AppTest(unittest.TestCase):
         #print(response.normal_body)
 
     #@unittest.skip('Test User login')
-    def test3_user_login(self):
+    def test003_user_login(self):
         '''
           given: user is logged to his gmail in 
           then: he should be authenticated
@@ -91,7 +91,7 @@ class AppTest(unittest.TestCase):
         # test the logged in user:
         assert users.get_current_user().email() == 'pankajche1@gmail.com'
 
-    def test4_signin_page_given_client_not_loggedin(self):
+    def test004_signin_page_given_client_not_loggedin(self):
         '''
             given: client is not logged in
             then: he should be redirected to the guest page
@@ -102,7 +102,7 @@ class AppTest(unittest.TestCase):
         #products = json.dumps(response.normal_body) 
         #print(response.normal_body)
 
-    def test5_signin_page_given_client_loggedin_and_no_admin(self):
+    def test005_signin_page_given_client_loggedin_and_no_admin(self):
         '''
             given: client is logged in
             and: he is no admin
@@ -121,7 +121,7 @@ class AppTest(unittest.TestCase):
         #products = json.dumps(response.normal_body) 
         #print(response.normal_body)
 
-    def test6_signin_page_given_client_loggedin_and_admin(self):
+    def test006_signin_page_given_client_loggedin_and_admin(self):
         '''
             given: client is logged in
             and: he is admin
@@ -141,7 +141,7 @@ class AppTest(unittest.TestCase):
         #products = json.dumps(response.normal_body) 
         #print(response.normal_body)
 
-    def test7_save_product_group_given_client_is_not_admin(self):
+    def test007_save_product_group_given_client_is_not_admin(self):
         '''
             given: client is logged in
             and: he is not admin
@@ -162,7 +162,7 @@ class AppTest(unittest.TestCase):
         #products = json.dumps(response.normal_body) 
         #print(response.normal_body)
 
-    def test8_save_product_group_given_client_is_admin(self):
+    def test008_save_product_group_given_client_is_admin(self):
         '''
             given: client is logged in
             and: he is  admin
@@ -183,12 +183,12 @@ class AppTest(unittest.TestCase):
         #products = json.dumps(response.normal_body) 
         #print(response.normal_body)
 
-    def test9_get_product_groups_given_no_group_on_db(self):
+    def test009_get_product_groups_given_no_group_on_db(self):
         data = self.testApp.get('/product-groups')
         self.assertEqual(data.status_int, 200)
         #print data.normal_body
 
-    def test10_get_product_groups_given_there_are_groups_on_db(self):
+    def test010_get_product_groups_given_there_are_groups_on_db(self):
         # save some product grups on the db:
         # first save product groups 
         data = {'name':'Cleaning Agents'}
@@ -198,3 +198,103 @@ class AppTest(unittest.TestCase):
         data = self.testApp.get('/product-groups')
         self.assertEqual(data.status_int, 200)
         #print data.normal_body
+
+    def test011_delete_product_group_on_db(self):
+        '''
+        given: client is not logged in
+        when: he deletes product group 
+        then: he should not be able to delete the group
+        '''
+        # create some product groups on the server db:
+        # first save product groups 
+        data = {'name':'Cleaning Agents'}
+        DAO().saveProductGroup(data)
+        data = {'name':'Speciality Chemicals'}
+        DAO().saveProductGroup(data)
+        # the data is got in form of json objects:
+        data = self.testApp.get('/product-groups')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a group that is to be deleted:
+        keyTargetObject = data.json[0]['key']
+        # now this key is to be sent to the server for deleting the group
+        response = self.testApp.get('/product-groups', {'mode':'delete','key':keyTargetObject})
+        # this converts the json object got from the server to a python dict object:
+        response = response.json
+        self.assertEqual(response['message'], 'operation not permitted')
+        # assert if only one element is in the product group list
+        groups = DAO().getProductGroups()
+        self.assertEqual(2, len(groups))
+
+    def test012_delete_product_group_on_db_when_client_logged_in_and_not_admin(self):
+        '''
+        given: client is logged in
+        and: he is not admin
+        when: he deletes product group 
+        then: he should not be able to delete the group
+        '''
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = False
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        # create some product groups on the server db:
+        # first save product groups 
+        data = {'name':'Cleaning Agents'}
+        DAO().saveProductGroup(data)
+        data = {'name':'Speciality Chemicals'}
+        DAO().saveProductGroup(data)
+        # the data is got in form of json objects:
+        data = self.testApp.get('/product-groups')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a group that is to be deleted:
+        keyTargetObject = data.json[0]['key']
+        # now this key is to be sent to the server for deleting the group
+        response = self.testApp.get('/product-groups', {'mode':'delete','key':keyTargetObject})
+        # this converts the json object got from the server to a python dict object:
+        response = response.json
+        self.assertEqual(response['message'], 'operation not permitted')
+        # assert if only one element is in the product group list
+        groups = DAO().getProductGroups()
+        self.assertEqual(2, len(groups))
+
+    def test013_delete_product_group_on_db_when_client_logged_in_and_is_admin(self):
+        '''
+        given: client is logged in
+        and: he is admin
+        when: he deletes product group 
+        then: he should be able to delete the group
+        '''
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = True
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        # create some product groups on the server db:
+        # first save product groups 
+        data = {'name':'Cleaning Agents'}
+        DAO().saveProductGroup(data)
+        data = {'name':'Speciality Chemicals'}
+        DAO().saveProductGroup(data)
+        # the data is got in form of json objects:
+        data = self.testApp.get('/product-groups')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a group that is to be deleted:
+        keyTargetObject = data.json[0]['key']
+        # now this key is to be sent to the server for deleting the group
+        response = self.testApp.get('/product-groups', {'mode':'delete','key':keyTargetObject})
+        # this converts the json object got from the server to a python dict object:
+        response = response.json
+        self.assertEqual(response['message'], 'The object deleted successfully.')
+        # assert if only one element is in the product group list
+        groups = DAO().getProductGroups()
+        self.assertEqual(1, len(groups))
+

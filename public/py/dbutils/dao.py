@@ -79,3 +79,12 @@ class DAO:
             dto.append(dictObj)
         return dto  
 
+    def deleteProductGroup(self, key):
+        response = {'message':'The object deleted successfully.','error':False}
+        try:
+            key.delete()
+        except:
+            response['error'] = True
+            response['message'] = 'There is some error in deleting the object.'
+        return response
+

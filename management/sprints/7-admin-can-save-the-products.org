@@ -28,5 +28,4 @@
 ***** task6: form design for saving new product group and a controller for it and then testing its working.
 ***** task7: now design the controller and its interface for seeing the available 'product groups' on the server.
 ***** task8: design the directive for displaying product groups and there are to be 'edit', 'delete' etc buttons.
-
-
+***** task9: put delete a product group facility on the server side.
