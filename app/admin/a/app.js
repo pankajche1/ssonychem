@@ -13,9 +13,16 @@ app.config(['$routeProvider',function($routeProvider){
 		$routeProvider.when('/products',{
 				templateUrl:'/admin/a/products.html',
                                 controller:'ProductsController'});
+                // it is for goint to the base section of the products groups 
 		$routeProvider.when('/products-groups',{
 				templateUrl:'/admin/a/products-groups.html',
                                 controller:'ProductsGroupsController'});
+		$routeProvider.when('/products-groups-edit',{
+				templateUrl:'/admin/a/products-groups-edit.html',
+                                controller:'ProductsGroupsEditController'});
+		$routeProvider.when('/new-product-group',{
+				templateUrl:'/admin/a/new-product-group.html',
+                                controller:'NewProductGroupController'});
 		$routeProvider.when('/emplopyees',{
 				templateUrl:'/admin/a/employees.html',
                                 controller:'EmployeesController'});

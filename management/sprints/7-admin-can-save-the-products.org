@@ -22,4 +22,11 @@
 ***** task4: put the save product group facility on a route of the app and working only when the client is logged in
              as admin.
 ***** task5: now develop client site form to save product group to the db given that the client is logged in as admin
+             - for this js unit test for controller and service
+             - then create a form and check it in real world on browser. Because at this time I can not think only in
+               terms of unit testing. It requires more experience.
+***** task6: form design for saving new product group and a controller for it and then testing its working.
+***** task7: now design the controller and its interface for seeing the available 'product groups' on the server.
+***** task8: design the directive for displaying product groups and there are to be 'edit', 'delete' etc buttons.
+
 
