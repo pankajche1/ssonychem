@@ -23,7 +23,7 @@ application = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/products', ProductsPageHandler),
     ('/signin', SigninPageHandler),
-    ('/product-groups', ProductGroupHandler),
+    ('/products-groups', ProductGroupHandler),
     ('/save-product-group', ProductGroupHandler)
     ], debug=True)
 

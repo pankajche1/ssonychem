@@ -27,7 +27,6 @@ module.exports=['$rootScope','$scope','$http', 'ProductsGroupsService', '$log',
         $scope.isDisabled=true;
         $scope.message = ajaxMsg;
 	master=angular.copy($scope.productGroup);
-        $log.info($scope.productGroup);
 	saveProductGroup();
     };//submit()
 }];

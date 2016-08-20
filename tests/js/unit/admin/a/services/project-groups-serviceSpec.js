@@ -61,7 +61,7 @@
 			expect(productsGroupsService).not.toBe(undefined);
 		});//non null objects test
                 it('should get data from the server', function(){
-                        productsGroupsService.getProjectsGroups()
+                        productsGroupsService.getProductsGroups()
                             .then(function (response) {
                                  expect(response.data[0].name).toBe('PG1');
                             }, function (error) {
@@ -80,6 +80,7 @@
                              });//member service get prev page
 			$httpBackend.flush();
                 });//retrieving data from http request
+              
     
 
 	});//describe 'projects groups service test'

@@ -1,5 +1,7 @@
-<div>
+<div class="panel panel-default">
+    <div class="panel-body">
     <products-group ng-repeat="item in productsGroups" data="item"
                                delete="onDeleteClick({index:$index})"
                                edit="onEditClick({index:$index})"></products-group>
+    </div>
 </div>
