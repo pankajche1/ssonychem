@@ -298,3 +298,43 @@ class AppTest(unittest.TestCase):
         groups = DAO().getProductGroups()
         self.assertEqual(1, len(groups))
 
+    def test014_save_new_product_given_cleint_not_logged_in(self):
+        response = self.testApp.post_json('/products', dict(name='Car Wash'));
+        # status code 302 is for redirection
+        self.assertEqual(response.status_int, 302)
+        
+    def test015_save_new_product_given_cleint_is_logged_in_and_not_admin(self):
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = False
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        response = self.testApp.post_json('/products', dict(name='Car Wash'));
+        # status code 302 is for redirection
+        self.assertEqual(response.status_int, 302)
+        
+    def test016_save_new_product_given_cleint_is_logged_in_and_is_admin(self):
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = True
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        response = self.testApp.post_json('/products', dict(name='Car Wash'));
+        # status code 302 is for redirection and 200 is for normal
+        self.assertEqual(response.status_int, 200)
+        response = response.json
+        self.assertEqual(response['message'], 'New product created successfully')
+        # assert if only one element is in the product group list
+        prevCursor = False
+        nextCursor = False
+        itemsPerFetch = 10
+        response = DAO().getProductsByCursor(prevCursor, nextCursor, itemsPerFetch)
+        self.assertEqual(len(response['objects']), 1)
+        self.assertEqual(response['objects'][0]['name'], 'Car Wash')
+

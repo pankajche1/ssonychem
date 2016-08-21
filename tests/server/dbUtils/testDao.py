@@ -39,13 +39,13 @@ class DaoTestCase(unittest.TestCase):
             user_is_admin='1' if is_admin else '0',
             overwrite=True)
 
-    def test1_save_product_group(self):
+    def test001_save_product_group(self):
         # product group data:
         data = {'name':'Cleaning Agents'}
         response = DAO().saveProductGroup(data)
         self.assertEqual(response['error'], 'false')
 
-    def test2_get_product_group(self):
+    def test002_get_product_group(self):
         # first save product groups 
         data = {'name':'Cleaning Agents'}
         DAO().saveProductGroup(data)
@@ -57,7 +57,7 @@ class DaoTestCase(unittest.TestCase):
         self.assertEqual(groups[1]['name'],'Speciality Chemicals')
         #print groups
 
-    def test3_delete_product_group_in_db(self):
+    def test003_delete_product_group_in_db(self):
         # first save some product groups:
         data = {'name':'Cleaning Agents'}
         DAO().saveProductGroup(data)
@@ -81,6 +81,24 @@ class DaoTestCase(unittest.TestCase):
         self.assertEqual(response['error'], False)
         self.assertEqual(response['message'], 'The object deleted successfully.')
 
+    def test004_save_new_product(self):
+        # product:
+        data = {'name':'Car Wash'}
+        response = DAO().saveProduct(data)
+        self.assertEqual(response['error'], 'false')
+        self.assertEqual(response['message'], 'New product created successfully')
+
+    def test005_get_products_list_(self):
+        # first save 20 products on the server:
+        DbManager().createProducts(20)
+        # now get the products
+        prevCursor = False
+        nextCursor = False
+        itemsPerFetch = 10
+        response = DAO().getProductsByCursor(prevCursor, nextCursor, itemsPerFetch)
+        self.assertEqual(len(response['objects']), 10)
+        self.assertEqual(response['objects'][0]['name'], 'product-0')
+        self.assertEqual(response['objects'][1]['name'], 'product-1')
 
 
 # [START main]h

@@ -1,0 +1,14 @@
+* the admin should be able to update the products 
+** User Story: As an admin I can save a new Product on the server
+*** Acceptance Stories
+**** 1:
+    Scenario: Some client goes to admin page
+    Given: some client has access to the admin new product page
+    When: he clicks the save new product
+    Then: he must now be able to save the new product at all
+**** tasks
+***** task1: create a products menu page which will show a menu for this:
+            1. new product
+            2. edit existing products
+      for that a route in the 'app' is to be created.
+***** task2: create a facility to add a new product on the server side

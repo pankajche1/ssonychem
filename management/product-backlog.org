@@ -5,7 +5,8 @@
    CLOSED: [2016-08-11 Thu 22:34]
 ** DONE there should be good layout of the page
    CLOSED: [2016-08-12 Fri 13:44]
-** INPIPE the products are to be downloaded from the server when needed
+** DONE the products are to be downloaded from the server when needed
+   CLOSED: [2016-08-21 Sun 08:14]
 ** DONE a slide type of menu is to be developed.
    CLOSED: [2016-08-14 Sun 19:56]
 ** DONE routing for the admin-a section for menu link click test purpose
@@ -16,3 +17,4 @@
    CLOSED: [2016-08-15 Mon 08:50]
 ** DONE the admin should be able to update the products groups on the site.
    CLOSED: [2016-08-20 Sat 19:33]
+** the admin should be able to update products on the site

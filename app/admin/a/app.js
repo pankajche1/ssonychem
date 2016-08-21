@@ -10,9 +10,18 @@ require('./directives');
 app.config(['$routeProvider',function($routeProvider){
 		$routeProvider.when('/welcome',{
 				templateUrl:'/admin/a/welcome.html',controller:'WelcomeController'});
-		$routeProvider.when('/products',{
-				templateUrl:'/admin/a/products.html',
-                                controller:'ProductsController'});
+		$routeProvider.when('/products-area',{
+				templateUrl:'/admin/a/products-area.html',
+                                controller:'ProductsAreaController'});
+		$routeProvider.when('/products-menu',{
+				templateUrl:'/admin/a/products-menu.html',
+                                controller:'ProductsMenuController'});
+		$routeProvider.when('/products-edit',{
+				templateUrl:'/admin/a/products-edit.html',
+                                controller:'ProductsEditController'});
+		$routeProvider.when('/new-product',{
+				templateUrl:'/admin/a/new-product.html',
+                                controller:'NewProductController'});
                 // it is for goint to the base section of the products groups 
 		$routeProvider.when('/products-groups',{
 				templateUrl:'/admin/a/products-groups-menu.html',
