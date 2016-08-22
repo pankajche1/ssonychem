@@ -5,10 +5,24 @@
     Scenario: Some client goes to admin page
     Given: some client has access to the admin new product page
     When: he clicks the save new product
-    Then: he must now be able to save the new product at all
+    Then: he must not be able to save the new product at all
+**** 2:
+    Scenario: Some client logs in and accesses the admin page
+    Given:  client has access to the admin new product page
+    And: he is logged in
+    And: he is not admin 
+    When: he clicks the save new product
+    Then: he must not be able to save the new product at all
+**** 3:
+    Scenario: an admin A goes to admin page
+    Given: An admin A logs in 
+    And: he opens the admin section
+    When: he clicks the save new product
+    Then: he should be able to save the new product
 **** tasks
 ***** task1: create a products menu page which will show a menu for this:
             1. new product
             2. edit existing products
       for that a route in the 'app' is to be created.
 ***** task2: create a facility to add a new product on the server side
+***** task3: creaet client side angularjs codes for saving a new product

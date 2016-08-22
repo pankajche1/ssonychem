@@ -1,3 +1,24 @@
 <div>
-<% message %>
+    <h3>New Product</h3>
+	<div class='form-container'><!-- main -->
+		<div> <!-- form wrapper -->
+	<form novalidate name='myform' class="form" ng-submit="submit()" >
+         <div class="form-group">
+            <label for="productName">Name
+	     <span ng-show="myform.$submitted || myform.productName.$touched">
+		 <span ng-show="myform.productName.$error.maxlength">(Name must be less than 500 characters)</span>
+         	</span>
+          </label>
+          <input ng-maxlength="500" type="text" class="form-control" id="productName" name="productName"
+			    ng-model="product.name" placeholder="Product Name"  >
+          </div>
+         <button type="button" ng-click="reset(myform)" class="btn btn-default">Reset</button>
+         <button type="submit" ng-class="{'btn':true, 'btn-default':true,'disabled':isDisabled}">Update</button>
+         <span><% message %></span>
+      </form>
+
+
+</div><!-- form wrapper -->
+</div><!-- form container -->
 </div>
+

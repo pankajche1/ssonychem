@@ -121,7 +121,7 @@
                         spyOn(window, 'confirm').and.returnValue(true);
                         // data at 1 is deleted: index=1 (this is the index of the list)
                         // this is second element of the list:
-                        $scope.onDeleteClick(1);
+                        $scope.onDeleteClick({'index':1});
 			$httpBackend.flush();
                         expect($scope.ajaxMessage).toBe('Product Group Deleted Successfully');
 

@@ -1,6 +1,6 @@
 'use-strict()';
-module.exports=['$rootScope','$scope','$http', 'ProductsGroupsService', '$log',
-           function($rootScope,$scope, $http, productsGroupsService, $log){
+module.exports=['$rootScope','$scope', 'ProductsGroupsService', '$log',
+           function($rootScope,$scope, productsGroupsService, $log){
     var master={};
     var ajaxMsg = "Saving. Please wait ...";
     // for save a new product group use the service:
