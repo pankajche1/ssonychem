@@ -17,4 +17,5 @@
    CLOSED: [2016-08-15 Mon 08:50]
 ** DONE the admin should be able to update the products groups on the site.
    CLOSED: [2016-08-20 Sat 19:33]
-** the admin should be able to update products on the site
+** DONE the admin should be able to update products on the site
+   CLOSED: [2016-08-23 Tue 21:11]

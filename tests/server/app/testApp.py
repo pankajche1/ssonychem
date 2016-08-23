@@ -338,3 +338,113 @@ class AppTest(unittest.TestCase):
         self.assertEqual(len(response['objects']), 1)
         self.assertEqual(response['objects'][0]['name'], 'Car Wash')
 
+    def test017_delete_product_given_client_is_not_logged_in(self):
+        '''
+        given: client is not logged in
+        when: he deletes a product 
+        then: he should not be able to delete the product
+        '''
+        # create some products  on the server db:
+        # first save product groups 
+        data = {'name':'Quick Hand Wash'}
+        DAO().saveProduct(data)
+        data = {'name':'Quick Detergent Powder'}
+        DAO().saveProduct(data)
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a product that is to be deleted:
+        keyTargetObject = data.json['objects'][0]['key']
+        # now this key is to be sent to the server for deleting the group
+        response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        # this converts the json object got from the server to a python dict object:
+        response = response.json
+        self.assertEqual(response['message'], 'operation not permitted')
+        # assert if only one element is in the product group list
+        prevCursor = False
+        nextCursor = False
+        itemsPerFetch = 10
+        # DAO gives python objects so no need to use json here
+        response = DAO().getProductsByCursor(prevCursor, nextCursor, itemsPerFetch)
+        self.assertEqual(2, len(response['objects']))
+
+    def test018_delete_product_given_client_is_logged_in_and_is_not_an_admin(self):
+        '''
+        given: client is logged in
+        and: he is not an admin
+        when: he deletes a product 
+        then: he should not be able to delete the product
+        '''
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = False
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        # create some products  on the server db:
+        # first save product groups 
+        data = {'name':'Quick Hand Wash'}
+        DAO().saveProduct(data)
+        data = {'name':'Quick Detergent Powder'}
+        DAO().saveProduct(data)
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a product that is to be deleted:
+        keyTargetObject = data.json['objects'][0]['key']
+        # now this key is to be sent to the server for deleting the group
+        response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        # this converts the json object got from the server to a python dict object:
+        response = response.json
+        self.assertEqual(response['message'], 'operation not permitted')
+        # assert if only one element is in the product group list
+        prevCursor = False
+        nextCursor = False
+        itemsPerFetch = 10
+        # DAO gives python objects so no need to use json here
+        response = DAO().getProductsByCursor(prevCursor, nextCursor, itemsPerFetch)
+        self.assertEqual(2, len(response['objects']))
+
+    def test019_delete_product_given_client_is_logged_in_and_is_an_admin(self):
+        '''
+        given: client is logged in
+        and: he is an admin
+        when: he deletes a product 
+        then: he should not be able to delete the product
+        '''
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = True
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        # create some products  on the server db:
+        # first save product groups 
+        data = {'name':'Quick Hand Wash'}
+        DAO().saveProduct(data)
+        data = {'name':'Quick Detergent Powder'}
+        DAO().saveProduct(data)
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a product that is to be deleted:
+        keyTargetObject = data.json['objects'][0]['key']
+        # now this key is to be sent to the server for deleting the group
+        response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        # this converts the json object got from the server to a python dict object:
+        response = response.json
+        self.assertEqual(response['message'], 'The object deleted successfully.')
+        # assert if only one element is in the product group list
+        prevCursor = False
+        nextCursor = False
+        itemsPerFetch = 10
+        # DAO gives python objects so no need to use json here
+        response = DAO().getProductsByCursor(prevCursor, nextCursor, itemsPerFetch)
+        self.assertEqual(1, len(response['objects']))

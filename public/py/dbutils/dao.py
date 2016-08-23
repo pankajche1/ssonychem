@@ -88,3 +88,12 @@ class DAO:
             response['message'] = 'There is some error in deleting the object.'
         return response
 
+    def deleteProduct(self, key):
+        response = {'message':'The object deleted successfully.','error':False}
+        try:
+            key.delete()
+        except:
+            response['error'] = True
+            response['message'] = 'There is some error in deleting the object.'
+        return response
+

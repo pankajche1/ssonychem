@@ -5,7 +5,7 @@ import json
 from google.appengine.api import users
 from py.dbutils.dao import DAO as DAO
 from py.models.product import Product as Product
-
+from google.appengine.ext import ndb
 
 class ProductsPageHandler(webapp2.RequestHandler):
 
@@ -16,14 +16,30 @@ class ProductsPageHandler(webapp2.RequestHandler):
         if user:
             isAdmin = users.is_current_user_admin()
         return isAdmin
+
+    def deleteProduct(self, key):
+        keyTarget = ndb.Key(urlsafe=key)
+        if self.isUserAdmin() == True:
+            response = DAO().deleteProduct(keyTarget)
+        else:
+            response = {'error':True, 'message':'operation not permitted'}
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(response))
+
         
     def get(self):
         itemsPerFetch = 10
-        prev_cursor = self.request.get('prev_cursor', '')
-        next_cursor = self.request.get('next_cursor', '')
-        res = DAO().getProductsByCursor(prev_cursor, next_cursor, itemsPerFetch)
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(json.dumps(res))
+        # divide the request based on its mode:
+        # get request can come for deleting a product group
+        mode =  self.request.get('mode')
+        if mode == "delete":
+            self.deleteProduct(self.request.get('key'))
+        else:
+            prev_cursor = self.request.get('prev_cursor', '')
+            next_cursor = self.request.get('next_cursor', '')
+            res = DAO().getProductsByCursor(prev_cursor, next_cursor, itemsPerFetch)
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(res))
 
     def post(self):
         response = {'info':'','error':'true','message':''}

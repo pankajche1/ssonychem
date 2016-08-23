@@ -41,3 +41,4 @@
 ***** task4: create cleint side angularjs code for retrieving a list of the products on the server
 ***** task5: create a directive for product element in the products list. this element will have 'edit' and 'delete' button.
 ***** task6: code angularjs on client side to delete a particular product.
+***** task7: code python on server side to delete a desired product.

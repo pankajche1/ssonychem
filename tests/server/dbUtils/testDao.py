@@ -101,6 +101,38 @@ class DaoTestCase(unittest.TestCase):
         self.assertEqual(response['objects'][1]['name'], 'product-1')
 
 
+    def test006_delete_product_in_db(self):
+        # first save some products:
+        data = {'name':'Handwash'}
+        response = DAO().saveProduct(data)
+        self.assertEqual(response['error'], 'false')
+        self.assertEqual(response['message'], 'New product created successfully')
+        data = {'name':'Toilet Cleaner'}
+        response = DAO().saveProduct(data)
+        self.assertEqual(response['error'], 'false')
+        self.assertEqual(response['message'], 'New product created successfully')
+        # now get the products
+        prevCursor = False
+        nextCursor = False
+        itemsPerFetch = 10
+        response = DAO().getProductsByCursor(prevCursor, nextCursor, itemsPerFetch)
+        products = response['objects']
+        self.assertEqual(len(response['objects']), 2)
+        self.assertEqual(response['objects'][0]['name'], 'Handwash')
+        self.assertEqual(response['objects'][1]['name'], 'Toilet Cleaner')
+        # now we need to get the 'key' of the a product  for it to delete
+        keyTargetObject = products[0]['key']
+        keyTarget = ndb.Key(urlsafe=keyTargetObject)
+        # now use this key to delete the above object from the db:
+        response = DAO().deleteProduct(keyTarget)
+        # now again get the products list from the server. 
+        # and there must not be the deleted object:
+        response = DAO().getProductsByCursor(prevCursor, nextCursor, itemsPerFetch)
+        products = response['objects']
+        self.assertEqual(len(response['objects']), 1)
+        self.assertEqual(response['objects'][0]['name'], 'Toilet Cleaner')
+
+
 # [START main]h
 if __name__ == '__main__':
     unittest.main()
