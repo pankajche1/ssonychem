@@ -7,7 +7,7 @@ module.exports=['$http','$log', function($http, $log){
         products = productsIn;
     }
     service.getProducts = function(){
-        return $http.get(url1);
+        return $http.get(url);
     }//getDetailsByKey()
    /* for creating a new project group on the server */
     service.saveProduct = function(data){

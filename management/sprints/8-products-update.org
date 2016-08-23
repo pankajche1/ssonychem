@@ -19,6 +19,12 @@
     And: he opens the admin section
     When: he clicks the save new product
     Then: he should be able to save the new product
+**** 4:
+    Scenario: an admin A goes to admin page
+    Given: An admin A logs in 
+    And: he opens the admin section
+    When: he clicks edit product page
+    Then: he should be able to see the edit product page
 **** tasks
 ***** task1: create a products menu page which will show a menu for this:
             1. new product
@@ -26,3 +32,4 @@
       for that a route in the 'app' is to be created.
 ***** task2: create a facility to add a new product on the server side
 ***** task3: creaet client side angularjs codes for saving a new product
+***** task4: create cleint side angularjs code for retrieving a list of the products on the server
