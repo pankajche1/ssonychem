@@ -15,7 +15,7 @@ module.exports=['$http','$log', function($http, $log){
    }
     //for deleting a product group:
     service.deleteProduct = function(key){
-        return $http.get(url1+"?mode=delete&key="+key);
+        return $http.get(url+"?mode=delete&key="+key);
     }
     return service;
 }];

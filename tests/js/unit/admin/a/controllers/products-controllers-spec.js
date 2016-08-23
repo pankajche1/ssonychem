@@ -92,20 +92,27 @@
                         
                         // scope to access controller's scope:
 			$scope = $rootScope.$new();
-			// get the controller:
-			ctrl = $controller('ProductsEditController', {
-				$scope: $scope
-			});
+                        createController = function() {
+                           return $controller('ProductsEditController', {'$scope' : $scope });
+                        };
 		}));//beforeEach
-
+                afterEach(function() {
+                   $httpBackend.verifyNoOutstandingExpectation();
+                   $httpBackend.verifyNoOutstandingRequest();
+                });
 		// Load the module containing the app, only 'ng' is loaded by default.
 		it('should have a non-null controller', function () {
+                        // when this controller is created it loads the product groups autmatically. so this line:
+                        $httpBackend.expectGET('/products');
+                        var ctrl = createController();
+                  	$httpBackend.flush();
 			expect(ctrl).not.toBe(null);
 			expect(ctrl).not.toBe(undefined);
 			expect($scope).not.toBe(null);
 			expect($scope).not.toBe(undefined);
 		});//non null objects test
                 it('should load products from the server', function(){
+
                     getReqHandler.respond(function(method, url, data, headers, params){
                                var objects = [{'name':'Product 1'},{'name':'Product 2'}];
                                var nextCursor = false;
@@ -118,22 +125,62 @@
                          }//function
                     );//respond
                     $httpBackend.expectGET('/products');
+                    var ctrl = createController();
                     $httpBackend.flush();
                     // now check the products loaded to the controller:
                     var products = $scope.products;
                     expect(products.length).toBe(2);
-
-
-
-
-
-
-
-
-
-
               });//it should load products from the server
+              it('should delete a desired produce from the server db', function(){
+                        //prepare your products groups response:
+                        getReqHandler.respond(function(method, url, data, headers, params){
+                               var objects = [{'name':'Product 1', 'key':'abc'},{'name':'Product 2','key':'def'}];
+                               var nextCursor = false;
+                               var prevCursor = false;
+                               var prev = false;
+                               var next = false;
+                               return [200, {'objects': objects, 'next_cursor': nextCursor, 
+                                          'prev_cursor': prevCursor, 'prev': prev, 'next': next}];
 
+                          }); 
+                        // loads the product groups:
+                    $httpBackend.expectGET('/products');
+                    var ctrl = createController();
+                    $httpBackend.flush();
+                    // now check the products loaded to the controller:
+                    var products = $scope.products;
+                    expect(products.length).toBe(2);
+                    // now for delete request:
+                        // now for delete operation:
+                        // (it should not be given in get request but for now it is like this. change it later)
+        		$httpBackend.expect('GET', /\/products/g, undefined, undefined, [])
+                             .respond(function(method, url, data, headers, params){
+                                 var mode, key;
+                                 var qString = matchParams(url.split('?')[1]);
+                                 if(qString.mode != undefined){
+                                    mode = qString.mode;
+
+                                 }
+                                 if(qString.key != undefined){
+                                    key = qString.key;
+
+                                 }
+                                 expect(mode).toBe('delete');                                 
+                                 expect(key).toBe('def');                                 
+
+                               return [200, {'message':'Product Deleted Successfully.', 'error':false}];
+                             }//function
+                         );//respond()
+
+                    spyOn(window, 'confirm').and.returnValue(true);
+                    $scope.onDeleteClick({'index':1});
+                    $httpBackend.flush();
+                    expect($scope.ajaxMessage).toBe('Product Deleted Successfully.');
+
+
+
+
+              });// it should delete a product from the server
 
             });//describe edit product controller
 

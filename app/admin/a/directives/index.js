@@ -4,6 +4,7 @@ app.directive('pnav', require('./nav.js'));//direcitve
 app.directive('headerTopBar', require('./header-top-bar.js'));
 app.directive('headerMiddleBar', require('./header-middle-bar.js'));
 app.directive('productsGroup', require('./products-group.js'));
+app.directive('product', require('./product.js'));
 
 
 

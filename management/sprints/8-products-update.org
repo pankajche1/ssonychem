@@ -25,6 +25,12 @@
     And: he opens the admin section
     When: he clicks edit product page
     Then: he should be able to see the edit product page
+**** 5:
+    Scenario: an admin A goes to admin page
+    Given: An admin A logs in 
+    And: he downloads the products list from the server
+    When: he clicks the delete button on a product
+    Then: he should be able to delete that products
 **** tasks
 ***** task1: create a products menu page which will show a menu for this:
             1. new product
@@ -33,3 +39,5 @@
 ***** task2: create a facility to add a new product on the server side
 ***** task3: creaet client side angularjs codes for saving a new product
 ***** task4: create cleint side angularjs code for retrieving a list of the products on the server
+***** task5: create a directive for product element in the products list. this element will have 'edit' and 'delete' button.
+***** task6: code angularjs on client side to delete a particular product.
