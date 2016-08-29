@@ -29,10 +29,15 @@ app.config(['$routeProvider',function($routeProvider){
 		$routeProvider.when('/products-groups-edit',{
 				templateUrl:'/admin/a/products-groups-edit.html',
                                 controller:'ProductsGroupsEditController'});
+                /* 
+		$routeProvider.when('/products-groups-edit-place',{
+				templateUrl:'/admin/a/products-group-edit-place.html',
+                                controller:'ProductsGroupsEditPlaceController'});
+                */
 		$routeProvider.when('/new-product-group',{
 				templateUrl:'/admin/a/new-product-group.html',
                                 controller:'NewProductGroupController'});
-		$routeProvider.when('/emplopyees',{
+		$routeProvider.when('/employees',{
 				templateUrl:'/admin/a/employees.html',
                                 controller:'EmployeesController'});
 		$routeProvider.when('/settings',{

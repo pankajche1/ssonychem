@@ -30,7 +30,7 @@
                                return [200, [{'name':'PG1'},{'name':'PG2'}]];
 
                          });
-        		$httpBackend.when('POST', /\/save-product-group/g, undefined, undefined, [])
+        		$httpBackend.when('POST', /\/products-groups/g, undefined, undefined, [])
                              .respond(function(method, url, data, headers, params){
                            // console.log(data); this shows the data that comes with post form
                           var params2 = matchParams(url.split('?')[1]);

@@ -1,7 +1,24 @@
-<div class="panel panel-default">
+<div ng-if="isMenuShow" class="panel panel-default" ng-controller="ProductsGroupsSelectorController">
     <div class="panel-body">
     <products-group ng-repeat="item in productsGroups" data="item"
-                               delete="onDeleteClick({index:$index})"
+                               delete="deleteGroup({index:$index})"
                                edit="onEditClick({index:$index})"></products-group>
     </div>
+</div>
+<div ng-if="isEditShow">
+    <p>this is edit attribute place</p>
+<h2> <% targetGroup.name %></h2>
+    <p><button ng-click="onEditAttributesClick()">Edit Attributes</button>
+              <button ng-click="onAddProductsClick()">Add Products</button></p>
+    <p><button ng-click="cancelEditPlace()">Cancel</button></p>
+</div>
+<div ng-if="isEditAttributesShow" ng-controller="EditProductsGroupAttributesController">
+    <edit-products-group-attributes data="data" update="update()" cancel="cancel()"></edit-products-group-attribute>
+
+</div>
+<div ng-if="isAddProductsShow">
+    <p>Add Products</p>
+    <h2><% targetGroup.name %></h2>
+    <p><button ng-click="cancelAddProducts()">Cancel</button></p>
+
 </div>

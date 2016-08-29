@@ -37,8 +37,8 @@ class AppTest(unittest.TestCase):
             ('/',MainHandler),
             ('/products', ProductsPageHandler),
             ('/signin', SigninPageHandler),
-            ('/product-groups', ProductGroupHandler),
-            ('/save-product-group', ProductGroupHandler)
+            ('/products-groups', ProductGroupHandler)
+
             ])
         # wrap the app with WebTest's AppTest:
         self.testApp=webtest.TestApp(app)
@@ -156,7 +156,7 @@ class AppTest(unittest.TestCase):
         # make the user logged in:
         self.loginUser(email, id, isAdmin)
         #response = self.testApp.post('/save-product-group', {'name':'Cleaning Agent'});
-        response = self.testApp.post_json('/save-product-group', dict(name='Cleaning Agent'));
+        response = self.testApp.post_json('/products-groups', dict(name='Cleaning Agent'));
         # status code 302 is for redirection
         self.assertEqual(response.status_int, 302)
         #products = json.dumps(response.normal_body) 
@@ -177,14 +177,14 @@ class AppTest(unittest.TestCase):
         # make the user logged in:
         self.loginUser(email, id, isAdmin)
         #response = self.testApp.post('/save-product-group', {'name':'Cleaning Agent'});
-        response = self.testApp.post_json('/save-product-group', dict(name='Cleaning Agent'));
+        response = self.testApp.post_json('/products-groups', dict(name='Cleaning Agent'));
         # status code 302 is for redirection and 200 is for good successful response
         self.assertEqual(response.status_int, 200)
         #products = json.dumps(response.normal_body) 
         #print(response.normal_body)
 
     def test009_get_product_groups_given_no_group_on_db(self):
-        data = self.testApp.get('/product-groups')
+        data = self.testApp.get('/products-groups')
         self.assertEqual(data.status_int, 200)
         #print data.normal_body
 
@@ -195,7 +195,7 @@ class AppTest(unittest.TestCase):
         DAO().saveProductGroup(data)
         data = {'name':'Speciality Chemicals'}
         DAO().saveProductGroup(data)
-        data = self.testApp.get('/product-groups')
+        data = self.testApp.get('/products-groups')
         self.assertEqual(data.status_int, 200)
         #print data.normal_body
 
@@ -212,13 +212,13 @@ class AppTest(unittest.TestCase):
         data = {'name':'Speciality Chemicals'}
         DAO().saveProductGroup(data)
         # the data is got in form of json objects:
-        data = self.testApp.get('/product-groups')
+        data = self.testApp.get('/products-groups')
         self.assertEqual(data.status_int, 200)
         #groups = json.dumps(data.normal_body) 
         # get the key of a group that is to be deleted:
         keyTargetObject = data.json[0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/product-groups', {'mode':'delete','key':keyTargetObject})
+        response = self.testApp.get('/products-groups', {'mode':'delete','key':keyTargetObject})
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'operation not permitted')
@@ -248,13 +248,13 @@ class AppTest(unittest.TestCase):
         data = {'name':'Speciality Chemicals'}
         DAO().saveProductGroup(data)
         # the data is got in form of json objects:
-        data = self.testApp.get('/product-groups')
+        data = self.testApp.get('/products-groups')
         self.assertEqual(data.status_int, 200)
         #groups = json.dumps(data.normal_body) 
         # get the key of a group that is to be deleted:
         keyTargetObject = data.json[0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/product-groups', {'mode':'delete','key':keyTargetObject})
+        response = self.testApp.get('/products-groups', {'mode':'delete','key':keyTargetObject})
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'operation not permitted')
@@ -284,13 +284,13 @@ class AppTest(unittest.TestCase):
         data = {'name':'Speciality Chemicals'}
         DAO().saveProductGroup(data)
         # the data is got in form of json objects:
-        data = self.testApp.get('/product-groups')
+        data = self.testApp.get('/products-groups')
         self.assertEqual(data.status_int, 200)
         #groups = json.dumps(data.normal_body) 
         # get the key of a group that is to be deleted:
         keyTargetObject = data.json[0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/product-groups', {'mode':'delete','key':keyTargetObject})
+        response = self.testApp.get('/products-groups', {'mode':'delete','key':keyTargetObject})
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'The object deleted successfully.')

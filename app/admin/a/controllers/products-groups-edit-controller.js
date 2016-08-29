@@ -1,8 +1,13 @@
 'use-strict()';
-module.exports=['$rootScope','$scope','$http', '$log', '$window', 'ProductsGroupsService',
-           function($rootScope,$scope, $http, $log, $window, productsGroupsService){
+module.exports=['$rootScope','$scope','$http', '$log', '$window', '$location','ProductsGroupsService',
+           function($rootScope,$scope, $http, $log, $window, $location, productsGroupsService){
     $scope.productsGroups = []
     $scope.ajaxMessage = "";
+    $scope.isMenuShow = true;
+    $scope.isEditShow = false;        
+    $scope.isEditAttributesShow = false;        
+    $scope.isAddProductsShow = false;        
+/*
     $scope.getProductsGroups = function(){
         $scope.isDisabled=true;
         $scope.ajaxMessage = "Loading. Please wait";
@@ -26,6 +31,7 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', 'ProductsGroup
         $scope.productsGroups = data;
 
     }//processProductsGroups
+*/
     $scope.onDeleteClick = function(data){
       // ask for confirmation because it is a dangrous opearation
       // TODO: learn how to use $window for unit test. For now i am commenting this out
@@ -42,9 +48,57 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', 'ProductsGroup
       }
 
     }//onDeleteClick()
-    $scope.onEditClick = function(index){
+    $scope.onEditClick = function(data){
+        $scope.isMenuShow = false;        
+        $scope.isEditShow = true;        
+        $scope.isEditAttributesShow = false;        
+        $scope.isAddProductsShow = false;        
+
+        $scope.targetGroup = {'name':$scope.productsGroups[data.index].name};
+        //var path = '/products-groups-edit-place';
+        //gotoEditPage(path);
+    }//onDeleteClick()
+    $scope.cancelEditPlace = function(data){
+        $scope.isMenuShow = true;        
+        $scope.isEditShow = false;        
+        $scope.isEditAttributesShow = false;        
+        $scope.isAddProductsShow = false;        
 
     }//onDeleteClick()
+    $scope.cancelEditAttributes = function(data){
+        $scope.isMenuShow = false;        
+        $scope.isEditShow = true;        
+        $scope.isEditAttributesShow = false;        
+        $scope.isAddProductsShow = false;        
+
+    }//onDeleteClick()
+    $scope.onEditAttributesClick = function(){
+        $scope.isMenuShow = false;        
+        $scope.isEditShow = false;        
+        $scope.isEditAttributesShow = true;        
+        $scope.isAddProductsShow = false;        
+
+    }//onEditAttributesClick
+    $scope.onAddProductsClick = function(){
+        $scope.isMenuShow = false;        
+        $scope.isEditShow = false;        
+        $scope.isEditAttributesShow = false;        
+        $scope.isAddProductsShow = true;        
+
+
+    }//onAddProductsClick
+    $scope.cancelAddProducts = function(data){
+        $scope.isMenuShow = false;        
+        $scope.isEditShow = true;        
+        $scope.isEditAttributesShow = false;        
+        $scope.isAddProductsShow = false;        
+
+    }//onDeleteClick()
+   /*
+    function gotoEditPage(path) {
+        $location.path(path);
+    };
+*/
     function deleteProductGroup(index){
         productsGroupsService.deleteProductGroup(index)
                 .then(function (response) {
@@ -70,6 +124,6 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', 'ProductsGroup
 
     }
     //load products groups
-    $scope.getProductsGroups();
+    //$scope.getProductsGroups();
 }];
 

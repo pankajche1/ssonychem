@@ -19,3 +19,4 @@
    CLOSED: [2016-08-20 Sat 19:33]
 ** DONE the admin should be able to update products on the site
    CLOSED: [2016-08-23 Tue 21:11]
+** the admin should be able add desired products to a group

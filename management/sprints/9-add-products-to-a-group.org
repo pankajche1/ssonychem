@@ -1,0 +1,9 @@
+* Add products to a group 
+** User Story: A a admin I should be able to add products to a group
+*** Acceptance Stories
+**** 1:
+    Scenario: Admin goes to product group area
+    Given: an admin is logged
+    When: he clicks the edit a product group
+    Then: he should be able to go to the product group edit page
+**** task1: prepare a product group edit page which shows the product group 'attributes editing' option and 'add products' option
