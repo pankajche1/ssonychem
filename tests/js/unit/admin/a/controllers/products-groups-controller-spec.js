@@ -187,8 +187,8 @@
 
                 });//it should properly set the values of variables
              });//describe test products group edit place controller
-             xdescribe('EditProductsGroupAttributesController', function(){
-	var  $scope, $httpBackend, getReqHandler, postReqHandler;
+             describe('EditProductsGroupAttributesController', function(){
+        	var  $scope, $httpBackend, getReqHandler, postReqHandler;
 		beforeEach(module('app'));
 		beforeEach(inject(function (_$httpBackend_,$controller, $rootScope) {
 			$httpBackend = _$httpBackend_;
@@ -232,6 +232,8 @@
 		});//non null objects test
                 it('should have the target product group', function(){
                         var ctrl = createController();
+                        // the $scope object is coming from the parent controller so it can be given a value:
+                        $scope.targetGroup = {'name':'Industrial Cleaners', 'key':'abc'};
 			expect($scope.targetGroup).not.toBe(null);
 			expect($scope.targetGroup).not.toBe(undefined);
                  });//it should have the data of the group that it is going to update
@@ -246,8 +248,7 @@
                     $scope.targetGroup = {'name':'Cleaning Agent','key':'abc'};
                     // now change the targetGroup name:
                     $scope.targetGroup.name = "Detergent Products";
-                    // this is connected to the form as models and any change there is reflected here:
-                    $scope.data = {'topic':'update', 'group':{}};
+                    $scope.data = {'topic':'update'};
                     postReqHandler.respond(function(method, url, data, headers, params){
                                var name;
                                // showing error in this:

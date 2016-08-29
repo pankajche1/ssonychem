@@ -1,3 +1,4 @@
+<!-- area I: groups list loaded from the server -->
 <div ng-if="isMenuShow" class="panel panel-default" ng-controller="ProductsGroupsSelectorController">
     <div class="panel-body">
     <products-group ng-repeat="item in productsGroups" data="item"
@@ -5,6 +6,7 @@
                                edit="onEditClick({index:$index})"></products-group>
     </div>
 </div>
+<!-- area II: this is the menu that is shown after the user clicks on 'edit' button on one of the groups in the list above -->
 <div ng-if="isEditShow">
     <p>this is edit attribute place</p>
 <h2> <% targetGroup.name %></h2>
@@ -12,10 +14,14 @@
               <button ng-click="onAddProductsClick()">Add Products</button></p>
     <p><button ng-click="cancelEditPlace()">Cancel</button></p>
 </div>
+
+<!-- area III: for showing attributes editing things -->
 <div ng-if="isEditAttributesShow" ng-controller="EditProductsGroupAttributesController">
     <edit-products-group-attributes data="data" update="update()" cancel="cancel()"></edit-products-group-attribute>
 
 </div>
+
+<!-- area IV: arae for adding products to a group -->
 <div ng-if="isAddProductsShow">
     <p>Add Products</p>
     <h2><% targetGroup.name %></h2>
