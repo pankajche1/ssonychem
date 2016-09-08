@@ -11,7 +11,7 @@ from py.handlers.mainHandler import MainHandler as MainHandler
 from py.handlers.productsPageHandler import ProductsPageHandler as ProductsPageHandler
 from py.handlers.signinPageHandler import SigninPageHandler as SigninPageHandler
 from py.handlers.productGroupHandler import ProductGroupHandler as ProductGroupHandler
-
+from py.handlers.dbCreatorHandler import DbCreatorHandler  as DbCreatorHandler
 import cgi
 import urllib
 
@@ -23,7 +23,8 @@ application = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/products', ProductsPageHandler),
     ('/signin', SigninPageHandler),
-    ('/products-groups', ProductGroupHandler)
+    ('/products-groups', ProductGroupHandler),
+    ('/db', DbCreatorHandler)
     #('/save-product-group', ProductGroupHandler)
     ], debug=True)
 

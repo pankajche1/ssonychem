@@ -127,6 +127,28 @@ class DAO:
         response['error']='false'
         return response
 
+    def addProductsToGroup(self, groupKey, productsKeys):
+        response = {'info':'','error':'true','message':''} 
+        targetGroup = None
+        if groupKey is not None:
+            targetGroup = groupKey.get()
+        if targetGroup is None:
+            response['message']='no product group was found!'
+            response['error']='true'
+            return response
+        # now put the products in this group
+        targetGroup.products = productsKeys
+        try:
+            targetGroup.put()
+        except:
+            response['message']='some error in adding products to this group!'
+            response['error']='true'
+            return response
+
+        response['message']='products added to the group successfully!'
+        response['error']='false'
+        return response
+
 
     def deleteProduct(self, key):
         response = {'message':'The object deleted successfully.','error':False}

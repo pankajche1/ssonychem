@@ -9,3 +9,4 @@
 **** task1: prepare a product group edit page which shows the product group 'attributes editing' option and 'add products' option
 **** task2: product group attribute editing on the angularjs client side
 **** taks3: product group attributes editing on the server side
+**** task4: add products to a desired group on the server python side

@@ -15,6 +15,13 @@ class DbManager:
             data = {'name': name}
             DAO().saveProduct(data)
 
+    def createProductsGroups(self, num=10):
+        dao = DAO()
+        for i in range(0,num):
+            name = 'Product-Group-'+str(i)
+            data = {'name': name}
+            dao.saveProductGroup(data)
+
     def getUsers(self):
         ''' gets users list from google data store'''
         #q = User.query()

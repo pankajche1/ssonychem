@@ -157,6 +157,47 @@ class DaoTestCase(unittest.TestCase):
         group = DAO().getProductGroupByKey(keyTarget)
         self.assertEqual(group['name'],'Sunny Products')
 
+    def test008_add_products_to_group(self):
+        # first create some products and groups
+        dbManager = DbManager()
+        dbManager.createProducts(10)        
+        dbManager.createProductsGroups(10)
+        # now get list of products groups:
+        groups = DAO().getProductGroups()
+        self.assertEqual(groups[0]['name'],'Product-Group-0')
+        self.assertEqual(groups[1]['name'],'Product-Group-1')
+        # now we need to get the 'key' of the a product group in which we want to add some products:
+        # this gives a key for the html page:
+        keyTargetGroup = groups[0]['key']
+        # the above key is to be converted to python thing when it is used in the dao functions:
+        keyTargetGrp = ndb.Key(urlsafe=keyTargetGroup)
+        # now have download products
+        # now get the products
+        prevCursor = False
+        nextCursor = False
+        itemsPerFetch = 10
+        response = DAO().getProductsByCursor(prevCursor, nextCursor, itemsPerFetch)
+        #self.assertEqual(len(response['objects']), 10)
+        # now get keys of some desired products that are to be attached to the above group
+        i = 0
+        productsKeys = []
+        for item in response['objects']:
+            # even index products will be selected for addition
+            if i%2 == 0:
+                productsKeys.append(ndb.Key(urlsafe=item['key']))
+            i = i+1
+        self.assertEqual(len(productsKeys), 5)
+        # now add to the group:
+        response = DAO().addProductsToGroup(keyTargetGrp, productsKeys)
+        self.assertEqual(response['error'], 'false')
+        # check the products Group:
+        # get the group by key:
+        group = DAO().getProductGroupByKey(keyTargetGrp)
+        # get the attached products keys:
+        productsKeysFromGrp = group['products']
+        # now compare with the actual products keys:
+        self.assertEqual(productsKeysFromGrp[0], productsKeys[0])
+
 
 # [START main]h
 if __name__ == '__main__':
