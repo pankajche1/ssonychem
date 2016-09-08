@@ -32,16 +32,9 @@
                          });
         		$httpBackend.when('POST', /\/products-groups/g, undefined, undefined, [])
                              .respond(function(method, url, data, headers, params){
-                           // console.log(data); this shows the data that comes with post form
-                          var params2 = matchParams(url.split('?')[1]);
-                          if(params2.prev_cursor != undefined){
-                                     console.log(params2.prev_cursor);
-
-                          }
-                          if(params2.next_cursor != undefined){
-                              console.log(params2.next_cursor);
-
-                          }
+                               var dataFromClient = JSON.parse(data);
+                               //expect(dataFromClient.group.name).toBe('Detergent Products');
+                               expect(dataFromClient.topic).toBe('new');
                                return [200, {'error':'false','message':'new product group saved successfully'}];
 
                          });
@@ -61,7 +54,7 @@
 			expect(productsGroupsService).not.toBe(undefined);
 		});//non null objects test
                 it('should get data from the server', function(){
-                        productsGroupsService.getProductsGroups()
+                        productsGroupsService.fetchProductsGroups()
                             .then(function (response) {
                                  expect(response.data[0].name).toBe('PG1');
                             }, function (error) {
@@ -70,7 +63,7 @@
 			$httpBackend.flush();
                 });//retrieving data from http request
                 it('should save data to the server', function(){
-                        var data = {'name':'Cleaning Agent'}
+                        var data = {'name':'Cleaning Agent', 'topic':'new'}
 
                         productsGroupsService.saveProductGroup(data)
                             .then(function (response) {

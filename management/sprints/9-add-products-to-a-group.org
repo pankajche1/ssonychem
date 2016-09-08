@@ -7,3 +7,5 @@
     When: he clicks the edit a product group
     Then: he should be able to go to the product group edit page
 **** task1: prepare a product group edit page which shows the product group 'attributes editing' option and 'add products' option
+**** task2: product group attribute editing on the angularjs client side
+**** taks3: product group attributes editing on the server side

@@ -79,6 +79,19 @@ class DAO:
             dto.append(dictObj)
         return dto  
 
+    def getProductGroupByKey(self, key):
+        response = {'message':'','error':''}
+        group = None
+        if key is not None:
+            group = key.get()
+        if group is None:
+            response['message']='no product group was found!'
+            response['error']='true'
+            return response
+        dictObj = self.to_dict(group)
+        dictObj['key'] = group.key.urlsafe()
+        return dictObj  
+
     def deleteProductGroup(self, key):
         response = {'message':'The object deleted successfully.','error':False}
         try:
@@ -87,6 +100,33 @@ class DAO:
             response['error'] = True
             response['message'] = 'There is some error in deleting the object.'
         return response
+
+    def updateProductGroup(self, key, data):
+        targetMember = None
+        response = {'info':'','error':'true','message':''} 
+        if key is not None:
+            targetGroup = key.get()
+        if targetGroup is None:
+            response['message']='no product group was found!'
+            response['error']='true'
+            return response
+        # 1 name
+        if data.has_key('name'):
+            targetGroup.name = data['name']
+        # 2 TODO next attribute
+        #if data.has_key('gender'):
+            #user.gender = data['gender']
+        try:
+            targetGroup.put()
+        except:
+            response['message']='some error in updating!'
+            response['error']='true'
+            return response
+
+        response['message']='product group updated successfully'
+        response['error']='false'
+        return response
+
 
     def deleteProduct(self, key):
         response = {'message':'The object deleted successfully.','error':False}

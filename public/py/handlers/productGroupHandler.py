@@ -31,6 +31,40 @@ class ProductGroupHandler(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(response))
 
+    def saveGroup(self, body):
+        response = {'info':'','error':'','message':''}
+        try:
+            group = body['group'] # name of the product group
+        except:
+            # if some error in retrieving the form data:
+            response['error'] = True
+            response['message'] = "There is some error in form. Please go to profile and try again."
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
+            return
+        if self.isUserAdmin() == True:
+            # save the data to datastore
+            data = {'name': group['name']}
+            response = DAO().saveProductGroup(data)
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
+        else:
+            self.redirect('/')
+      
+    def updateGroup(self, body):
+        if self.isUserAdmin() == True:
+            # update the data to datastore
+            # data is comming in this form {topic:'update', 'group':{'key':'', 'name':''}}
+            group = body['group']
+            key = group['key']
+            keyTarget = ndb.Key(urlsafe=key)
+            name = group['name']
+            data = {'name':name}
+            response = DAO().updateProductGroup(keyTarget, data)
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
+        else:
+            self.redirect('/')
 
     def get(self):
         # get request can come for deleting a product group
@@ -45,23 +79,22 @@ class ProductGroupHandler(webapp2.RequestHandler):
     def post(self):
         response = {'info':'','error':'true','message':''}
         body =  json.loads(self.request.body)
-        # these are the required keys
-        # 1 name, 2 e(email) 3 email(honey pot) 4 msg
+        # these are the possible routes here:
+        # 1: form data for a new product group
+        # 2: form data for a desired product group update
         # get the form data:
         try:
-            uName = body['name'] # name of the product group
+            topic = body['topic'] # this is the route name
         except:
             # if some error in retrieving the form data:
             response['error'] = True
-            response['message'] = "There is some error in form. Please go to profile and try again."
+            response['message'] = "There is no topic given in the form."
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
             return
-        if self.isUserAdmin() == True:
-            # save the data to datastore
-            data = {'name':uName}
-            response = DAO().saveProductGroup(data)
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.out.write(json.dumps(response))
-        else:
-            self.redirect('/')
+
+        if topic == 'new':
+            self.saveGroup(body)
+        elif topic == 'update':
+            self.updateGroup(body)
+

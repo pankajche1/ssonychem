@@ -9,7 +9,7 @@
 <!-- area II: this is the menu that is shown after the user clicks on 'edit' button on one of the groups in the list above -->
 <div ng-if="isEditShow">
     <p>this is edit attribute place</p>
-<h2> <% targetGroup.name %></h2>
+<h2> <% targetProductsGroup.name %></h2>
     <p><button ng-click="onEditAttributesClick()">Edit Attributes</button>
               <button ng-click="onAddProductsClick()">Add Products</button></p>
     <p><button ng-click="cancelEditPlace()">Cancel</button></p>
@@ -24,7 +24,7 @@
 <!-- area IV: arae for adding products to a group -->
 <div ng-if="isAddProductsShow">
     <p>Add Products</p>
-    <h2><% targetGroup.name %></h2>
+    <h2><% targetProductsGroup.name %></h2>
     <p><button ng-click="cancelAddProducts()">Cancel</button></p>
 
 </div>

@@ -6,7 +6,8 @@ module.exports=['$rootScope','$scope', 'ProductsGroupsService', '$log',
     // for save a new product group use the service:
     $scope.productGroup = {};
     function saveProductGroup(){
-        productsGroupsService.saveProductGroup($scope.productGroup)
+        var dataToServer = {'topic':'new', 'group':$scope.productGroup};
+        productsGroupsService.saveProductGroup(dataToServer)
                 .then(function (response) {
                      $scope.isDisabled=false;
                      $scope.message = response.data.message;
@@ -29,5 +30,7 @@ module.exports=['$rootScope','$scope', 'ProductsGroupsService', '$log',
 	master=angular.copy($scope.productGroup);
 	saveProductGroup();
     };//submit()
+
+
 }];
 

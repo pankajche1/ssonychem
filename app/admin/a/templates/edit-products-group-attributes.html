@@ -1,7 +1,7 @@
 <h2>products group attributes edit</h2>
     <p>Edit Attributes</p>
     <form novalidate name='myform'  ng-submit="submit()" >
-        <input type='text' style="display:none;" name="topic" ng-model="topic" value="<% data.topicValue %>"></input>
+        <input type='text' style="display:none;" name="topic" ng-model="data.topic" value="<% data.topic %>"></input>
           <input ng-maxlength="500" type="text" class="form-control" id="pgroupName" name="pgName"
 			    ng-model="data.group.name" placeholder="Product Group Name"  >
           </input>
@@ -10,6 +10,7 @@
    <hr class="featurette-divider">
     <button type="submit" ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}">Update</button>
     <button type="button" ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}" ng-click="cancel()">Cancel</button>
+         <span><% data.message %></span>
 </form>
 
 

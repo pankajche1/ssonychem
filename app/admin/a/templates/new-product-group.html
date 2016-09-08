@@ -3,6 +3,7 @@
 	<div class='form-container'><!-- main -->
 		<div> <!-- form wrapper -->
 	<form novalidate name='myform' class="form" ng-submit="submit()" >
+        <input type='text' style="display:none;" name="topic" ng-model="topic" value="<% data.topicValue %>"></input>
          <div class="form-group">
             <label for="pgroupName">Name
 	     <span ng-show="myform.$submitted || myform.uName.$touched">

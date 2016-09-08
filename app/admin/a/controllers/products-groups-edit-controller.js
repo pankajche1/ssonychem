@@ -1,12 +1,28 @@
 'use-strict()';
 module.exports=['$rootScope','$scope','$http', '$log', '$window', '$location','ProductsGroupsService',
-           function($rootScope,$scope, $http, $log, $window, $location, productsGroupsService){
-    $scope.productsGroups = []
-    $scope.ajaxMessage = "";
-    $scope.isMenuShow = true;
-    $scope.isEditShow = false;        
-    $scope.isEditAttributesShow = false;        
-    $scope.isAddProductsShow = false;        
+    function($rootScope,$scope, $http, $log, $window, $location, productsGroupsService){
+      // these are some variables that will be used by the child controllers and not
+      // not to be defined there
+      $scope.productsGroups = [];
+      $scope.targetProductsGroup = null;
+      $scope.ajaxMessage = "";
+      $scope.info1 = "Sunny Kailash Dagar";
+      $scope.isMenuShow = true;
+      $scope.isEditShow = false;        
+      $scope.isEditAttributesShow = false;        
+      $scope.isAddProductsShow = false;        
+      $scope.testData1 = [];
+      $scope.testData2 = [];
+      $scope.showGroupsData = function(){
+        $log.info('PrdtsGrpsEditCtrl groups.length:'+$scope.productsGroups.length);
+
+
+        }// show groups data
+      $scope.showTestData = function(){
+        $log.info('PrdtsGrpsEditCtrl testData1.length:'+$scope.testData1.length);        
+        $log.info('PrdtsGrpsEditCtrl testData2.length:'+$scope.testData2.length);        
+        }
+      
 /*
     $scope.getProductsGroups = function(){
         $scope.isDisabled=true;
@@ -32,6 +48,7 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', '$location','P
 
     }//processProductsGroups
 */
+/*
     $scope.onDeleteClick = function(data){
       // ask for confirmation because it is a dangrous opearation
       // TODO: learn how to use $window for unit test. For now i am commenting this out
@@ -48,16 +65,19 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', '$location','P
       }
 
     }//onDeleteClick()
-    $scope.onEditClick = function(data){
-        $scope.isMenuShow = false;        
-        $scope.isEditShow = true;        
-        $scope.isEditAttributesShow = false;        
-        $scope.isAddProductsShow = false;        
+*/
 
-        $scope.targetGroup = {'name':$scope.productsGroups[data.index].name};
-        //var path = '/products-groups-edit-place';
-        //gotoEditPage(path);
-    }//onDeleteClick()
+    $scope.showEditMenu = function(index){
+
+      // get the target group that is to be edited:
+      $scope.targetProductsGroup = productsGroupsService.getTargetProductsGroup();
+      // now show the menu for a group in the DOM:
+      $scope.isMenuShow = false;        
+      $scope.isEditShow = true;        
+      $scope.isEditAttributesShow = false;        
+      $scope.isAddProductsShow = false;        
+
+    }//showEditMenu()
     $scope.cancelEditPlace = function(data){
         $scope.isMenuShow = true;        
         $scope.isEditShow = false;        
@@ -99,6 +119,7 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', '$location','P
         $location.path(path);
     };
 */
+/*
     function deleteProductGroup(index){
         productsGroupsService.deleteProductGroup(index)
                 .then(function (response) {
@@ -118,11 +139,13 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', '$location','P
                      $scope.message = "Error in deleting";
         });//save data by service
 
-    }//deleteProductGroup
-    function updateCache(){
+    }//deleteProductGroup function updateCache(){
         productsGroupsService.setProductsGroups(angular.copy($scope.productsGroups));
 
+		            
+
     }
+*/
     //load products groups
     //$scope.getProductsGroups();
 }];

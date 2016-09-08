@@ -132,6 +132,31 @@ class DaoTestCase(unittest.TestCase):
         self.assertEqual(len(response['objects']), 1)
         self.assertEqual(response['objects'][0]['name'], 'Toilet Cleaner')
 
+    def test007_update_product_group_attributes_in_db(self):
+        # first save some groups:
+        # first save some product groups:
+        data = {'name':'Cleaning Agents'}
+        DAO().saveProductGroup(data)
+        data = {'name':'Speciality Chemicals'}
+        DAO().saveProductGroup(data)
+        # now get the list of the above product groups
+        groups = DAO().getProductGroups()
+        self.assertEqual(groups[0]['name'],'Cleaning Agents')
+        self.assertEqual(groups[1]['name'],'Speciality Chemicals')
+        # now we need to get the 'key' of the a product group for it to delete
+        keyTargetObject = groups[0]['key']
+        keyTarget = ndb.Key(urlsafe=keyTargetObject)
+        updatedGroupData = {'name':'Sunny Products'}
+        # now use this key to delete the above object from the db:
+        response = DAO().updateProductGroup(keyTarget, updatedGroupData)
+        # test the repsonse:
+        self.assertEqual(response['error'], 'false')
+        self.assertEqual(response['message'], 'product group updated successfully')
+        # now again get the groups list from the server. 
+        # and there must not be the deleted object:
+        group = DAO().getProductGroupByKey(keyTarget)
+        self.assertEqual(group['name'],'Sunny Products')
+
 
 # [START main]h
 if __name__ == '__main__':
