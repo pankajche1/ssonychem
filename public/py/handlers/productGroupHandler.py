@@ -66,6 +66,28 @@ class ProductGroupHandler(webapp2.RequestHandler):
         else:
             self.redirect('/')
 
+    def addProductsToGroup(self, body):
+        response = {'info':'','error':'','message':''}
+        if self.isUserAdmin() == True:
+            # get data from the body:
+            productsKeys = body['products']
+            targetGroupKey = body['group']
+            targetGroupKey = ndb.Key(urlsafe=targetGroupKey)
+            # products key data:
+            productsKeysSafe = []
+            for key in productsKeys:
+                productsKeysSafe.append(ndb.Key(urlsafe=key))
+            response = DAO().addProductsToGroup(targetGroupKey, productsKeysSafe)
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
+        else:
+            response['error'] = True
+            response['message'] = "For this service you must be admin!"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
+
+
+
     def get(self):
         # get request can come for deleting a product group
         mode =  self.request.get('mode')
@@ -97,4 +119,11 @@ class ProductGroupHandler(webapp2.RequestHandler):
             self.saveGroup(body)
         elif topic == 'update':
             self.updateGroup(body)
+        elif topic == 'add-products':
+            self.addProductsToGroup(body)
+        else:
+            response['error'] = True
+            response['message'] = "The topic provided does not meet with any of our services!"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
 

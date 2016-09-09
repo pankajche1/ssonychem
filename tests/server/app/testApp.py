@@ -550,3 +550,122 @@ class AppTest(unittest.TestCase):
         group = DAO().getProductGroupByKey(keyTarget)
         self.assertEqual(group['name'],'Sunny Products')
 
+    def createFakeData(self):
+        # first save some products on the server:
+        data = {'name':'Quick Hand Wash'}
+        DAO().saveProduct(data)
+        data = {'name':'Quick Detergent Powder'}
+        DAO().saveProduct(data)
+        data = {'name':'Quick Toilet Cleaner'}
+        DAO().saveProduct(data)
+        data = {'name':'Quick Car Wash'}
+        DAO().saveProduct(data)
+        # first save some groups:
+        # create some product groups on the server db:
+        # first save product groups 
+        data = {'name':'Cleaning Agents'}
+        DAO().saveProductGroup(data)
+        data = {'name':'Speciality Chemicals'}
+        DAO().saveProductGroup(data)
+
+    def test021_add_products_to_a_group_given_client_is_not_logged_in(self):
+        # create fake product and groups data:
+        self.createFakeData()
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200)        
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products-groups')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a group that is to be updated:
+        keyTargetObject = data.json[0]['key']
+        # now this key is to be sent to the server for deleting the group
+        dataToServer = dict(name='Cleaning Agents', key='keyTargetObject', topic='add-products');
+        response = self.testApp.post_json('/products-groups', dataToServer);
+        #print response.normal_body
+        # status code 302 is for redirection and 200 for successful response
+        self.assertEqual(response.status_int, 200)
+        # this converts the json object got from the server to a python dict object:
+        #response = response.json
+        #self.assertEqual(response['message'], 'The object updated successfully.')
+        # assert if only one element is in the product group list
+        #groups = DAO().getProductGroups()
+
+    def test022_add_products_to_a_group_given_client_is_logged_in_and_not_an_admin(self):
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = False
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        # create fake product and groups data:
+        self.createFakeData()
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200)        
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products-groups')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a group that is to be updated:
+        keyTargetObject = data.json[0]['key']
+        # now this key is to be sent to the server for deleting the group
+        dataToServer = dict(name='Cleaning Agents', key='keyTargetObject', topic='add-products');
+        response = self.testApp.post_json('/products-groups', dataToServer);
+        #print response.normal_body
+        # status code 302 is for redirection and 200 for successful response
+        self.assertEqual(response.status_int, 200)
+        # this converts the json object got from the server to a python dict object:
+        #response = response.json
+        #self.assertEqual(response['message'], 'The object updated successfully.')
+        # assert if only one element is in the product group list
+        #groups = DAO().getProductGroups()
+
+    def test023_add_products_to_a_group_given_client_is_logged_in_is_an_admin(self):
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = True
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        # create fake product and groups data:
+        self.createFakeData()
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200) 
+        #print data.normal_body
+        products = data.json['objects']
+        self.assertEqual(len(products), 4)
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products-groups')
+        self.assertEqual(data.status_int, 200)
+        #groups = json.dumps(data.normal_body) 
+        # get the key of a group that is to be updated:
+        keyTargetObject = data.json[0]['key']
+        # prepare the product keys to be uploaded to the server:
+        productsKeys = []
+        for item in products:
+            productsKeys.append(item['key'])
+        # now this key is to be sent to the server for deleting the group
+        dataToServer = dict(group=keyTargetObject,products=productsKeys, topic='add-products');
+        response = self.testApp.post_json('/products-groups', dataToServer);
+        #print response.normal_body
+        # status code 302 is for redirection and 200 for successful response
+        self.assertEqual(response.status_int, 200)
+        # now test the product groups:
+        # get the group by key:
+
+        group = DAO().getProductGroupByKey(ndb.Key(urlsafe=keyTargetObject))
+        # get the attached products keys:
+        productsKeysFromGrp = group['products']
+        # now compare with the actual products keys:
+        self.assertEqual(productsKeysFromGrp[0], ndb.Key(urlsafe=productsKeys[0]))
+
+
+
+
