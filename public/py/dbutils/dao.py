@@ -58,6 +58,12 @@ class DAO:
         res['objects'] = productsDto
         return res  
 
+    def getProductByKey(self, key):
+        product = key.get()
+        dictObj = self.to_dict(product)
+        dictObj['key'] = product.key.urlsafe()
+        return dictObj  
+        
     def saveProductGroup(self, data):
         '''
         saves the product group on the database
@@ -70,11 +76,20 @@ class DAO:
         response['message']='New product Group created successfully'
         return response
    
-    def getProductGroups(self):
+    def getProductsGroups(self, isProducts=False):
+        '''
+        here if you want to get the keys of the products attached with
+        the groups then you give isProducts True
+        '''
         groups = ProductGroup.getProductsGroups()
         dto = []  
         for obj in groups:
             dictObj = self.to_dict(obj)
+            if isProducts == False:
+                # put an empty list in place of products keys
+                # though not a good solution putting empty keys after processing
+                # so try to write better codes
+                dictObj['products'] = []
             dictObj['key'] = obj.key.urlsafe()
             dto.append(dictObj)
         return dto  
@@ -88,8 +103,18 @@ class DAO:
             response['message']='no product group was found!'
             response['error']='true'
             return response
+        # process it for the attached products data:
+        productsKeys = group.products
+        products = []
+        for key in productsKeys:
+            product = self.getProductByKey(key)
+            product['key'] = key.urlsafe()
+            products.append(product)
+        # get the products full info:
         dictObj = self.to_dict(group)
         dictObj['key'] = group.key.urlsafe()
+        # add the products to the dto:
+        dictObj['products'] = products
         return dictObj  
 
     def deleteProductGroup(self, key):

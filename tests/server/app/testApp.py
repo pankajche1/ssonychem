@@ -224,12 +224,15 @@ class AppTest(unittest.TestCase):
         # get the key of a group that is to be deleted:
         keyTargetObject = data.json[0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/products-groups', {'mode':'delete','key':keyTargetObject})
+        #response = self.testApp.get('/products-groups', {'mode':'delete','key':keyTargetObject})
+        # now this key is to be sent to the server for deleting the group
+        formData = dict(topic='delete', key=keyTargetObject);
+        response = self.testApp.post_json('/products-groups', formData);
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'operation not permitted')
         # assert if only one element is in the product group list
-        groups = DAO().getProductGroups()
+        groups = DAO().getProductsGroups()
         self.assertEqual(2, len(groups))
 
     def test012_delete_product_group_on_db_when_client_logged_in_and_not_admin(self):
@@ -260,12 +263,12 @@ class AppTest(unittest.TestCase):
         # get the key of a group that is to be deleted:
         keyTargetObject = data.json[0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/products-groups', {'mode':'delete','key':keyTargetObject})
+        response = self.testApp.post_json('/products-groups', dict(topic='delete',key=keyTargetObject))
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'operation not permitted')
         # assert if only one element is in the product group list
-        groups = DAO().getProductGroups()
+        groups = DAO().getProductsGroups()
         self.assertEqual(2, len(groups))
 
     def test013_delete_product_group_on_db_when_client_logged_in_and_is_admin(self):
@@ -296,12 +299,12 @@ class AppTest(unittest.TestCase):
         # get the key of a group that is to be deleted:
         keyTargetObject = data.json[0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/products-groups', {'mode':'delete','key':keyTargetObject})
+        response = self.testApp.post_json('/products-groups', dict(topic='delete',key=keyTargetObject))
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'The object deleted successfully.')
         # assert if only one element is in the product group list
-        groups = DAO().getProductGroups()
+        groups = DAO().getProductsGroups()
         self.assertEqual(1, len(groups))
 
     def test014_save_new_product_given_cleint_not_logged_in(self):
@@ -478,7 +481,7 @@ class AppTest(unittest.TestCase):
         #response = response.json
         #self.assertEqual(response['message'], 'The object updated successfully.')
         # assert if only one element is in the product group list
-        #groups = DAO().getProductGroups()
+        #groups = DAO().getProductsGroups()
 
     def test021_update_products_group_attributes_given_client_is_logged_in_and_not_admin(self):
         # user data:
@@ -511,7 +514,7 @@ class AppTest(unittest.TestCase):
         #response = response.json
         #self.assertEqual(response['message'], 'The object updated successfully.')
         # assert if only one element is in the product group list
-        #groups = DAO().getProductGroups()
+        #groups = DAO().getProductsGroups()
 
     def test021_update_products_group_attributes_given_client_is_logged_in_and_is_admin(self):
         # user data:
@@ -545,7 +548,7 @@ class AppTest(unittest.TestCase):
         #response = response.json
         #self.assertEqual(response['message'], 'The object updated successfully.')
         # assert if only one element is in the product group list
-        #groups = DAO().getProductGroups()
+        #groups = DAO().getProductsGroups()
         keyTarget = ndb.Key(urlsafe=keyTargetObject)
         group = DAO().getProductGroupByKey(keyTarget)
         self.assertEqual(group['name'],'Sunny Products')
@@ -590,7 +593,7 @@ class AppTest(unittest.TestCase):
         #response = response.json
         #self.assertEqual(response['message'], 'The object updated successfully.')
         # assert if only one element is in the product group list
-        #groups = DAO().getProductGroups()
+        #groups = DAO().getProductsGroups()
 
     def test022_add_products_to_a_group_given_client_is_logged_in_and_not_an_admin(self):
         # user data:
@@ -622,7 +625,7 @@ class AppTest(unittest.TestCase):
         #response = response.json
         #self.assertEqual(response['message'], 'The object updated successfully.')
         # assert if only one element is in the product group list
-        #groups = DAO().getProductGroups()
+        #groups = DAO().getProductsGroups()
 
     def test023_add_products_to_a_group_given_client_is_logged_in_is_an_admin(self):
         # user data:
@@ -661,10 +664,10 @@ class AppTest(unittest.TestCase):
         # get the group by key:
 
         group = DAO().getProductGroupByKey(ndb.Key(urlsafe=keyTargetObject))
-        # get the attached products keys:
-        productsKeysFromGrp = group['products']
+        # get the attached products full data attached to this group:
+        products = group['products']
         # now compare with the actual products keys:
-        self.assertEqual(productsKeysFromGrp[0], ndb.Key(urlsafe=productsKeys[0]))
+        self.assertEqual(products[0]['key'], productsKeys[0])
 
 
 

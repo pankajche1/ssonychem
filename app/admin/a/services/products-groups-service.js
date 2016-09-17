@@ -12,6 +12,10 @@ module.exports=['$http','$log', function($http, $log){
   service.fetchProductsGroups = function(){
     return $http.get(url);
   }
+  service.fetchProductsGroupByKey = function(key){
+    var strUrl = url+"?topic=single&key="+key;
+    return $http.get(strUrl);
+  };
   service.getProductsGroups = function(){
     return groups;
   }//getDetailsByKey()
@@ -27,9 +31,12 @@ module.exports=['$http','$log', function($http, $log){
     return $http.post(url, data, {headers: {'Content-Type': 'json'}});
   }
   //for deleting a product group:
+  /*
   service.deleteProductGroup = function(key){
-    return $http.get(url+"?mode=delete&key="+key);
+    //return $http.get(url+"?mode=delete&key="+key);
+    return $http.post(url, data, {headers: {'Content-Type': 'json'}});
   }
+  */
   //for deleting a product group:
   service.updateProductGroup = function(data){
     return $http.post(url, data, {headers: {'Content-Type': 'json'}});

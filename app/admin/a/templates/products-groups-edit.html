@@ -1,30 +1,50 @@
 <!-- area I: groups list loaded from the server -->
 <div ng-if="isMenuShow" class="panel panel-default" ng-controller="ProductsGroupsSelectorController">
-    <div class="panel-body">
+  <div class="panel-body">
     <products-group ng-repeat="item in productsGroups" data="item"
-                               delete="deleteGroup({index:$index})"
-                               edit="onEditClick({index:$index})"></products-group>
-    </div>
+                    delete="deleteGroup({index:$index})"
+                    edit="onEditClick({index:$index})"></products-group>
+  </div>
 </div>
 <!-- area II: this is the menu that is shown after the user clicks on 'edit' button on one of the groups in the list above -->
 <div ng-if="isEditShow">
-    <p>this is edit attribute place</p>
-<h2> <% targetProductsGroup.name %></h2>
-    <p><button ng-click="onEditAttributesClick()">Edit Attributes</button>
-              <button ng-click="onAddProductsClick()">Add Products</button></p>
-    <p><button ng-click="cancelEditPlace()">Cancel</button></p>
+  <p>this is edit attribute place</p>
+  <h2> <% targetProductsGroup.name %></h2>
+  <p><button ng-click="onEditAttributesClick()">Edit Attributes</button>
+    <button ng-click="onAddProductsClick()">Add Products</button></p>
+  <p><button ng-click="cancelEditPlace()">Cancel</button></p>
 </div>
 
 <!-- area III: for showing attributes editing things -->
 <div ng-if="isEditAttributesShow" ng-controller="EditProductsGroupAttributesController">
-    <edit-products-group-attributes data="data" update="update()" cancel="cancel()"></edit-products-group-attribute>
+  <edit-products-group-attributes data="data" update="update()" cancel="cancel()"></edit-products-group-attribute>
 
 </div>
 
 <!-- area IV: arae for adding products to a group -->
-<div ng-if="isAddProductsShow">
-    <p>Add Products</p>
-    <h2><% targetProductsGroup.name %></h2>
-    <p><button ng-click="cancelAddProducts()">Cancel</button></p>
+<div ng-if="isAddProductsShow" ng-controller="AddProductsToGroupController">
+
+  <div ng-if="isDashboardShow"><!-- main dashboard -->
+    <h2>Add Products to group Section</h2>
+    <h3><% targetProductsGroup.name %></h3>
+    <!-- selected products -->
+    <div>
+      <ul>
+        <li ng-repeat="item in selectedProducts"><% item.name %>
+          <button ng-click="removeProduct($index)">Remove</button>
+        </li>
+      </ul>
+     </div>
+    <p>
+      <button ng-click="cancelAddProducts()">Cancel</button>
+      <button ng-click="showProductsSelector()">Select Products</button>
+      <button ng-click="addProductsToGroup()">Update</button>      
+    </p>
+  </div>
+  <div ng-if="isSelectorShow" ng-controller="ProductsSelectorController"><!-- ui for selecting products that are to be added to the group -->
+    <products-selector cancel="cancel()" ok="ok()" data="data"></products-selector>
+  </div>
+
+  
 
 </div>

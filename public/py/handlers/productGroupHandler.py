@@ -22,7 +22,8 @@ class ProductGroupHandler(webapp2.RequestHandler):
             isAdmin = users.is_current_user_admin()
         return isAdmin
     
-    def deleteGroups(self, key):
+    def deleteGroup(self, body):
+        key = body['key']
         keyTarget = ndb.Key(urlsafe=key)
         if self.isUserAdmin() == True:
             response = DAO().deleteProductGroup(keyTarget)
@@ -70,6 +71,7 @@ class ProductGroupHandler(webapp2.RequestHandler):
         response = {'info':'','error':'','message':''}
         if self.isUserAdmin() == True:
             # get data from the body:
+            # actually the names are 'products' and 'group' but they are keys only!
             productsKeys = body['products']
             targetGroupKey = body['group']
             targetGroupKey = ndb.Key(urlsafe=targetGroupKey)
@@ -86,15 +88,24 @@ class ProductGroupHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
 
+    def getProductsGroupByKey(self):
+        key = self.request.get('key')
+        key = ndb.Key(urlsafe=key)
+        response = DAO().getProductGroupByKey(key)
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(response))
+
 
 
     def get(self):
         # get request can come for deleting a product group
-        mode =  self.request.get('mode')
-        if mode == "delete":
-            self.deleteGroups(self.request.get('key'))
-        else:
-            response = DAO().getProductGroups()
+        topic =  self.request.get('topic')
+        #if mode == "delete":
+        #    self.deleteGroups(self.request.get('key'))
+        if topic == "single": # get a single group by key
+            self.getProductsGroupByKey()
+        else: # get a list of groups
+            response = DAO().getProductsGroups()
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
 
@@ -119,6 +130,8 @@ class ProductGroupHandler(webapp2.RequestHandler):
             self.saveGroup(body)
         elif topic == 'update':
             self.updateGroup(body)
+        elif topic == 'delete':
+            self.deleteGroup(body)
         elif topic == 'add-products':
             self.addProductsToGroup(body)
         else:

@@ -1,3 +1,8 @@
+**Q:** Where is the angular js documentation?
+
+**Ans:**   ~/Softwares/angular/angular-1.5.0-rc.0 and there you will find a file 'server'. run it by './server'. ok
+
+
 Here I will make a plane to know which controller is doing what. Because it is getting so confusing actually.
 
 ```javascript

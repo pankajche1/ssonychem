@@ -4,16 +4,16 @@ module.exports= [function(){
     restrict: 'E',
     scope: {
       data: '=data',
-      update:'&',
-      submit:'&update',
-      cancel:'&'
+      ok:'&',
+      cancel:'&',
+      loadProducts:'&'
 
     },
     transclude: true,
     link: function ($scope, element, attrs) {
 
     },
-    templateUrl:'/admin/a/edit-products-group-attributes.html'
+    templateUrl:'/admin/a/products-selector.html'
   };
 
 

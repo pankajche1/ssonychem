@@ -31,7 +31,8 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', '$location','P
           // get the key of the thing that is to be deleted:
         key = $scope.productsGroups[data.index].key;
         $scope.productsGroups.splice(data.index, 1);
-        deleteProductGroup(key);
+        var dataToServer = {'topic':'delete', 'key':key}
+        deleteProductGroup(dataToServer);
       }else{
           //$log.info('no');
       }
@@ -47,22 +48,36 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', '$location','P
 
     }//onEditClick()
 
-    function deleteProductGroup(index){
+    function deleteProductGroup(data){
+      productsGroupsService.updateProductGroup(data)
+        .then(function (response) {
+          $scope.ajaxMessage = response.data.message;
+          if(response.data.error == true){
+            //do something the change the style of the message ex: red color
+            //$scope.ajaxMessage = 'Error!';
+          }else{
+            updateCache();
+          }//else
+
+        }, function (error) {
+          $scope.ajaxMessage = "Error in deleting!";
+        });//delete data by service
+      /*
         productsGroupsService.deleteProductGroup(index)
-                .then(function (response) {
-                     $scope.ajaxMessage = response.data.message;
-                     if(response.data.error == true){
-                         //do something the change the style of the message ex: red color
-                         //$scope.ajaxMessage = 'Error!';
-                     }else{
-                         updateCache();
-                     }//else
+        .then(function (response) {
+        $scope.ajaxMessage = response.data.message;
+        if(response.data.error == true){
+        //do something the change the style of the message ex: red color
+        //$scope.ajaxMessage = 'Error!';
+        }else{
+        updateCache();
+        }//else
 
-               }, function (error) {
-                     $scope.ajaxMessage = "";
-                     $scope.message = "Error in deleting";
+        }, function (error) {
+        $scope.ajaxMessage = "";
+        $scope.message = "Error in deleting";
         });//save data by service
-
+      */
     }//deleteProductGroup
     function updateCache(){
         productsGroupsService.setProductsGroups(angular.copy($scope.productsGroups));

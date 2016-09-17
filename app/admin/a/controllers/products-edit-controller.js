@@ -8,7 +8,7 @@ module.exports=['$rootScope','$scope','$http', '$log', '$window', 'ProductsServi
         fetchProducts();
     }
     function fetchProducts(){
-        productsService.getProducts()
+        productsService.fetchProducts()
                 .then(function (response) {
                      $scope.isDisabled=false;
                      $scope.ajaxMessage = "";

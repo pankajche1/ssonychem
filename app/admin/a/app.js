@@ -1,5 +1,10 @@
 require('./templates');
-var app = angular.module('app', ['ngRoute','ngResource','ngAnimate','TemplatesAdminA'], 
+var underscore = angular.module('underscore',[]);
+underscore.factory('_', ['$window', function($window){
+
+  return $window._;
+}]);//factory of underscore
+var app = angular.module('app', ['ngRoute','ngResource','ngAnimate','TemplatesAdminA', 'underscore'], 
 	['$interpolateProvider',function($interpolateProvider){
 		$interpolateProvider.startSymbol('<%');
 		$interpolateProvider.endSymbol('%>');

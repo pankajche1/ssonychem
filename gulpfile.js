@@ -145,6 +145,25 @@ gulp.task('browserify-lib-dev', function() {
 
 });
 
+
+gulp.task('concat-lib-dev', function() {
+  var concat = require('gulp-concat');
+  var lstLibs = [                 "./node_modules/underscore/underscore-min.js",
+                                  "./node_modules/angular/angular.min.js",
+                                  "./node_modules/angular-route/angular-route.min.js",
+                                  "./node_modules/angular-animate/angular-animate.min.js",
+                                  "./node_modules/angular-resource/angular-resource.min.js"
+
+                ]
+
+      return gulp.src(lstLibs)
+              .pipe(concat('lib.js'))
+              .pipe(gulp.dest('./public/js'));
+
+});
+
+
+
 gulp.task('browserify-guest-dev', function() {
 	// Grabs the app.js file
 	browserify('./app/guest/app.js')

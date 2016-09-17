@@ -1,0 +1,17 @@
+<div>
+  <p>Products Selector</p>
+  <!-- products list will be shown here -->
+  <div>
+    <div><% data.message %></div><!-- for ajax notifications -->
+    <div>
+      <div ng-repeat="product in data.products">
+                <% product.name %>
+                <input type='checkbox' ng-model="product.isSelected" value="<% product.isSelected %>"></input>
+      </div>
+    </div>
+  </div><!-- products list -->
+  <div>
+    <button ng-click="cancel()">Cancel</button>
+    <button ng-click="ok()">OK</button>
+  </div>
+</div>

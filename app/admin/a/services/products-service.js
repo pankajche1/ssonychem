@@ -6,7 +6,10 @@ module.exports=['$http','$log', function($http, $log){
     service.setProducts = function(productsIn){
         products = productsIn;
     }
-    service.getProducts = function(){
+  service.getProducts = function(){
+    return products;
+  }//getProducts()
+    service.fetchProducts = function(){
         return $http.get(url);
     }//getDetailsByKey()
    /* for creating a new project group on the server */

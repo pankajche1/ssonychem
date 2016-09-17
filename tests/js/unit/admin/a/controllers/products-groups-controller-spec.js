@@ -289,7 +289,8 @@
         $scope.targetProductsGroup = {'name':'Cleaning Agent','key':'abc'};
         // now change the targetGroup name:
         $scope.targetProductsGroup.name = "Detergent Products";
-        $scope.data = {'topic':'update'};
+        // this is set by the ui html thing when the user changes the name:
+        $scope.data = {'topic':'update', 'group':$scope.targetProductsGroup};
         postReqHandler.respond(function(method, url, data, headers, params){
           var name;
           // showing error in this:
@@ -321,6 +322,18 @@
           return [200, [{'name':'PG1'},{'name':'PG2'}]];
         }//function
                 );//respond()
+      postReqHandler = $httpBackend.when('POST', 
+                                         /\/products-groups/g, 
+                                         undefined, 
+                                         undefined, 
+                                         [])
+        .respond(function(method, url, data, headers, params){
+          //dataToServer = data;
+          return [200, {'error':'false',
+                        'message':'new product group saved successfully'}];
+
+        }//function
+                  );//respond
       // scope to access controller's scope:
 
       $scope = $rootScope.$new();
@@ -390,6 +403,15 @@
       // at start the products groups are:
       expect($scope.productsGroups.length).toBe(4);
       expect($scope.productsGroups[1].name).toBe('Car Wash');
+      postReqHandler.respond(function(method, url, data, headers, params){
+        var dataFromClient = JSON.parse(data);
+        expect(dataFromClient.topic).toBe('delete');
+        expect(dataFromClient.key).toBe('def');
+        return [200, {'error':'false',
+                      'message':'Product Group Deleted Successfully'}];
+      }//function
+                            );//respond
+      /*
       $httpBackend.expect('GET', /\/products-groups/g, undefined, undefined, [])
         .respond(function(method, url, data, headers, params){
           var mode, key;
@@ -408,6 +430,7 @@
           return [200, {'message':'Product Group Deleted Successfully', 'error':false}];
         }//function
                 );//respond()
+      */
       // call the delete function:
       spyOn(window, 'confirm').and.returnValue(true);
       $scope.deleteGroup({'index':1});
@@ -465,5 +488,252 @@
 
     });//should have an onEditClick function to goto the desired group for editing
   });//describe ProductsGroupsSelectorController
+  describe('AddProductsToGroupController Tests', function(){
+    var  $scope, $httpBackend, getReqHandler, getGrpReqHandler,  postReqHandler;
+    beforeEach(module('app'));
+    beforeEach(inject(function (_$httpBackend_,$controller, $rootScope, $injector) {
+      $httpBackend = _$httpBackend_;
+      /*
+      getReqHandler = $httpBackend.when('GET', 
+                                        /\/products/g, 
+                                        undefined, 
+                                        undefined, 
+                                        [])
+        .respond(function(method, url, data, headers, params){
+          return [200, [
+            {'name':'P1', 'key':'abc'},
+            {'name':'P2','key':'def'},
+            {'name':'P3','key':'ghi'},
+            {'name':'P4','key':'klm'}
+          ]
+                 ];
+        }//function
+                );//respond()
+      */
+      getGrpReqHandler = $httpBackend.when('GET', 
+                                        /\/products-groups/g, 
+                                        undefined, 
+                                        undefined, 
+                                        [])
+          .respond(function(method, url, data, headers, params){
+            var topic, key;
+            var qString = matchParams(url.split('?')[1]);
+            if(qString.topic != undefined){
+              topic = qString.topic;
 
+            }
+            if(qString.key != undefined){
+              key = qString.key;
+
+            }
+            expect(topic).toBe('single');                                 
+            expect(key).toBe('grp-1-key');                                 
+
+            return [200, {'key':'grp-1-key', 'name':'Group 1'}];
+          }//function
+                  );//respond()    
+      postReqHandler = $httpBackend.when('POST', 
+                                         /\/products-groups/g, 
+                                         undefined, 
+                                         undefined, 
+                                         [])
+        .respond(function(method, url, data, headers, params){
+          //dataToServer = data;
+          return [200, {'error':'false',
+                        'message':'new product group saved successfully'}];
+
+        }//function
+                  );//respond
+      // scope to access controller's scope:
+      $scope = $rootScope.$new();
+      // get the parent controller:
+      createParentController = function(){
+        return $controller('ProductsGroupsEditController', { $scope: $scope });
+      };
+      createController = function() {
+        return $controller('AddProductsToGroupController', {$scope : $scope });
+      };
+      getProductGroupsService = function(){
+        return $injector.get("ProductsGroupsService");
+        };
+      getProductsService = function(){
+        return $injector.get("ProductsService");
+        };
+    }));//beforeEach
+    afterEach(function() {
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+    });
+    it('should create a non null and defined controller and should load the selected group info frm server', function(){
+      //$httpBackend.expectGET('/products-groups');
+      $scope.targetProductsGroup = {'name':'Grp1', 'key':'grp-1-key'};
+      var ctrl = createController();
+      $httpBackend.flush();
+      expect(ctrl).not.toBe(null);
+      expect(ctrl).not.toBe(undefined);
+      //test the message from the controller:
+      //note: this test will not work now cz message removed now:
+      //expect($scope.message).toBe('test message');
+      
+    });//should create no-null and defined controller
+    it('should add selected products to the selected group on the server', function(){
+      getGrpReqHandler.respond(function(method, url, data, headers, params){
+        var topic, key, products;
+        var qString = matchParams(url.split('?')[1]);
+        if(qString.topic != undefined){
+          topic = qString.topic;
+        }
+        if(qString.key != undefined){
+          key = qString.key;
+        }
+        expect(topic).toBe('single');                                 
+        expect(key).toBe('grp-1-key');
+        //you have to give the already present products on this group
+        products = [{'name':'P1','key':'P1-key'}, {'name':'P2','key':'P2-key'},{'name':'P3','key':'P3-key'},{'name':'P4','key':'P4-key'}];  
+        return [200, {'key':'grp-1-key', 'name':'Group 1', 'products':products}];
+      }//function
+                  );//respond()          
+      $scope.targetProductsGroup = {'name':'Grp1', 'key':'grp-1-key'};
+      // creat a controller:
+      var ctrl = createController();
+      $httpBackend.flush();
+      //check the products list download also:
+      var products = $scope.productsGroupDetails.products;
+      expect(products.length).toBe(4);
+      expect(products[0].key).toBe('P1-key');
+      //now the user wants to add more products to the current group.
+      // now the $scope object should have a list of the selected products:
+      // and this is done by the products selector. so we just do it
+       var selectedProducts = [{'name':'P3','key':'ghi','img':'Z'},
+                              {'name':'P2','key':'def','img':'B'},
+                              {'name':'P1','key':'abc','img':'A'},
+                              {'name':'P4','key':'jkl','img':'C'}];
+      $scope.onSelectProductsDone(selectedProducts);
+      // now the above function should not include the already present products with the product group:
+      // now see if the $scope has got the products or not from inside the ctrl :
+      expect($scope.selectedProducts.length).toBe(8);
+      // get to selectedProducts here
+      // now there should be button for adding there prouducts' keys to the selected group
+      //  we need to make this data: {'topic': 'add-products', 'group-key':'key', 'products-keys':[]};
+      // prepare the $scope for sending data to the server:
+      // in 'group' there is the key of the selected group and in the 'products' entry there is a list of products keys.
+      postReqHandler.respond(function(method, url, data, headers, params){
+          var dataFromClient = JSON.parse(data);
+          expect(dataFromClient.group).toBe('grp-1-key');
+          expect(dataFromClient.products.length).toBe(8);
+          expect(dataFromClient.products[1]).toBe('abc');
+        return [200, {'error':'false',
+                      'message':'new product group saved successfully'}];
+      }//function
+                           );//respond
+      $scope.addProductsToGroup();
+      $httpBackend.flush();
+    });//it should download products from the server
+    it('should sort the products by names', function(){
+  getGrpReqHandler.respond(function(method, url, data, headers, params){
+        var topic, key, products;
+        var qString = matchParams(url.split('?')[1]);
+        if(qString.topic != undefined){
+          topic = qString.topic;
+        }
+        if(qString.key != undefined){
+          key = qString.key;
+        }
+        expect(topic).toBe('single');                                 
+        expect(key).toBe('grp-1-key');
+        //you have to give the already present products on this group
+        products = [{'name':'Zameeer','key':'zameer-key'},
+                    {'name':'Manish','key':'manish-key'},
+                    {'name':'Sarita','key':'sarita-key'},
+                    {'name':'Hemant','key':'hemant-key'}];  
+        return [200, {'key':'grp-1-key', 'name':'Group 1', 'products':products}];
+      }//function
+                  );//respond()          
+      $scope.targetProductsGroup = {'name':'Grp1', 'key':'grp-1-key'};
+      // creat a controller:
+      var ctrl = createController();
+      $httpBackend.flush();
+      //now the user wants to add more products to the current group.
+      // now the $scope object should have a list of the selected products:
+      // and this is done by the products selector. so we just do it
+       var selectedProducts = [{'name':'Sunny','key':'sunny-key'},
+                              {'name':'Ashutosh','key':'ashutosh-key'},
+                              {'name':'Zahid','key':'zahid-key'},
+                              {'name':'Babu','key':'babu-key'}];
+      $scope.onSelectProductsDone(selectedProducts);
+      expect($scope.selectedProducts[0].name).toBe('Ashutosh');
+      // now the above function should not include the already present products with the product group:
+      // in 'group' there is the key of the selected group and in the 'products' entry there is a list of products keys.
+      postReqHandler.respond(function(method, url, data, headers, params){
+        var dataFromClient = JSON.parse(data);
+        expect(dataFromClient.products[0]).toBe('ashutosh-key');
+        expect(dataFromClient.products[7]).toBe('zameer-key');
+
+        return [200, {'error':'false',
+                      'message':'new product group saved successfully'}];
+      }//function
+                           );//respond
+      $scope.addProductsToGroup();
+      $httpBackend.flush();
+
+
+
+    });//it should sort the selected products by names
+    it('should remove the duplicate products in the selected list', function(){
+  getGrpReqHandler.respond(function(method, url, data, headers, params){
+        var topic, key, products;
+        var qString = matchParams(url.split('?')[1]);
+        if(qString.topic != undefined){
+          topic = qString.topic;
+        }
+        if(qString.key != undefined){
+          key = qString.key;
+        }
+        expect(topic).toBe('single');                                 
+        expect(key).toBe('grp-1-key');
+        //you have to give the already present products on this group
+        products = [{'name':'Zameeer','key':'zameer-key'},
+                    {'name':'Manish','key':'manish-key'},
+                    {'name':'Sarita','key':'sarita-key'},
+                    {'name':'Sunny','key':'sunny-key'}];  
+        return [200, {'key':'grp-1-key', 'name':'Group 1', 'products':products}];
+      }//function
+                  );//respond()          
+      $scope.targetProductsGroup = {'name':'Grp1', 'key':'grp-1-key'};
+      // creat a controller:
+      var ctrl = createController();
+      $httpBackend.flush();
+      // see the size of the selected products
+      expect(_.size($scope.selectedProducts)).toBe(4);
+      //now the user wants to add more products to the current group.
+      // now the $scope object should have a list of the selected products:
+      // and this is done by the products selector. so we just do it
+       var selectedProducts = [{'name':'Sunny','key':'sunny-key'},
+                              {'name':'Manish','key':'manish-key'},
+                              {'name':'Zahid','key':'zahid-key'},
+                              {'name':'Babu','key':'babu-key'}];
+      $scope.onSelectProductsDone(selectedProducts);
+      expect(_.size($scope.selectedProducts)).toBe(6);      
+      expect($scope.selectedProducts[0].name).toBe('Babu');
+      // now the above function should not include the already present products with the product group:
+      // in 'group' there is the key of the selected group and in the 'products' entry there is a list of products keys.
+      postReqHandler.respond(function(method, url, data, headers, params){
+        var dataFromClient = JSON.parse(data);
+        expect(dataFromClient.products[0]).toBe('babu-key');
+        expect(dataFromClient.products[3]).toBe('sunny-key');
+
+        return [200, {'error':'false',
+                      'message':'new product group saved successfully'}];
+      }//function
+                           );//respond
+      $scope.addProductsToGroup();
+      $httpBackend.flush();
+
+
+
+    });//it should remove the duplication of the products
+
+
+
+  });//describe AddProductsToGroupController test
 }());
