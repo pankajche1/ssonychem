@@ -30,16 +30,22 @@
     <!-- selected products -->
     <div>
       <ul>
-        <li ng-repeat="item in selectedProducts"><% item.name %>
-          <button ng-click="removeProduct($index)">Remove</button>
+        <li ng-repeat="item in selectedProducts" style="height:40px;">[<% $index %>]&nbsp; &rarr; &nbsp; <% item.name %>
+        
+        &nbsp;  <button ng-click="removeProduct($index)" class="btn btn-xs btn-primary" >Remove</button>
+        
         </li>
       </ul>
      </div>
-    <p>
-      <button ng-click="cancelAddProducts()">Cancel</button>
-      <button ng-click="showProductsSelector()">Select Products</button>
-      <button ng-click="addProductsToGroup()">Update</button>      
-    </p>
+    
+    <hr class="featurette-divider">
+    <div>
+      <button ng-class="{'btn':true, 'btn-default':true,'disabled':isDisabled}" ng-click="cancelAddProducts()">Cancel</button>
+      <button ng-class="{'btn':true, 'btn-default':true,'disabled':isDisabled}" ng-click="showProductsSelector()">Select Products</button>
+      <button ng-class="{'btn':true, 'btn-default':true,'disabled':isDisabled}" ng-click="addProductsToGroup()">Update</button>
+      <span><% message %></span>
+    </div>
+
   </div>
   <div ng-if="isSelectorShow" ng-controller="ProductsSelectorController"><!-- ui for selecting products that are to be added to the group -->
     <products-selector cancel="cancel()" ok="ok()" data="data"></products-selector>

@@ -59,9 +59,13 @@ class DAO:
         return res  
 
     def getProductByKey(self, key):
-        product = key.get()
-        dictObj = self.to_dict(product)
-        dictObj['key'] = product.key.urlsafe()
+        dictObj = None
+        try:
+            product = key.get()
+            dictObj = self.to_dict(product)
+            dictObj['key'] = product.key.urlsafe()
+        except:
+            dictObj = None
         return dictObj  
         
     def saveProductGroup(self, data):
@@ -108,8 +112,9 @@ class DAO:
         products = []
         for key in productsKeys:
             product = self.getProductByKey(key)
-            product['key'] = key.urlsafe()
-            products.append(product)
+            if product is not None:
+                product['key'] = key.urlsafe()
+                products.append(product)
         # get the products full info:
         dictObj = self.to_dict(group)
         dictObj['key'] = group.key.urlsafe()

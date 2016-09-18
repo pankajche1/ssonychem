@@ -147,6 +147,7 @@ gulp.task('browserify-lib-dev', function() {
 
 
 gulp.task('concat-lib-dev', function() {
+  // because by browserify the underscore lib was not coming before all other libs so I simply concatnated it
   var concat = require('gulp-concat');
   var lstLibs = [                 "./node_modules/underscore/underscore-min.js",
                                   "./node_modules/angular/angular.min.js",
@@ -159,6 +160,7 @@ gulp.task('concat-lib-dev', function() {
       return gulp.src(lstLibs)
               .pipe(concat('lib.js'))
               .pipe(gulp.dest('./public/js'));
+  // you can also put the timestamp thing here. for futher removing of the tension.
 
 });
 

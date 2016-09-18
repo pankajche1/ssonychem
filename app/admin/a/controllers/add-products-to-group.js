@@ -13,23 +13,28 @@ module.exports=['$scope','$http','$log', '$window','ProductsGroupsService','_',
                   $scope.isDashboardShow = true;
                   $scope.isSelectorShow = false;
                   $scope.productsGroupDetails = {'products':[]};// just for default when no download
+                  $scope.message = '';
+                  $scope.isDisabled = false;
                   $scope.loadProductsGroup = function(){
                     // use the service to do this operation:
+                    $scope.message = "Loading group details. Please wait...";
+                    $scope.isDisabled = true;
                     fetchProductsGroup($scope.targetProductsGroup.key);//this is set by the parent controller
                   };// loadProductsGroups()
 
                   function fetchProductsGroup(key){
                     productsGroupsService.fetchProductsGroupByKey(key)
                       .then(function (response) {
-                        $log.info('i have come here');
-                        $scope.ajaxMessage = "";
+                        $scope.message = "";
+                        $scope.isDisabled = false;                        
                         $scope.productsGroupDetails = response.data;
 
                         $scope.selectedProducts = response.data.products;
                         // and this data will be cached in the service:
                         //productsGroupsService.setProductsGroups(response.data);
                       }, function (error) {
-                        $scope.ajaxMessage = "";
+                        $scope.message = "Some error in downloading details!";
+                        $scope.isDisabled = false;
                         $scope.message = "Error in downloading the desired products group.";
                       });//save data by service
                   }// fetch product groups 
@@ -39,11 +44,6 @@ module.exports=['$scope','$http','$log', '$window','ProductsGroupsService','_',
                     $scope.isSelectorShow = true;
                   };
                   $scope.onSelectProductsDone = function(selectedProductsIn){
-                    $log.info(_.isUndefined($scope.selectedProducts));
-                    _.each(selectedProductsIn, function(value, key){
-                      console.log("key:"+key+", value:"+JSON.stringify(value));
-
-                    });//_each
 
                     selectedProducts = selectedProductsIn;
                     $scope.isDashboardShow = true;
@@ -96,6 +96,7 @@ module.exports=['$scope','$http','$log', '$window','ProductsGroupsService','_',
                   $scope.addProductsToGroup = function(){
                     // here it should call the service for doing http thing
                     $scope.message = "Please wait. Updating...";
+                    $scope.isDisabled = true;
                     var productsKeys = []
                     _.each($scope.selectedProducts, function(item){
                       productsKeys.push(item.key);
@@ -118,7 +119,7 @@ module.exports=['$scope','$http','$log', '$window','ProductsGroupsService','_',
                   function updateProductGroup(data){
                     productsGroupsService.updateProductGroup(data)
                       .then(function (response) {
-                        $scope.isDisabled=false;
+                        $scope.isDisabled = false;
                         $scope.message = response.data.message;
                       }, function (error) {
                         $scope.isDisabled=false;

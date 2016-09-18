@@ -1,5 +1,6 @@
 * Add products to a group 
-** User Story: A a admin I should be able to add products to a group
+** DONE User Story: A a admin I should be able to add products to a group
+   CLOSED: [2016-09-19 Mon 02:00]
 *** Acceptance Stories
 **** 1:
     Scenario: Admin goes to product group area
@@ -9,4 +10,5 @@
 **** task1: prepare a product group edit page which shows the product group 'attributes editing' option and 'add products' option
 **** task2: product group attribute editing on the angularjs client side
 **** taks3: product group attributes editing on the server side
-**** task4: add products to a desired group on the server python side
+**** DONE task4: add products to a desired group on the server python side
+     CLOSED: [2016-09-19 Mon 02:00]

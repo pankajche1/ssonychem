@@ -1,17 +1,21 @@
 <div>
-  <p>Products Selector</p>
+  <h2>Products Selector</h2>
   <!-- products list will be shown here -->
   <div>
-    <div><% data.message %></div><!-- for ajax notifications -->
+
     <div>
-      <div ng-repeat="product in data.products">
-                <% product.name %>
-                <input type='checkbox' ng-model="product.isSelected" value="<% product.isSelected %>"></input>
+      <div ng-repeat="product in data.products" class="checkbox">
+                <label>
+                <input type='checkbox'  ng-model="product.isSelected" value="<% product.isSelected %>"><% product.name %></input>
+                </label>
       </div>
     </div>
   </div><!-- products list -->
-  <div>
-    <button ng-click="cancel()">Cancel</button>
-    <button ng-click="ok()">OK</button>
-  </div>
+    <div><% data.message %></div><!-- for ajax notifications -->
+    <hr class="featurette-divider">
+    <div>
+      <button ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}" ng-click="cancel()">Cancel</button>
+      <button ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}" ng-click="ok()">Ok</button>
+      </div>
+
 </div>
