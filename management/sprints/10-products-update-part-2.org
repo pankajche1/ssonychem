@@ -1,0 +1,44 @@
+* the admin should be able to change product attributes
+** DONE User Story: As an admin I should be able to update a selected product's attributes
+   CLOSED: [2016-09-21 Wed 05:36]
+*** Acceptance Stories
+    **** 1:
+    Scenario: Admin is on the proudcts list page
+    Given: the admin is logged in
+    When: he clicks the edit button of a desired product
+    Then: he should be able to go to the product attributes update page
+    And: he should be able to see the details of the product
+*** task1: prepare the ui of a products attribute page 
+*** task2: when the admin clicks the 'edit' button of a product in the products list then the concerned controller should take
+    the correct action. so design that.
+*** Supporting Stuff:
+    In the menubar there is a 'products' tab. Clicking it you go to 'product-area'.
+    which gives you two links
+    1. products (link: products-menu)
+       1. Products update (link: products-edit)
+          It gives you a list of products on the server and with each product two buttons
+          'delete' and 'edit' buttons.
+          With delete btn u can delete it. this facility has been added
+          Now we have to add the facility for 'edit' button
+       2. new product (link:new-product)
+    2. products groups
+
+Now the controllers for the above
+route 'product-area': 		template: products-area.html,
+                                controller: ProductsAreaController
+route 'products-menu': 		template: products-menu.html,
+                                controller: ProductsMenuController
+route 'products-edit':		template: products-edit.html,
+                                controller: ProductsEditController
+So here we need to see the  ProductsEditController. So let's study that!
+It has these functions
+1. fetch prouducts from the server and dislay list of them with 'edit' and 'delete' button on each product.
+2. a deleteProduct function which is called when clicking the 'delete' button on the product item.
+3. onEditClick() function which will hae the index of the desired item in the products list. and then it will take to the 
+   products attribute edit page. 
+   I don't think that we need a separate controller for this purpose. On the same page we can design our products attributes editing section.
+   So on the products-edit.html page we need to put a DOM section. And we can have directive for that purpose. And it will give a form for 
+   products attributes editing purpose.
+
+      
+   

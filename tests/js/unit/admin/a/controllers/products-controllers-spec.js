@@ -52,7 +52,8 @@
         postReqHandler.respond(function(method, url, data, headers, params){
           var name;
           // showing error in this:
-          var product = JSON.parse(data);
+          var dataFromClient = JSON.parse(data);
+          var product = dataFromClient.product;
           expect(product.name).toBe('Product 1');
           return [200, {'error':'false',
                         'message':''}];
@@ -77,6 +78,7 @@
             return [200, [{'name':'PG1'},{'name':'PG2'}]];
           }//function
                   );//respond()
+/*
         postReqHandler = $httpBackend.when('POST', 
                                            /\/products/g, 
                                            undefined, 
@@ -89,7 +91,7 @@
 
           }//function
                   );//respond
-        
+  */      
         // scope to access controller's scope:
 	$scope = $rootScope.$new();
         createController = function() {
@@ -110,7 +112,11 @@
 	expect(ctrl).not.toBe(undefined);
 	expect($scope).not.toBe(null);
 	expect($scope).not.toBe(undefined);
-      });//non null objects test
+        // AND at start it should show the products list area only.
+        //AND it should not show the product attributes area:
+        expect($scope.isSelectorShow).toBe(true);
+        expect($scope.isEditShow).toBe(false);
+      });//it 1 non null objects test
       it('should load products from the server', function(){
 
         getReqHandler.respond(function(method, url, data, headers, params){
@@ -130,7 +136,7 @@
         // now check the products loaded to the controller:
         var products = $scope.products;
         expect(products.length).toBe(2);
-      });//it should load products from the server
+      });//it 2 should load products from the server
       it('should delete a desired produce from the server db', function(){
         //prepare your products groups response:
         getReqHandler.respond(function(method, url, data, headers, params){
@@ -153,6 +159,7 @@
         // now for delete request:
         // now for delete operation:
         // (it should not be given in get request but for now it is like this. change it later)
+        /*
         $httpBackend.expect('GET', /\/products/g, undefined, undefined, [])
           .respond(function(method, url, data, headers, params){
             var mode, key;
@@ -171,17 +178,74 @@
             return [200, {'message':'Product Deleted Successfully.', 'error':false}];
           }//function
                   );//respond()
+        */
+        $httpBackend.when('POST', 
+                          /\/products/g, 
+                          undefined, 
+                          undefined, 
+                          [])
+          .respond(function(method, url, data, headers, params){
+            var dataFromClient = JSON.parse(data);
+            expect(dataFromClient.topic).toBe('delete');
+            expect(dataFromClient.key).toBe('def');
+            return [200, {'error':'false',
+                          'message':'Product Deleted Successfully'}];
+          }//function
+                  );//respond
 
         spyOn(window, 'confirm').and.returnValue(true);
         $scope.onDeleteClick({'index':1});
         $httpBackend.flush();
-        expect($scope.ajaxMessage).toBe('Product Deleted Successfully.');
+        expect($scope.message).toBe('Product Deleted Successfully');
 
+      });// it 3 should delete a product from the server
+      it('should show the product attribute edit area', function(){
+        //prepare your products list download at start:
+        getReqHandler.respond(function(method, url, data, headers, params){
+          var objects = [{'name':'Product 1', 'key':'abc'},{'name':'Product 2','key':'def'}];
+          var nextCursor = false;
+          var prevCursor = false;
+          var prev = false;
+          var next = false;
+          return [200, {'objects': objects, 'next_cursor': nextCursor, 
+                        'prev_cursor': prevCursor, 'prev': prev, 'next': next}];
 
-
-
-      });// it should delete a product from the server
-
+        }); 
+        // loads the product groups:
+        $httpBackend.expectGET('/products');
+        var ctrl = createController();
+        $httpBackend.flush();
+        // now the user clicks 'edit' button of the desired product item
+        // suppose he wants to edit the item at indes '1'
+        $scope.onEditClick({'index':1});
+        // it hide the selector area AND show the edit area:
+        expect($scope.isSelectorShow).toBe(false);
+        expect($scope.isEditShow).toBe(true);
+        // it should select the right target product:
+        expect($scope.targetProduct).not.toBe(null);
+        expect($scope.targetProduct.name).toBe('Product 2');
+        expect($scope.data.product.name).toBe('Product 2');
+        // now the user changes the name of the product on the user interface
+        // we change it here this way
+        $scope.data.product.name = 'Product 2 Edited';
+        // now the edited product name is to be updated on the server.
+        // so prepare the POST request
+        $httpBackend.when('POST', 
+                          /\/products/g, 
+                          undefined, 
+                          undefined, 
+                          [])
+          .respond(function(method, url, data, headers, params){
+            var dataFromClient = JSON.parse(data);
+            expect(dataFromClient.product.key).toBe('def');
+            expect(dataFromClient.product.name).toBe('Product 2 Edited');
+            return [200, {'error':'false',
+                          'message':'product updated successfully'}];
+          }//function
+                  );//respond
+        $scope.update();
+        $httpBackend.flush();
+      });//it 4 should show the product attribute area when the edit button is clicked
     });//describe edit product controller
     describe('ProductsSelectorController', function(){
       var ctrl, $scope, $httpBackend, getRequestHandler, postReqHandler;

@@ -21,3 +21,5 @@
    CLOSED: [2016-08-23 Tue 21:11]
 ** DONE the admin should be able add desired products to a group
    CLOSED: [2016-09-19 Mon 02:01]
+** DONE the admin should be able to change product attributes
+   CLOSED: [2016-09-21 Wed 05:36]

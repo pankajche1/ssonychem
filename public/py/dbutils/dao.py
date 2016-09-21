@@ -189,3 +189,27 @@ class DAO:
             response['message'] = 'There is some error in deleting the object.'
         return response
 
+    def updateProduct(self, data):
+        response = {'info':'','error':'true','message':''}
+        key = data['key']
+        if key is not None:
+            targetProduct = key.get()
+        if targetProduct is None:
+            response['message']='no product was found!'
+            response['error']='true'
+            return response
+        # get the product's attributes here:
+        # 1 name
+        if data.has_key('name'):
+            targetProduct.name = data['name']
+        # 2 TODO next attribute
+        #if data.has_key('gender'):
+            #user.gender = data['gender']
+        try:
+            targetProduct.put()
+            response['message']='product updated successfully'
+            response['error']='false'
+        except:
+            response['message']='some error in updating the product!'
+            response['error']='true'
+        return response

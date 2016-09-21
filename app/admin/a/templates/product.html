@@ -1,6 +1,7 @@
-<div>
- this is a product <% product.name %>
-<button ng-click="delete()">Delete</button>
-<button ng-click="edit()">Edit</button>
-
+<div style="height:40px;border-bottom:#777 1px solid;margin-bottom:5px;clear:both;">
+ <% product.name %>
+ <span style="float:right;">
+&nbsp;&nbsp;<button class="btn btn-sm" ng-click="delete()">Delete</button>
+&nbsp;&nbsp;<button class="btn btn-sm "ng-click="edit()">Edit</button>
+</span>
 </div>

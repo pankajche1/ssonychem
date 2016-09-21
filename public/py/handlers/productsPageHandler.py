@@ -17,48 +17,103 @@ class ProductsPageHandler(webapp2.RequestHandler):
             isAdmin = users.is_current_user_admin()
         return isAdmin
 
-    def deleteProduct(self, key):
-        keyTarget = ndb.Key(urlsafe=key)
+    def deleteProduct(self, body):
+        response = {'error':'', 'message':''}
+        try:
+            key = body['key']
+        except:
+            # if some error in retrieving the form data:
+            response['error'] = True
+            response['message'] = "There is some error in getting the key of the product to be deleted!"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
+            return
+        key = ndb.Key(urlsafe=key)
         if self.isUserAdmin() == True:
-            response = DAO().deleteProduct(keyTarget)
+            response = DAO().deleteProduct(key)
         else:
             response = {'error':True, 'message':'operation not permitted'}
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(response))
 
-        
+    def saveProduct(self, body):
+        '''
+        for creating a new product
+        '''
+        response = {'error':'', 'message':''}
+        try:
+            product = body['product']
+        except:
+            # if some error in retrieving the form data:
+            response['error'] = True
+            response['message'] = "There is some error in form!"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
+            return
+        if self.isUserAdmin() == True:
+            # save the data to datastore
+            data = {'name': product['name']}
+            response = DAO().saveProduct(data)
+        else:
+            response['error'] = True
+            response['message'] = "Admin A level is required for this operaton!"
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(response))
+
+    def updateProduct(self, body):
+        response = {'error':'', 'message':''}
+        try:
+            product = body['product']
+        except:
+            # if some error in retrieving the form data:
+            response['error'] = True
+            response['message'] = "There is some error in form!"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(json.dumps(response))
+            return
+        if self.isUserAdmin() == True:
+            # save the data to datastore
+            data = {'name': product['name'],
+                    'key':ndb.Key(urlsafe=product['key'])}
+            response = DAO().updateProduct(data)
+        else:
+            response['error'] = True
+            response['message'] = "Admin A level is required for this operaton!"
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(response))
+
+
     def get(self):
         itemsPerFetch = 10
-        # divide the request based on its mode:
-        # get request can come for deleting a product group
-        mode =  self.request.get('mode')
-        if mode == "delete":
-            self.deleteProduct(self.request.get('key'))
-        else:
-            prev_cursor = self.request.get('prev_cursor', '')
-            next_cursor = self.request.get('next_cursor', '')
-            res = DAO().getProductsByCursor(prev_cursor, next_cursor, itemsPerFetch)
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.out.write(json.dumps(res))
+        prev_cursor = self.request.get('prev_cursor', '')
+        next_cursor = self.request.get('next_cursor', '')
+        res = DAO().getProductsByCursor(prev_cursor, next_cursor, itemsPerFetch)
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(res))
 
     def post(self):
         response = {'info':'','error':'true','message':''}
         body =  json.loads(self.request.body)
         # get the form data:
         try:
-            uName = body['name'] # name of the product
+            topic = body['topic'] # name of the product
         except:
             # if some error in retrieving the form data:
             response['error'] = True
-            response['message'] = "There is some error in form. Please go to profile and try again."
+            response['message'] = "There is no topic in the request."
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
             return
-        if self.isUserAdmin() == True:
-            # save the data to datastore
-            data = {'name':uName}
-            response = DAO().saveProduct(data)
+
+        if topic == 'new':
+            self.saveProduct(body)
+        elif topic == 'update':
+            self.updateProduct(body)
+        elif topic == 'delete':
+            self.deleteProduct(body)
+        else:
+            response['error'] = True
+            response['message'] = "The topic provided does not meet with any of our services!"
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
-        else:
-            self.redirect('/')
+

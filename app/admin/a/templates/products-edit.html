@@ -1,7 +1,13 @@
-<div class="panel panel-default">
+<div ng-if="isSelectorShow"><!-- product selector area -->
+  <div class="panel panel-default">
     <div class="panel-body">
-    <product ng-repeat="item in products" data="item"
-                               delete="onDeleteClick({index:$index})"
-                               edit="onEditClick({index:$index})"></product>
+      <product ng-repeat="item in products" data="item"
+               delete="onDeleteClick({index:$index})"
+               edit="onEditClick({index:$index})"></product>
     </div>
+  </div>
+</div> 
+<div ng-if="isEditShow"><!-- products editing area -->
+ <edit-product-attributes data="data" submit="update()" cancel="cancel()"></edit-product-attributes>
 </div>
+

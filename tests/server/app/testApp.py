@@ -308,9 +308,10 @@ class AppTest(unittest.TestCase):
         self.assertEqual(1, len(groups))
 
     def test014_save_new_product_given_cleint_not_logged_in(self):
-        response = self.testApp.post_json('/products', dict(name='Car Wash'));
+        response = self.testApp.post_json('/products', dict(name='Car Wash', topic='new'));
         # status code 302 is for redirection
-        self.assertEqual(response.status_int, 302)
+        # self.assertEqual(response.status_int, 302)
+        self.assertEqual(response.status_int, 200)
         
     def test015_save_new_product_given_cleint_is_logged_in_and_not_admin(self):
         # user data:
@@ -321,9 +322,10 @@ class AppTest(unittest.TestCase):
         assert not users.get_current_user()
         # make the user logged in:
         self.loginUser(email, id, isAdmin)
-        response = self.testApp.post_json('/products', dict(name='Car Wash'));
+        response = self.testApp.post_json('/products', dict(name='Car Wash', topic='new'));
         # status code 302 is for redirection
-        self.assertEqual(response.status_int, 302)
+        #self.assertEqual(response.status_int, 302)
+        self.assertEqual(response.status_int, 200)
         
     def test016_save_new_product_given_cleint_is_logged_in_and_is_admin(self):
         # user data:
@@ -334,7 +336,8 @@ class AppTest(unittest.TestCase):
         assert not users.get_current_user()
         # make the user logged in:
         self.loginUser(email, id, isAdmin)
-        response = self.testApp.post_json('/products', dict(name='Car Wash'));
+        product = dict(name='Car Wash')
+        response = self.testApp.post_json('/products', dict(product=product, topic='new'));
         # status code 302 is for redirection and 200 is for normal
         self.assertEqual(response.status_int, 200)
         response = response.json
@@ -366,7 +369,9 @@ class AppTest(unittest.TestCase):
         # get the key of a product that is to be deleted:
         keyTargetObject = data.json['objects'][0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        # response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        formData = dict(topic='delete', key=keyTargetObject);
+        response = self.testApp.post_json('/products-groups', formData);
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'operation not permitted')
@@ -406,7 +411,9 @@ class AppTest(unittest.TestCase):
         # get the key of a product that is to be deleted:
         keyTargetObject = data.json['objects'][0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        # response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        formData = dict(key=keyTargetObject, topic='delete');
+        response = self.testApp.post_json('/products-groups', formData);
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'operation not permitted')
@@ -446,7 +453,9 @@ class AppTest(unittest.TestCase):
         # get the key of a product that is to be deleted:
         keyTargetObject = data.json['objects'][0]['key']
         # now this key is to be sent to the server for deleting the group
-        response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        #response = self.testApp.get('/products', {'mode':'delete','key':keyTargetObject})
+        formData = dict(key=keyTargetObject, topic='delete');
+        response = self.testApp.post_json('/products-groups', formData);
         # this converts the json object got from the server to a python dict object:
         response = response.json
         self.assertEqual(response['message'], 'The object deleted successfully.')
@@ -669,6 +678,108 @@ class AppTest(unittest.TestCase):
         # now compare with the actual products keys:
         self.assertEqual(products[0]['key'], productsKeys[0])
 
+    def test024_update_product_given_client_is_not_logged(self):
+        # first create some products on the server:
+        # create fake product and groups data:
+        self.createFakeData()
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200) 
+        #print data.normal_body
+        products = data.json['objects']
+        self.assertEqual(len(products), 4)
+        # now select a product for its name edit:
+        # let's take the second product:
+        product = products[1]
+        # test its name:
+        self.assertEqual(product['name'], 'Quick Detergent Powder')
+        # now change the name:
+        keyTargetObject = product['key']
+        # now this key is to be sent to the server for deleting the group
+        product = dict(name='Quick Detergent Powder', key=keyTargetObject)
+        formData = dict(topic='update', product=product);
+        response = self.testApp.post_json('/products', formData);
+        self.assertEqual(response.status_int, 200)
+        #print response
+        response = response.json
+        #print response
+        self.assertEqual(response['message'], 'Admin A level is required for this operaton!')
 
+    def test025_update_product_given_client_is_logged_in_and_not_an_admin(self):
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = False
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        # first create some products on the server:
+        # create fake product and groups data:
+        self.createFakeData()
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200) 
+        #print data.normal_body
+        products = data.json['objects']
+        self.assertEqual(len(products), 4)
+        # now select a product for its name edit:
+        # let's take the second product:
+        product = products[1]
+        # test its name:
+        self.assertEqual(product['name'], 'Quick Detergent Powder')
+        # now change the name:
+        keyTargetObject = product['key']
+        # now this key is to be sent to the server for deleting the group
+        product = dict(name='Quick Detergent Powder', key=keyTargetObject)
+        formData = dict(topic='update', product=product);
+        response = self.testApp.post_json('/products', formData);
+        self.assertEqual(response.status_int, 200)
+        #print response
+        response = response.json
+        #print response
+        self.assertEqual(response['message'], 'Admin A level is required for this operaton!')
 
-
+    def test026_update_product_given_client_is_logged_in_and_is_an_admin(self):
+        # user data:
+        email = 'sunny@gmail.com'
+        id = 'sunny'
+        isAdmin = True
+        # check that the user is not logged in
+        assert not users.get_current_user()
+        # make the user logged in:
+        self.loginUser(email, id, isAdmin)
+        # first create some products on the server:
+        # create fake product and groups data:
+        self.createFakeData()
+        # the data is got in form of json objects:
+        data = self.testApp.get('/products')
+        self.assertEqual(data.status_int, 200) 
+        #print data.normal_body
+        products = data.json['objects']
+        self.assertEqual(len(products), 4)
+        # now select a product for its name edit:
+        # let's take the second product:
+        product = products[1]
+        # test its name:
+        self.assertEqual(product['name'], 'Quick Detergent Powder')
+        # now change the name:
+        keyTargetObject = product['key']
+        # now this key is to be sent to the server for deleting the group
+        product = dict(name='Quick Detergent Powder Edited', key=keyTargetObject)
+        formData = dict(topic='update', product=product);
+        response = self.testApp.post_json('/products', formData);
+        self.assertEqual(response.status_int, 200)
+        #print response
+        response = response.json
+        #print response
+        self.assertEqual(response['message'], 'product group updated successfully')
+        # now get the products again
+        data = self.testApp.get('/products')
+        #print data.normal_body
+        products = data.json['objects']
+        self.assertEqual(len(products), 4)
+        # this is your second product that has been edited:
+        product = products[1]
+        # test its name:
+        self.assertEqual(product['name'], 'Quick Detergent Powder Edited')
