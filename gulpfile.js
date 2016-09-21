@@ -260,7 +260,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('watch-guest', function() {
-	//gulp.watch('app/guest/**/*.js', ['browserify-guest-dev']);
+	gulp.watch('app/guest/**/*.js', ['concat-guest-dev']);
 	gulp.watch('./app/guest/templates/**/*.html', ['template-guest']);
 	gulp.watch('./styles/less/**/*.less', ['less']);
 });
