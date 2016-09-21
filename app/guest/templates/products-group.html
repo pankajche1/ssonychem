@@ -1,0 +1,6 @@
+<!-- this is used to show a particular group and the products with it -->
+<div>
+<div><% data.group.name %></div>
+<h3>Products</h3>
+<product-item ng-repeat="item in data.group.products" product="item"/>
+<div>

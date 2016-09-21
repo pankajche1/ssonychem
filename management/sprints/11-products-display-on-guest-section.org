@@ -1,0 +1,9 @@
+* on the guest page products groups are to be shown in the products tab.
+** User Story: As a guest I should be able to see the products of the company
+*** Acceptance Stories
+   **** 1:
+   Scenario: A guest visits the site
+   Given: he is a guest
+   When: he clicks the products menu on the menubar
+   Then: he should be able to see all the products groups of the company
+*** task 1: Design the Controller that will download the groups when the products page is visited.

@@ -23,3 +23,5 @@
    CLOSED: [2016-09-19 Mon 02:01]
 ** DONE the admin should be able to change product attributes
    CLOSED: [2016-09-21 Wed 05:36]
+** DONE on the guest page products groups are to be shown in the products tab.
+   CLOSED: [2016-09-22 Thu 01:37]

@@ -1,5 +1,5 @@
 'use-strict()';
-module.exports= [function(){
+app.directive('pnav', [function(){
     return{
 	    restrict: 'E',
 	    scope: {
@@ -79,4 +79,4 @@ module.exports= [function(){
     };
 
 
-}];
+}]);

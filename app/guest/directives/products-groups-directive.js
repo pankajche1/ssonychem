@@ -1,9 +1,9 @@
 'use-strict()';
-app.directive('topHeader', [function(){
+app.directive('productsGroups', [function(){
     return{
 	    restrict: 'E',
 	    scope: {
-		    items: '='
+		    data: '='
 
 	    },
 	    transclude: true,
@@ -13,9 +13,8 @@ app.directive('topHeader', [function(){
 	    link: function ($scope, element, attrs) {
 
 	    },
-	    templateUrl:'/guest/header.html'
+	    templateUrl:'/guest/products-groups.html'
     };
 
 
 }]);
-	

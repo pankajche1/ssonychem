@@ -1,21 +1,17 @@
 'use-strict()';
-app.directive('topHeader', [function(){
+app.directive('productsGroupItem', [function(){
     return{
 	    restrict: 'E',
 	    scope: {
-		    items: '='
+		    group: '='
 
 	    },
 	    transclude: true,
-
-	    //repeat:false,
-
 	    link: function ($scope, element, attrs) {
 
 	    },
-	    templateUrl:'/guest/header.html'
+	    templateUrl:'/guest/products-group-item.html'
     };
 
 
 }]);
-	

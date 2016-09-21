@@ -163,7 +163,25 @@ gulp.task('concat-lib-dev', function() {
   // you can also put the timestamp thing here. for futher removing of the tension.
 
 });
+gulp.task('concat-guest-dev', function() {
+  	var concat = require('gulp-concat');
+  var files = [
+    './app/guest/templates/alltemplate.js',
+    './app/guest/app.js',
+    './app/guest/services/*.js',
+    './app/guest/controllers/*.js',
+    './app/guest/directives/*.js'
 
+  ];
+      return gulp.src(files)
+              .pipe(concat('main-guest.js'))
+              .pipe(uglify())
+              .pipe(gulp.dest('./public/js'));
+      	gulp.src('./public/py/handlers/templates/guest/index.html')
+	.pipe(replace(/main-guest([0-9]*).js(\?*[0-9]*)/g, 'main-guest.js?' + getStamp()))
+	.pipe(gulp.dest('./public/py/handlers/templates/guest'));
+
+});
 
 
 gulp.task('browserify-guest-dev', function() {
@@ -231,7 +249,8 @@ gulp.task('browserify-admin-a-dev', function() {
 */
 gulp.task('watch', function() {
 	//guest module:
-	gulp.watch('app/guest/**/*.js', ['browserify-guest-dev']);
+  //no need to watch guest browserify thing. cause now it will be concatnated.
+	//gulp.watch('app/guest/**/*.js', ['browserify-guest-dev']);
 	gulp.watch('./app/guest/templates/**/*.html', ['template-guest']);
 	//admin a module:
 	gulp.watch('app/admin/a/**/*.js', ['browserify-admin-a-dev']);
@@ -241,7 +260,11 @@ gulp.task('watch', function() {
 });
 
 gulp.task('watch-guest', function() {
-	gulp.watch('app/guest/**/*.js', ['browserify-guest-dev']);
+	//gulp.watch('app/guest/**/*.js', ['browserify-guest-dev']);
+	gulp.watch('./app/guest/templates/**/*.html', ['template-guest']);
+	gulp.watch('./styles/less/**/*.less', ['less']);
+});
+gulp.task('watch-guest-template', function() {
 	gulp.watch('./app/guest/templates/**/*.html', ['template-guest']);
 	gulp.watch('./styles/less/**/*.less', ['less']);
 });

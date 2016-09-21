@@ -1,5 +1,5 @@
 'use-strict()';
-module.exports= [function(){
+app.directive('headerMiddleBar', [function(){
     return{
 	    restrict: 'E',
 	    scope: {
@@ -15,5 +15,5 @@ module.exports= [function(){
     };
 
 
-}];
+}]);
 	

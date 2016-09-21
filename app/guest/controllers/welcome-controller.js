@@ -1,5 +1,5 @@
 'use-strict()';
-module.exports=['$rootScope','$scope','$http', function($rootScope,$scope, $http){
+app.controller('WelcomeController', ['$rootScope','$scope','$http', function($rootScope,$scope, $http){
 
 		$scope.message="Welcome From Controller on angular js";
                 // taking data from the script tag that was created in the server side:
@@ -9,5 +9,5 @@ module.exports=['$rootScope','$scope','$http', function($rootScope,$scope, $http
 
 
 		
-}];
+}]);
 

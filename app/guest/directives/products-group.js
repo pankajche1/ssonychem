@@ -1,23 +1,20 @@
 'use-strict()';
-module.exports= [function(){
+app.directive('productsGroup', [function(){
     return{
 	    restrict: 'E',
 	    scope: {
-		    items: '='
+		    data: '='
 
 	    },
 	    transclude: true,
-	    controller:['$scope','$element',function($scope, $element){
 
-            }],
 	    //repeat:false,
 
 	    link: function ($scope, element, attrs) {
 
 	    },
-	    templateUrl:'/guest/nav.html'
+	    templateUrl:'/guest/products-group.html'
     };
 
 
-}];
-	
+}]);

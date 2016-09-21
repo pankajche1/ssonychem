@@ -84,7 +84,7 @@ class ProductsPageHandler(webapp2.RequestHandler):
 
 
     def get(self):
-        itemsPerFetch = 10
+        itemsPerFetch = 100
         prev_cursor = self.request.get('prev_cursor', '')
         next_cursor = self.request.get('next_cursor', '')
         res = DAO().getProductsByCursor(prev_cursor, next_cursor, itemsPerFetch)
