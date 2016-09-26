@@ -15,8 +15,9 @@ from py.handlers.productsPageHandler import ProductsPageHandler as \
                              ProductsPageHandler
 #from py.handlers.signupPageHandler import SignupPageHandler as SignupPageHandler
 from py.handlers.signinPageHandler import SigninPageHandler as SigninPageHandler
+from py.handlers.signupPageHandler import SignupPageHandler as SignupPageHandler
 from py.handlers.productGroupHandler import ProductGroupHandler as ProductGroupHandler
-#@unittest.skip('AppTest Case')
+@unittest.skip('AppTest Case')
 class AppTest(unittest.TestCase):
     def setUp(self):
         # First, create an instance of the Testbed class.
@@ -37,6 +38,7 @@ class AppTest(unittest.TestCase):
             ('/',MainHandler),
             ('/products', ProductsPageHandler),
             ('/signin', SigninPageHandler),
+            ('/signup', SignupPageHandler),
             ('/products-groups', ProductGroupHandler)
 
             ])
@@ -74,6 +76,8 @@ class AppTest(unittest.TestCase):
         products = json.dumps(response.normal_body) 
         #members2 = json.loads(members)
         #print(response.normal_body)
+        print(response.content_type)
+
 
     #@unittest.skip('Test User login')
     def test003_user_login(self):
@@ -121,6 +125,7 @@ class AppTest(unittest.TestCase):
         #products = json.dumps(response.normal_body) 
         #print(response.normal_body)
 
+    #@unittest.skip('Test User login')
     def test006_signin_page_given_client_loggedin_and_admin(self):
         '''
             given: client is logged in
@@ -773,7 +778,7 @@ class AppTest(unittest.TestCase):
         #print response
         response = response.json
         #print response
-        self.assertEqual(response['message'], 'product group updated successfully')
+        self.assertEqual(response['message'], 'product updated successfully')
         # now get the products again
         data = self.testApp.get('/products')
         #print data.normal_body
@@ -783,3 +788,4 @@ class AppTest(unittest.TestCase):
         product = products[1]
         # test its name:
         self.assertEqual(product['name'], 'Quick Detergent Powder Edited')
+

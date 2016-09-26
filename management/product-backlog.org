@@ -27,3 +27,5 @@
    CLOSED: [2016-09-22 Thu 01:37]
 ** DONE on the guest page make the user interface better when loading products
    CLOSED: [2016-09-22 Thu 08:06]
+** DONE there should be member signup facility
+   CLOSED: [2016-09-26 Mon 19:35]

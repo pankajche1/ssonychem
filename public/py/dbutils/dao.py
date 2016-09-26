@@ -4,6 +4,8 @@ import time
 from google.appengine.api import users
 from py.models.product import Product as Product
 from py.models.productGroup import ProductGroup as ProductGroup
+from py.models.user import User as User
+from py.models.userDetail import UserDetails as UserDetails
 
 class DAO:
     def __init__(self):
@@ -97,6 +99,7 @@ class DAO:
             dictObj['key'] = obj.key.urlsafe()
             dto.append(dictObj)
         return dto  
+
 
     def getProductGroupByKey(self, key):
         response = {'message':'','error':''}
@@ -213,3 +216,45 @@ class DAO:
             response['message']='some error in updating the product!'
             response['error']='true'
         return response
+
+    def getUser(self, nickName, isRaw=False):
+        '''
+          this gets user data from the datastore
+          nickname : on google it is only the user name without the @gmail thing
+          isRaw means that if you want a pure python model datastore object then make it True
+        '''
+        data=None
+        user=None
+        # first get the user:
+        q = User.query(User.nickname == nickName)
+        users = q.fetch()
+        isNickNameFound=False
+        if len(users) > 0:
+            user = users[0] 
+        if user != None:
+            if isRaw:
+                data = user
+            else:
+                data={'nickName':user.nickname,'userId':user.userId,'level':user.level}
+        return data
+
+
+    def getMembersByCursor(self, prevCursor, nextCursor, itemsPerFetch):
+        ''' 
+        get the registered members list:
+        '''
+        # response from the User model:
+        # res =  {'objects': objects, 'prev': prev, 'next': next_, 'prev_offset': prev_offset, 'next_offset': next_offset}
+        res = User.cursor_pagination(prevCursor, nextCursor, itemsPerFetch)
+        # conver the objects returned to json objects
+        #q = User.query()
+        #usersDb, nextCursor, more = q.fetch_page(50)
+        usersDto = []  
+        for obj in res['objects']:
+            userDict = self.to_dict(obj)
+            userDict['key'] = obj.key.urlsafe()
+            usersDto.append(userDict)
+        res['objects'] = usersDto
+        return res  
+
+

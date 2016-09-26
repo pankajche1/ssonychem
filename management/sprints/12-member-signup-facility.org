@@ -1,0 +1,48 @@
+* member signup facility 
+** User Story 1: As a visitor[role] I want[feature] to find a sign up button so that[reason] I can goto sign up page
+*** Acceptance Stories
+**** AS1:
+     Scenario: user is logged in to his gmail account
+     Given: user is logged in to his gmail and he is not a member of the site
+     When: user opens the site main page
+     Then: he should see the login and signup buttons both
+***** tasks
+****** task1 : put a signin and signup button on the site main page.
+
+*****      Given: user is logged in to his gmail and he is not a member of the site
+           When: he clicks the sign up button
+           Then: he should go to the signup page of the site
+
+*****      Given: user is logged in to his gmail and he is a member of the site
+           When: he opens the site's main page
+           Then: he should see sign in and sign up buttons both
+
+*****      Given: user is logged in to his gmail and he is a member of the site
+           When: he clicks the sign up button
+           Then: he should be taken to his profile home page
+
+**** Scenario 2: user is not logged in to his gmail account
+
+*****      Given: user is not logged in to his gmail account and he is not a member of the site
+           When: he opens the site's main page
+           Then: he should see sign in and sign up buttons both
+
+*****      Given: user is not logged in to his gmail account and he is not a member of the site
+           When: he clicks the sign up button
+           Then: he should be taken the sign up page of the site
+
+*****      Given: user is not logged in to his gmail AND he is a member of the site :acceptance:story:
+           When: he opens the site's main page
+           Then: he shoudl see sign in and sign up buttons both
+
+*****      Given: user is not logged in to his gmail AND he is a member of the site
+           When: he clicks the sign up button
+           Then: he should be taken to the google account sign in page AND then to his profile page
+
+** Supporting stuff
+*** what goes on on a page
+    user clicks on signup link on the guest section of the site. Then server checks if the user is logged in as a gmail user.
+    if yes then it will check if the user in the db or not. if the user is in the db then it presents the user its proper member page.
+    and if the user in not in the db then it redirects to the 'registration page' where the user will decide if he has to get registered or not.
+    if the the user clicks the 'yes, I want to get registered' then it goes to the '/register' page. There the user is saved to the db.
+   
