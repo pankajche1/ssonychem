@@ -13,7 +13,7 @@ app.directive('productsGroups', [function(){
 	    link: function ($scope, element, attrs) {
 
 	    },
-	    templateUrl:'/guest/products-groups.html'
+	    templateUrl:'/guest/templates/products-groups.html'
     };
 
 

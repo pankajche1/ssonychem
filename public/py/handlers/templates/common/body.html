@@ -1,0 +1,28 @@
+<body ng-class="hasActiveMenu">
+  <!-- header -->
+  <div class="top-header">
+    <div ng-controller="HeaderController">
+      <headertopbar data="data.topbarData"></headertopbar>
+      <header-middle-bar></header-middle-bar>
+    </div>
+    <div class="bottom-navbar-wrapper">
+      <nav-wrapper></nav-wrapper>  
+    </div>
+  </div><!-- top header -->
+  <div  class='container content-main'>
+    <div class='row'>	
+      <div class='col-lg-8 col-md-7 col-sm-6 col-xs-12'>	
+        <div ng-view class='main-view'></div>
+      </div><!-- col-md-6 -->
+      <div class='col-lg-4 col-md-5 col-sm-6 col-xs-12'>	
+        <!-- side bar -->
+        <p>SSonyChem Private Limited</p>
+      </div><!-- col-md-6 -->
+    </div><!-- row div ends here -->
+  </div><!-- container for main content-->
+  <!-- footer section -->
+  <div  class='container'>
+    <div class='row'>
+    </div><!-- row of the footer ends here -->
+  </div><!-- container of the row ends here -->
+</body>

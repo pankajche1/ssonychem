@@ -29,7 +29,7 @@ class UserDAO:
         isMember = False
         memberInfo = None
         if member is not None:
-            memberInfo = {'name':member.name, 'level':member.level, 'key':member.key}
+            memberInfo = {'name':member.name, 'level':member.level, 'key':member.key.urlsafe()}
             isMember = True
         user = { 'nickname': nickname,
                  'userId': userId,
@@ -97,7 +97,7 @@ class UserDAO:
 
         if user['isAdmin'] == True:
             template = env.get_template('member/admin/a/index.html')
-        return template
+            return template
         level = user['memberInfo']['level']
         if level == 'admin-a':
             template = env.get_template('member/admin/a/index.html')

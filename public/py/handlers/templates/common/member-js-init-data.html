@@ -1,0 +1,6 @@
+<script> 
+  var logoutUrl = "{{ logoutUrl|safe }}";
+  var user = { 'nickname': "{{ user['nickname'] }}", 'logoutUrl': "{{ user['logoutUrl']|safe  }}",
+  'isAdmin':{% if user['isAdmin'] %} true {% else %} false {% endif %}
+  };
+</script> 

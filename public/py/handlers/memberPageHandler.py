@@ -17,19 +17,20 @@ class MemberPageHandler(webapp2.RequestHandler):
     def get(self):
         #self.userDao = UserDAO()
         user = self.userDao.getUser()
+        data = {}
         if user: # if user is not None means he is logged in to his google account
             # now process the user info, to see if he is the member of the site
             user['isAdmin'] = users.is_current_user_admin()
+            user['logoutUrl'] = users.create_logout_url('/')
+            # this is python data type.
+            data['user'] = user
+            template = self.userDao.getTemplate(env, user)
             if user['isAdmin'] == True:
-                template = self.userDao.getTemplate(env, user)
-                # logout url is to be created here:
-                user['logoutUrl'] = users.create_logout_url('/')
-                self.response.write(template.render(user))
+                #dataToTemplate = json.dumps(data)
+                self.response.write(template.render(data))
             elif user['isMember'] == True:
-                template = self.userDao.getTemplate(env, user)
-                # logout url is to be created here:
-                user['logoutUrl'] = users.create_logout_url('/')
-                self.response.write(template.render(user))
+                #dataToTemplate = json.dumps(data)
+                self.response.write(template.render(data))
             else: # the google user is not them member of our site:
                 self.redirect('/signup')
         else: # user not logged in to the google account

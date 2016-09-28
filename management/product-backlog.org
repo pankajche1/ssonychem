@@ -29,3 +29,5 @@
    CLOSED: [2016-09-22 Thu 08:06]
 ** DONE there should be member signup facility
    CLOSED: [2016-09-26 Mon 19:35]
+** DONE there should be home page for general members
+   CLOSED: [2016-09-28 Wed 21:59]

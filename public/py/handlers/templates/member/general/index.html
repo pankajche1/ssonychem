@@ -1,25 +1,17 @@
 <html lang="en" ng-app='app'>
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" ></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,
-			           user-scalable=no"></meta>
+    {% include "common/meta.html" %}
     <title>SSonyChem Pvt Ltd::Member Area</title>
-    <!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"></link>-->
+    <link rel="stylesheet" href="css/main.min-201608164340.css" type="text/css"></link> 
+    <!--  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"></link> -->
+    <!--<script src='js/lib/angular-animate/angular-animate.js'> </script>--> 
+    {% include "common/common-js-lib.html" %}
+    <!-- including the script that will init the member info -->
+    {% include "common/member-js-init-data.html" %}
+    <script src="/js/main-member-general.js?99"></script>
+
   </head>
-<html>
-  <body>
-    <h2>Welcome member to SSonyChem Pvt. Ltd.</h2>
-        <div  class='container content-main'>
-      <div class='row'>	
-        <div class='col-lg-12 col-md-12'>
-
-          <p>Welcome {{ nickname }}. Your level is {{ memberInfo['level'] }}</p>
-          <p><a href="{{ logoutUrl }}">logout</a></p>
-	</div><!-- col-md-6 -->
-      </div><!-- row  -->
-
-    </div><!-- container for main content-->
-
-  </body>
+  {% include "common/body.html" %}
+  <p>Welcome {{ user['nickname'] }}. Your level is {{ user['memberInfo']['level'] }}</p>
+  <p><a href="{{ user['logoutUrl'] }}">logout</a></p>
 </html>
-

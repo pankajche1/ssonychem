@@ -1,0 +1,13 @@
+<!-- this is used to show a particular group and the products with it -->
+<div class='panel panel-default'>
+      <div class='panel-heading'>
+        <h3 class='panel-title'><% data.group.name %></h3>
+    </div>
+    <div class='panel-body'>
+      <h4 style="border-bottom:green 1px dotted;">Products</h4>
+      <p><% data.message %></p>
+      <product-item ng-repeat="item in data.group.products" product="item"/>
+    </div>
+
+<div>
+
