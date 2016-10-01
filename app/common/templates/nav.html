@@ -12,11 +12,11 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" ng-class="{isActive:isActive}">
-			<ul class="nav navbar-nav">
-				<li ng-repeat="item in items" ng-class="{active:item.selected}">
-					<a href="<% item.page %>" ng-click="select(item)"><% item.label %></a>
-				</li>
-			</ul>
+      <ul class="nav navbar-nav">
+	<li ng-repeat="item in items" ng-class="{active:item.selected}" ng-click="toggleSelect(item)">
+	  <a href="<% item.page %>"><% item.label %></a>
+	</li>
+      </ul>
       <div ng-transclude></div>
     </div><!-- /.navbar-collapse -->
     <div class='menu-mask' ng-click="toggle()" ng-class="{isActive:isActive}"></div>
