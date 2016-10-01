@@ -123,7 +123,7 @@ class User(ndb.Model):
             prev_cursor_str = next_cursor.urlsafe()
             prev = True if more else False
             next_ = True
-        return {'objects': objects, 'next_cursor': next_cursor_str, 
+        return {'members': objects, 'next_cursor': next_cursor_str, 
                  'prev_cursor': prev_cursor_str, 'prev': prev, 'next': next_}
 
     @classmethod

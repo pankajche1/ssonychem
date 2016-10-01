@@ -42,6 +42,9 @@ app.config(['$routeProvider',function($routeProvider){
 		$routeProvider.when('/employees',{
 				templateUrl:'/member/admin/a/templates/employees.html',
                                 controller:'EmployeesController'});
+		$routeProvider.when('/members',{
+				templateUrl:'/member/admin/a/templates/members.html',
+                                controller:'MembersController'});
 		$routeProvider.when('/settings',{
 				templateUrl:'/member/admin/a/templates/settings.html',
                                 controller:'SettingsController'});

@@ -35,7 +35,7 @@ class DbManager:
             data = {'nickname': nickname,
                     'userId': userId,
                     'name': name}
-            UserDAO().saveUser(data)
+            response = UserDAO().saveUser(data)
 
     def getUsers(self):
         ''' gets users list from google data store'''

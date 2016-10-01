@@ -13,7 +13,7 @@ app.directive('productsSelector', [function(){
     link: function ($scope, element, attrs) {
 
     },
-    templateUrl:'/admin/a/products-selector.html'
+    templateUrl:'/member/admin/a/templates/products-selector.html'
   };
 
 

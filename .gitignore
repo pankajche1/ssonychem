@@ -3,7 +3,9 @@
 /public/js/lib
 /public/js
 /public/css
-/app/**/alltemplate.js
+#/app/**/alltemplate.js
+/app/**/*-templates.js
+/app/**/templates-*.js
 *.pyc
 *~
 *.swp

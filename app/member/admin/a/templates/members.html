@@ -1,0 +1,23 @@
+<div>
+  <div ng-if="isSelectorShow">
+    <div>
+      <div ng-repeat="member in data.members">
+        <span><% member.name %></span><span ng-if="isEditBtnShow"><button ng-click="onEditMemberClick($index)">Edit</button></span>
+      </div>
+    </div>
+  </div><!-- members selector div -->
+  <div ng-if="isMemberEditShow">
+    <h3><% data.targetMember.name %></h3>
+    <select ng-model="data.targetMember.level">
+      <option value="0">Guest</option>
+      <option value="1">Admin B</option>
+      <option value="2">Admin A</option>
+    </select><br><br>
+    <div>
+    <button ng-click="updateMember()">Update</button>
+    <button ng-click="onOkClick()">Ok</button>
+    </div>
+    <p><% data.status %></p>
+    
+  </div><!-- member edit div -->
+</div><!-- main div -->

@@ -2,10 +2,9 @@ import json
 import datetime
 import time
 from google.appengine.api import users
-from py.models.product import Product as Product
-from py.models.productGroup import ProductGroup as ProductGroup
 from py.models.user import User as User
 from py.models.userDetail import UserDetails as UserDetails
+from py.utils.utils import Utils as Utils
 
 class UserDAO:
     '''
@@ -13,7 +12,52 @@ class UserDAO:
     '''
     def __init__(self):
         pass
-    
+
+    def getUsersByCursor(self, prevCursor, nextCursor, itemsPerFetch, isAuth=True):
+        ''' 
+        get the users list saved to the site:
+        '''
+        if isAuth is False: # means when we don't want to give this data to all the users
+            return {'members': [], 'next_cursor': '','prev_cursor': '', 'prev': False, 'next': False}
+        res = User.cursor_pagination(prevCursor,
+                                        nextCursor, itemsPerFetch)
+        userDto = []  
+        for obj in res['members']:
+            # convert the python class object to a dict object
+            dictUser = Utils.to_dict(obj)
+            dictUser['key'] = obj.key.urlsafe()
+            userDto.append(dictUser)
+        res['members'] = userDto
+        return res  
+
+    def getMemberByKey(self, key):
+        dictObj = None
+        try:
+            member = key.get()
+            dictObj = Utils.to_dict(member)
+            dictObj['key'] = member.key.urlsafe()
+        except:
+            dictObj = None
+        return dictObj  
+
+    def updateMemberLevel(self, key, level):
+        res = {'error': True,'message':''}
+        if key is not None:
+            member = key.get()
+        if member is None:
+            res['message']='No member was found.'
+            res['error']= True
+            return res
+        member.level = level
+        try:
+            member.put()
+            res['message']='Member level  updated successfully'
+            res['error']= False
+        except:
+            res['message']='some error in updating the member level'
+            res['error']= True
+        return res
+
     def getUser(self):
         # it should give these infos like isUserAdmin, isUserMember, etc
         user = users.get_current_user()
@@ -39,6 +83,25 @@ class UserDAO:
                  'memberInfo': memberInfo
             }
         return user
+
+    def isAuth(self, user):
+        '''
+        this function will be used to find out if the user has authority to update site data
+        :return isAllowed:False or True
+        '''
+        isAllowed = False
+        # these cases can be with the user:
+        # case 1: the user is a registered member or not
+        if user['memberInfo'] is not None: # if user is a registered member
+            # get his level:
+            level = user['memberInfo']['level']
+            if level == 'admin-a':
+                isAllowed = True
+        # case 2: the user is the app admin:
+        if user['isAdmin'] == True:
+            isAllowed = True
+        return isAllowed
+
 
     def saveUser(self, userIn):
         '''

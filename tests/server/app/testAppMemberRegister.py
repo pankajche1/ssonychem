@@ -7,7 +7,7 @@ from google.appengine.ext import ndb
 from google.appengine.ext import testbed
 from google.appengine.api import users
 #import rajput
-from py.dbutils.dao import DAO as DAO
+from py.dbutils.dao_user import UserDAO as UserDAO
 #from py.dbutils.adminDao import AdminDAO as AdminDAO
 from utils.dbmanager import DbManager as DbManager
 from py.handlers.mainHandler import MainHandler as MainHandler
@@ -19,6 +19,7 @@ from py.handlers.signupPageHandler import SignupPageHandler as SignupPageHandler
 from py.handlers.productGroupHandler import ProductGroupHandler as ProductGroupHandler
 from py.handlers.registrationPageHandler import RegistrationPageHandler as  RegistrationPageHandler
 from py.handlers.memberPageHandler import MemberPageHandler as MemberPageHandler
+from py.handlers.membersPageHandler import MembersPageHandler as MembersPageHandler
 #@unittest.skip('AppTest Case')
 class AppTestMemberRegister(unittest.TestCase):
     def setUp(self):
@@ -43,6 +44,7 @@ class AppTestMemberRegister(unittest.TestCase):
             ('/signup', SignupPageHandler),
             ('/register', RegistrationPageHandler),
             ('/member', MemberPageHandler),
+            ('/members', MembersPageHandler),
             ('/products-groups', ProductGroupHandler)
 
             ])
@@ -104,9 +106,9 @@ class AppTestMemberRegister(unittest.TestCase):
         DbManager().createUsers()
         prevCursor=None
         nextCursor=None
-        members = DAO().getMembersByCursor(prevCursor, nextCursor, 10)
-        self.assertEqual(len(members['objects']), 10)
-        self.assertEqual(members['objects'][0]['name'], 'user-email-0')
+        members = UserDAO().getUsersByCursor(prevCursor, nextCursor, 10)
+        self.assertEqual(len(members['members']), 10)
+        self.assertEqual(members['members'][0]['name'], 'user-email-0')
         # now make one user logged in to the google account:
         nickname='user-email-1'
         userId = 'user-id-1' # this id is IMP. cz this will be userd to get the member from the db
@@ -225,3 +227,278 @@ class AppTestMemberRegister(unittest.TestCase):
         self.assertEqual(response.status_int, 200)
         self.assertEqual(response.content_type, 'text/html')        
         #print response # gives print of the actual page
+
+    def test0014_given_user_is_not_loggedin_gmail_and_is_a_not_a_member_when_fetches_members_list(self):
+        # create some users:
+        DbManager().createUsers()
+        res=self.testApp.get('/members')
+        # it should redirect to the /member route:
+        self.assertEqual(res.status_int, 200)
+        self.assertEqual(res.content_type, 'application/json')
+        members = res.json['members']
+        self.assertEqual(len(members), 0)
+
+    #@unittest.skip('Test member info')
+    def test0015_given_user_is_not_loggedin_gmail_and_is_a_member_when_fetches_members_list(self):
+        # create some users:
+        DbManager().createUsers()
+        # make a registered user logged in:
+        #nickname='user-email-1'
+        #userId = 'user-id-1' # this id is IMP. cz this will be userd to get the member from the db
+        #DbManager().loginUser(self.testbed, userId, nickname)
+        #assert users.get_current_user().nickname() == 'user-email-1'
+        # get a member key:
+        res=self.testApp.get('/members')
+        # it should redirect to the /member route:
+        self.assertEqual(res.status_int, 200)
+        self.assertEqual(res.content_type, 'application/json')        
+        #print response # gives print of the actual page
+        members = res.json['members']
+        self.assertEqual(len(members), 0)
+
+    def test0015_given_user_is_loggedin_gmail_and_is_not_a_member_when_fetches_members_list(self):
+        # create some users:
+        DbManager().createUsers()
+        # make a registered user logged in:
+        #nickname='user-email-1'
+        #userId = 'user-id-1' # this id is IMP. cz this will be userd to get the member from the db
+        #DbManager().loginUser(self.testbed, userId, nickname)
+        #assert users.get_current_user().nickname() == 'user-email-1'
+        # make some gmail user logged in who is not a member of the site:
+        nickname='unknown'
+        userId = 'unknown-id-1' # this id is IMP. cz this will be userd to get the member from the db
+        DbManager().loginUser(self.testbed, userId, nickname)
+        assert users.get_current_user().nickname() == 'unknown'
+        res=self.testApp.get('/members')
+        # it should redirect to the /member route:
+        self.assertEqual(res.status_int, 200)
+        self.assertEqual(res.content_type, 'application/json')        
+        #print response # gives print of the actual page
+        members = res.json['members']
+        self.assertEqual(len(members), 0)
+        
+    def test0016_given_user_is_loggedin_gmail_and_is_a_member_and_is_level_guest_when_fetches_members_list(self):
+        # create some users:
+        DbManager().createUsers()
+        # make a registered user logged in:
+        # by default all users are level guest
+        nickname='user-email-1'
+        userId = 'user-id-1' # this id is IMP. cz this will be userd to get the member from the db
+        DbManager().loginUser(self.testbed, userId, nickname)
+        assert users.get_current_user().nickname() == 'user-email-1'
+        res=self.testApp.get('/members')
+        # it should redirect to the /member route:
+        self.assertEqual(res.status_int, 200)
+        self.assertEqual(res.content_type, 'application/json')        
+        #print response # gives print of the actual page
+        members = res.json['members']
+        self.assertEqual(len(members), 0)
+
+    def test0016_given_user_is_loggedin_gmail_and_is_a_not_a_member_and_is_app_admin__when_fetches_members_list(self):
+        # create some users:
+        DbManager().createUsers()
+        # make a registered user logged in:
+        # by default all users are level guest
+        nickname='pankaj'
+        userId = 'app-admin' # this id is IMP. cz this will be userd to get the member from the db
+        isAppAdmin = True
+        DbManager().loginUser(self.testbed, userId, nickname, isAppAdmin)
+        assert users.get_current_user().nickname() == 'pankaj'
+        res=self.testApp.get('/members')
+        # it should redirect to the /member route:
+        self.assertEqual(res.status_int, 200)
+        self.assertEqual(res.content_type, 'application/json')        
+        #print response # gives print of the actual page
+        members = res.json['members']
+        self.assertEqual(len(members), 10)
+
+    def test0017_given_user_is_loggedin_gmail_and_is_a_member_and_is_level_a_when_fetches_members_list(self):
+        # create some users:
+        DbManager().createUsers()
+        userDao = UserDAO()
+        # change level of 
+        members = userDao.getUsersByCursor(None, None, 10)['members']
+        # get a key of a target member: [the key is urlsafe already]
+        key = members[0]['key']
+        # now use this key to get a member:
+        # you are using dao object so convert this key to python database key object:
+        key = ndb.Key(urlsafe=key)
+        member = userDao.getMemberByKey(key)
+        self.assertEqual(member['level'], 'guest')
+        # update the member level:
+        level = 'admin-a'
+        res = userDao.updateMemberLevel(key, level)
+        self.assertEqual(res['error'], False)
+        # now get the same member again:
+        member = userDao.getMemberByKey(key)
+        self.assertEqual(member['level'], 'admin-a')
+        self.assertEqual(member['nickname'], 'user-email-0')        
+        self.assertEqual(member['userId'], 'user-id-0')        
+        # make a registered user logged in:
+        # by default all users are level guest
+        nickname='user-email-0'
+        userId = 'user-id-0' # this id is IMP. cz this will be userd to get the member from the db
+        isAppAdmin = False
+        DbManager().loginUser(self.testbed, userId, nickname, isAppAdmin)
+        assert users.get_current_user().nickname() == 'user-email-0'
+        res=self.testApp.get('/members')
+        # it should redirect to the /member route:
+        self.assertEqual(res.status_int, 200)
+        self.assertEqual(res.content_type, 'application/json')        
+        #print response # gives print of the actual page
+        members = res.json['members']
+        self.assertEqual(len(members), 10)
+
+    def test0018_given_user_is_not_loggedin_gmail_when_changes_the_level_of_a_member(self):
+        # create some users
+        DbManager().createUsers()
+        userDao = UserDAO()
+        # get the members:
+        members = userDao.getUsersByCursor(None, None, 10)['members']
+        # get a key of a target member: [the key is urlsafe already]
+        key = members[0]['key']
+        member = userDao.getMemberByKey(ndb.Key(urlsafe=key))
+        self.assertEqual(member['level'], 'guest')
+        # now user '/members' POST route to change the level of this user:
+        # java script data is this:
+        # var data = {'topic':'update-level', 'member':{'key': $scope.data.targetMember.key, 'level':level}};
+        newLevel = 'admin-a'
+        targetMember = dict(key=key, level=newLevel)
+        formData = dict(topic='update-level', member=targetMember);
+        res = self.testApp.post_json('/members', formData);
+        self.assertEqual(res.status_int, 200)
+        #print response
+        res = res.json
+        #print response
+        self.assertEqual(res['message'], 'Client must be logged in to his account to do this operation.')
+
+    def test0019_given_user_is_loggedin_gmail_and_not_a_member_when_changes_the_level_of_a_member(self):
+        # create some users
+        DbManager().createUsers()
+        userDao = UserDAO()
+        # get the members:
+        members = userDao.getUsersByCursor(None, None, 10)['members']
+        # get a key of a target member: [the key is urlsafe already]
+        key = members[0]['key']
+        member = userDao.getMemberByKey(ndb.Key(urlsafe=key))
+        self.assertEqual(member['level'], 'guest')
+        # now make a client who wants to change the level of the target member:
+        nickname='unknown'
+        userId = 'unknown-id-1' # this id is IMP. cz this will be userd to get the member from the db
+        DbManager().loginUser(self.testbed, userId, nickname)
+        assert users.get_current_user().nickname() == 'unknown'
+        # now user '/members' POST route to change the level of this user:
+        # java script data is this:
+        # var data = {'topic':'update-level', 'member':{'key': $scope.data.targetMember.key, 'level':level}};
+        newLevel = 'admin-a'
+        targetMember = dict(key=key, level=newLevel)
+        formData = dict(topic='update-level', member=targetMember);
+        res = self.testApp.post_json('/members', formData);
+        self.assertEqual(res.status_int, 200)
+        #print response
+        res = res.json
+        #print response
+        self.assertEqual(res['message'], 'Client must have proper admin level to do this operation.')
+
+    def test0020_given_user_is_loggedin_gmail_and_a_member_and_has_level_guest_when_changes_the_level_of_a_member(self):
+        # create some users
+        DbManager().createUsers()
+        userDao = UserDAO()
+        # get the members:
+        members = userDao.getUsersByCursor(None, None, 10)['members']
+        # get a key of a target member: [the key is urlsafe already]
+        key = members[0]['key']
+        member = userDao.getMemberByKey(ndb.Key(urlsafe=key))
+        self.assertEqual(member['level'], 'guest')
+        # now make a client who wants to change the level of the target member:
+        nickname='user-email-2'
+        userId = 'user-id-2' # this id is IMP. cz this will be userd to get the member from the db
+        DbManager().loginUser(self.testbed, userId, nickname)
+        assert users.get_current_user().nickname() == 'user-email-2'
+        # now user '/members' POST route to change the level of this user:
+        # java script data is this:
+        # var data = {'topic':'update-level', 'member':{'key': $scope.data.targetMember.key, 'level':level}};
+        newLevel = 'admin-a'
+        targetMember = dict(key=key, level=newLevel)
+        formData = dict(topic='update-level', member=targetMember);
+        res = self.testApp.post_json('/members', formData);
+        self.assertEqual(res.status_int, 200)
+        #print response
+        res = res.json
+        #print response
+        self.assertEqual(res['message'], 'Client must have proper admin level to do this operation.')
+
+    def test0021_given_user_is_loggedin_gmail_and_a_member_and_has_level_admin_a_when_changes_the_level_of_a_member(self):
+        # create some users
+        DbManager().createUsers()
+        userDao = UserDAO()
+        # get the members:
+        members = userDao.getUsersByCursor(None, None, 10)['members']
+        # get a key of a target member: [the key is urlsafe already]
+        key = members[0]['key']
+        member = userDao.getMemberByKey(ndb.Key(urlsafe=key))
+        self.assertEqual(member['level'], 'guest')
+        # now make a client who wants to change the level of the target member:
+        nickname='user-email-2'
+        userId = 'user-id-2' # this id is IMP. cz this will be userd to get the member from the db
+        # get a key of a target member: [the key is urlsafe already]
+        keyClient = members[2]['key']
+        # now use this key to get a member:
+        # you are using dao object so convert this key to python database key object:
+        keyClient = ndb.Key(urlsafe=keyClient)
+        client = userDao.getMemberByKey(keyClient)
+        self.assertEqual(client['level'], 'guest')
+        # update the member level:
+        levelClient = 'admin-a'
+        res = userDao.updateMemberLevel(keyClient, levelClient)
+        self.assertEqual(res['error'], False)
+        # now get the same member again:
+        client = userDao.getMemberByKey(keyClient)
+        self.assertEqual(client['level'], 'admin-a')
+        self.assertEqual(client['nickname'], 'user-email-2')        
+        self.assertEqual(client['userId'], 'user-id-2')        
+        # make the client logged in:
+        DbManager().loginUser(self.testbed, userId, nickname)
+        assert users.get_current_user().nickname() == 'user-email-2'
+        # now user '/members' POST route to change the level of this user:
+        # java script data is this:
+        # var data = {'topic':'update-level', 'member':{'key': $scope.data.targetMember.key, 'level':level}};
+        newLevel = 'admin-a'
+        targetMember = dict(key=key, level=newLevel)
+        formData = dict(topic='update-level', member=targetMember);
+        res = self.testApp.post_json('/members', formData);
+        self.assertEqual(res.status_int, 200)
+        #print response
+        res = res.json
+        #print response
+        self.assertEqual(res['message'], 'Member level  updated successfully')
+
+    def test0021_given_user_is_loggedin_gmail_and_app_admin_when_changes_the_level_of_a_member(self):
+        # create some users
+        DbManager().createUsers()
+        userDao = UserDAO()
+        # get the members:
+        members = userDao.getUsersByCursor(None, None, 10)['members']
+        # get a key of a target member: [the key is urlsafe already]
+        key = members[0]['key']
+        member = userDao.getMemberByKey(ndb.Key(urlsafe=key))
+        self.assertEqual(member['level'], 'guest')
+        # make the client logged in:
+        nickname='pankaj'
+        userId = 'app-admin' # this id is IMP. cz this will be userd to get the member from the db
+        isAppAdmin = True
+        DbManager().loginUser(self.testbed, userId, nickname, isAppAdmin)
+        assert users.get_current_user().nickname() == 'pankaj'
+        # now user '/members' POST route to change the level of this user:
+        # java script data is this:
+        # var data = {'topic':'update-level', 'member':{'key': $scope.data.targetMember.key, 'level':level}};
+        newLevel = 'admin-a'
+        targetMember = dict(key=key, level=newLevel)
+        formData = dict(topic='update-level', member=targetMember);
+        res = self.testApp.post_json('/members', formData);
+        self.assertEqual(res.status_int, 200)
+        #print response
+        res = res.json
+        #print response
+        self.assertEqual(res['message'], 'Member level  updated successfully')
+

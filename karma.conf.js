@@ -18,22 +18,29 @@ module.exports = function (config) {
       // common directives, services etc:
       ,'app/common/app.js'
       ,'app/common/directives/*.js'
-      ,'app/common/controllers/*.js'
+      //,'app/common/controllers/*.js'
       //,'app/common/services/*.js'
       //'public/js/main-admin-a.js',
       //'public/js/main-admin-b.js',
       // guest section:
-      ,'app/guest/templates/guest-templates.js'
-      ,'app/guest/app.js'
-      ,'app/guest/services/*.js'
-      ,'app/guest/directives/*.js'
-      ,'app/guest/controllers/*.js'
+      //,'app/guest/templates/guest-templates.js'
+      //,'app/guest/app.js'
+      //,'app/guest/services/*.js'
+      //,'app/guest/directives/*.js'
+      //,'app/guest/controllers/*.js'
       // member general section:
       //,'app/member/general/templates/member-general-templates.js'
       //,'app/member/general/app.js'
       //,'app/member/general/services/*.js'
       //,'app/member/general/directives/*.js'
       //,'app/member/general/controllers/*.js'
+      // member admin a section:
+      ,'app/member/admin/a/templates/member-admin-a-templates.js'
+      ,'app/member/admin/a/app.js'
+      ,'app/member/admin/a/services/*.js'
+      ,'app/member/admin/a/directives/*.js'
+      ,'app/member/admin/a/controllers/*.js'
+
       // angular libs etc:
       ,'node_modules/angular-mocks/angular-mocks.js'
       // test files:
@@ -42,9 +49,11 @@ module.exports = function (config) {
       //1 common section:
       //,'tests/js/unit/common/**/*.js'
       //2 guest section
-      ,'tests/js/unit/guest/**/*.js'
+      //,'tests/js/unit/guest/**/*.js'
       //3 member general section:
-      //,'tests/js/unit/member/general/**/*.js'      
+      //,'tests/js/unit/member/general/**/*.js'
+      //4 member admin a:
+      ,'tests/js/unit/member/admin/a/**/*.js'
     ],
     autoWatch: true,
     singleRun: false,

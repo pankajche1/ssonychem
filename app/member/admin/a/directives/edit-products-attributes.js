@@ -12,7 +12,7 @@ app.directive('editProductAttributes', [function(){
     link: function ($scope, element, attrs) {
 
     },
-    templateUrl:'/admin/a/edit-products-attributes.html'
+    templateUrl:'/member/admin/a/templates/edit-products-attributes.html'
   };
 
 

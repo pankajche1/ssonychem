@@ -51,7 +51,6 @@ class DaoMemberTestCase(unittest.TestCase):
         userNickName = user.nickname()
         self.assertEqual(userNickName, 'pankajche1')
         self.assertEqual(userId, 'user-123')                
-
         
     def test_0002_save_new_user_to_db(self):
         '''
@@ -124,11 +123,50 @@ class DaoMemberTestCase(unittest.TestCase):
         response = UserDAO().deleteMember(key)
         self.assertEqual(response['message'], 'The member deleted successfully.')        
 
-        
+    def test_0005_get_users_by_cursor_pagination(self):
+        # create 95 members on the site:
+        DbManager().createUsers(95)
+        # now get these users by cursor pagination:
+        members = UserDAO().getUsersByCursor(None, None, 10)['members']
+        self.assertEqual(len(members), 10);
+        # test some names:
+        self.assertEqual(members[0]['nickname'], 'user-email-0')
 
+    def test_0006_get_user_by_key(self):
+        # create 95 members on the site:
+        DbManager().createUsers(95)
+        userDao = UserDAO()
+        # now get these users by cursor pagination:
+        members = userDao.getUsersByCursor(None, None, 10)['members']
+        # get a key of a target member: [the key is urlsafe already]
+        key = members[0]['key']
+        # now use this key to get a member:
+        # you are using dao object so convert this key to python database key object:
+        key = ndb.Key(urlsafe=key)
+        member = userDao.getMemberByKey(key)
+        assert member
+        self.assertEqual(member['nickname'], 'user-email-0')
 
+    def test_0007_update_member_level(self):
+        DbManager().createUsers(95)
+        userDao = UserDAO()
+        # now get these users by cursor pagination:
+        members = userDao.getUsersByCursor(None, None, 10)['members']
+        # get a key of a target member: [the key is urlsafe already]
+        key = members[0]['key']
+        # now use this key to get a member:
+        # you are using dao object so convert this key to python database key object:
+        key = ndb.Key(urlsafe=key)
+        member = userDao.getMemberByKey(key)
+        self.assertEqual(member['level'], 'guest')
+        # update the member level:
+        level = 'admin-a'
+        res = userDao.updateMemberLevel(key, level)
+        self.assertEqual(res['error'], False)
+        # now get the same member again:
+        member = userDao.getMemberByKey(key)
+        self.assertEqual(member['level'], 'admin-a')
 
-        
 # [START main]h
 if __name__ == '__main__':
     unittest.main()

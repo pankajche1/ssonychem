@@ -9,7 +9,7 @@ import webapp2
 import json
 from py.handlers.mainHandler import MainHandler as MainHandler
 from py.handlers.productsPageHandler import ProductsPageHandler as ProductsPageHandler
-#from py.handlers.membersPageHandler import MembersPageHandler as MembersPageHandler
+from py.handlers.membersPageHandler import MembersPageHandler as MembersPageHandler
 from py.handlers.memberPageHandler import MemberPageHandler as MemberPageHandler
 from py.handlers.signinPageHandler import SigninPageHandler as SigninPageHandler
 from py.handlers.signupPageHandler import SignupPageHandler as SignupPageHandler
@@ -27,6 +27,7 @@ application = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/products', ProductsPageHandler),
     ('/member', MemberPageHandler),
+    ('/members', MembersPageHandler),
     ('/signin', SigninPageHandler),
     ('/signup', SignupPageHandler),
     ('/register', RegistrationPageHandler),

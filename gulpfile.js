@@ -317,6 +317,7 @@ gulp.task('watch-guest', function() {
   gulp.watch('./styles/less/**/*.less', ['less']);
 });
 gulp.task('watch-guest-template', function() {
+  gulp.watch('./app/common/templates/**/*.html', ['template-common']);
   gulp.watch('./app/guest/templates/**/*.html', ['template-guest']);
   gulp.watch('./styles/less/**/*.less', ['less']);
 });
@@ -329,6 +330,7 @@ gulp.task('watch-member-general', function() {
   gulp.watch('./styles/less/**/*.less', ['less']);
 });
 gulp.task('watch-member-general-template', function() {
+  gulp.watch('./app/common/templates/**/*.html', ['template-common']);
   gulp.watch('./app/member/general/templates/**/*.html', ['template-member-general']);
   gulp.watch('./styles/less/**/*.less', ['less']);
 });
@@ -341,4 +343,8 @@ gulp.task('watch-member-admin-a', function() {
   gulp.watch('./app/member/admin/a/templates/**/*.html', ['template-member-admin-a']);
   gulp.watch('./styles/less/**/*.less', ['less']);
 });
-
+gulp.task('watch-member-admin-a-template', function() {
+  gulp.watch('./app/common/templates/**/*.html', ['template-common']);
+  gulp.watch('./app/member/admin/a/templates/**/*.html', ['template-member-admin-a']);
+  gulp.watch('./styles/less/**/*.less', ['less']);
+});

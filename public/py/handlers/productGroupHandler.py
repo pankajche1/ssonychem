@@ -5,6 +5,7 @@ import json
 from google.appengine.ext import ndb
 from google.appengine.api import users
 from py.dbutils.dao import DAO as DAO
+from py.dbutils.dao_user import UserDAO as UserDAO
 #from py.data.userData import UserData as UserData
 
 loader = jinja2.FileSystemLoader( \
@@ -14,25 +15,17 @@ env = jinja2.Environment(loader=loader, extensions=extensions,autoescape=True)
 
 class ProductGroupHandler(webapp2.RequestHandler):
 
-    def isUserAdmin(self):
-        isAdmin = False
-        # check the status of the client            
-        user = users.get_current_user()
-        if user:
-            isAdmin = users.is_current_user_admin()
-        return isAdmin
-    
-    def deleteGroup(self, body):
+    def deleteGroup(self, body, isAuth):
         key = body['key']
         keyTarget = ndb.Key(urlsafe=key)
-        if self.isUserAdmin() == True:
+        if isAuth == True:
             response = DAO().deleteProductGroup(keyTarget)
         else:
             response = {'error':True, 'message':'operation not permitted'}
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(response))
 
-    def saveGroup(self, body):
+    def saveGroup(self, body, isAuth):
         response = {'info':'','error':'','message':''}
         try:
             group = body['group'] # name of the product group
@@ -43,7 +36,7 @@ class ProductGroupHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
             return
-        if self.isUserAdmin() == True:
+        if isAuth == True:
             # save the data to datastore
             data = {'name': group['name']}
             response = DAO().saveProductGroup(data)
@@ -52,8 +45,8 @@ class ProductGroupHandler(webapp2.RequestHandler):
         else:
             self.redirect('/')
       
-    def updateGroup(self, body):
-        if self.isUserAdmin() == True:
+    def updateGroup(self, body, isAuth):
+        if isAuth == True:
             # update the data to datastore
             # data is comming in this form {topic:'update', 'group':{'key':'', 'name':''}}
             group = body['group']
@@ -67,9 +60,9 @@ class ProductGroupHandler(webapp2.RequestHandler):
         else:
             self.redirect('/')
 
-    def addProductsToGroup(self, body):
+    def addProductsToGroup(self, body, isAuth):
         response = {'info':'','error':'','message':''}
-        if self.isUserAdmin() == True:
+        if isAuth == True:
             # get data from the body:
             # actually the names are 'products' and 'group' but they are keys only!
             productsKeys = body['products']
@@ -125,15 +118,16 @@ class ProductGroupHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
             return
-
+        userDao = UserDAO()
+        isAuth = userDao.isAuth(userDao.getUser())
         if topic == 'new':
-            self.saveGroup(body)
+            self.saveGroup(body, isAuth)
         elif topic == 'update':
-            self.updateGroup(body)
+            self.updateGroup(body, isAuth)
         elif topic == 'delete':
-            self.deleteGroup(body)
+            self.deleteGroup(body, isAuth)
         elif topic == 'add-products':
-            self.addProductsToGroup(body)
+            self.addProductsToGroup(body, isAuth)
         else:
             response['error'] = True
             response['message'] = "The topic provided does not meet with any of our services!"

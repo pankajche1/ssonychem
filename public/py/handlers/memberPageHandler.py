@@ -24,12 +24,15 @@ class MemberPageHandler(webapp2.RequestHandler):
             user['logoutUrl'] = users.create_logout_url('/')
             # this is python data type.
             data['user'] = user
-            template = self.userDao.getTemplate(env, user)
+            # this can not be put here. cause at this time memberInfo can be None
+            # template = self.userDao.getTemplate(env, user)
             if user['isAdmin'] == True:
                 #dataToTemplate = json.dumps(data)
+                template = self.userDao.getTemplate(env, user)
                 self.response.write(template.render(data))
             elif user['isMember'] == True:
                 #dataToTemplate = json.dumps(data)
+                template = self.userDao.getTemplate(env, user)
                 self.response.write(template.render(data))
             else: # the google user is not them member of our site:
                 self.redirect('/signup')

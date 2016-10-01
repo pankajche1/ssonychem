@@ -4,20 +4,13 @@ import jinja2
 import json
 from google.appengine.api import users
 from py.dbutils.dao import DAO as DAO
+from py.dbutils.dao_user import UserDAO as UserDAO
 from py.models.product import Product as Product
 from google.appengine.ext import ndb
 
 class ProductsPageHandler(webapp2.RequestHandler):
 
-    def isUserAdmin(self):
-        isAdmin = False
-        # check the status of the client            
-        user = users.get_current_user()
-        if user:
-            isAdmin = users.is_current_user_admin()
-        return isAdmin
-
-    def deleteProduct(self, body):
+    def deleteProduct(self, body, isAuth):
         response = {'error':'', 'message':''}
         try:
             key = body['key']
@@ -29,14 +22,14 @@ class ProductsPageHandler(webapp2.RequestHandler):
             self.response.out.write(json.dumps(response))
             return
         key = ndb.Key(urlsafe=key)
-        if self.isUserAdmin() == True:
+        if isAuth == True:
             response = DAO().deleteProduct(key)
         else:
             response = {'error':True, 'message':'operation not permitted'}
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(response))
 
-    def saveProduct(self, body):
+    def saveProduct(self, body, isAuth):
         '''
         for creating a new product
         '''
@@ -50,7 +43,7 @@ class ProductsPageHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
             return
-        if self.isUserAdmin() == True:
+        if isAuth == True:
             # save the data to datastore
             data = {'name': product['name']}
             response = DAO().saveProduct(data)
@@ -60,7 +53,7 @@ class ProductsPageHandler(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(response))
 
-    def updateProduct(self, body):
+    def updateProduct(self, body, isAuth):
         response = {'error':'', 'message':''}
         try:
             product = body['product']
@@ -71,7 +64,7 @@ class ProductsPageHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
             return
-        if self.isUserAdmin() == True:
+        if isAuth == True:
             # save the data to datastore
             data = {'name': product['name'],
                     'key':ndb.Key(urlsafe=product['key'])}
@@ -104,13 +97,14 @@ class ProductsPageHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.out.write(json.dumps(response))
             return
-
+        userDao = UserDAO()
+        isAuth = userDao.isAuth(userDao.getUser())
         if topic == 'new':
-            self.saveProduct(body)
+            self.saveProduct(body, isAuth)
         elif topic == 'update':
-            self.updateProduct(body)
+            self.updateProduct(body, isAuth)
         elif topic == 'delete':
-            self.deleteProduct(body)
+            self.deleteProduct(body, isAuth)
         else:
             response['error'] = True
             response['message'] = "The topic provided does not meet with any of our services!"
