@@ -1,17 +1,25 @@
-<h2>products group attributes edit</h2>
-
+<div class="panel panel-primary">
+  <div class="panel-heading">
+<div class="panel-title">products group attributes edit</div>
+</div>
+  <div class="panel-body">
     <form novalidate name='myform'  ng-submit="submit()" >
         <input type='text' style="display:none;" name="topic" ng-model="data.topic" value="<% data.topic %>"></input>
+            <label for="pgName">Product Group Name:
+          </label>
+
           <input ng-maxlength="500" type="text" class="form-control" id="pgroupName" name="pgName"
 			    ng-model="data.group.name" placeholder="Product Group Name"  >
           </input>
 
 
-   <hr class="featurette-divider">
+<br></br>
     <button type="submit" ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}">Update</button>
-    <button type="button" ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}" ng-click="cancel()">Cancel</button>
+    <button type="button" ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}" ng-click="cancel()">Exit</button>
          <span><% data.message %></span>
 </form>
-
+</div>
+<div class="panel-footer"></div>
+</div>
 
 

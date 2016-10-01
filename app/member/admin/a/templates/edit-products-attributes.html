@@ -1,15 +1,19 @@
-<h2>Products Attributes Edit</h2>
-
+<h3>Product Update</h3>
+<hr class="featurette-divider">
 <form novalidate name='myform'  ng-submit="submit()" >
   <input type='text' style="display:none;" name="topic" ng-model="data.topic" value="<% data.topic %>"></input>
+            <label for="pName">Product Name:
+
+          </label>
+
   <input ng-maxlength="500" type="text" class="form-control" id="productName" name="pName"
 	 ng-model="data.product.name" placeholder="Product Name"  >
           </input>
 
+<br><br>
 
-          <hr class="featurette-divider">
           <button type="submit" ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}">Update</button>
-          <button type="button" ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}" ng-click="cancel()">Cancel</button>
+          <button type="button" ng-class="{'btn':true, 'btn-default':true,'disabled':data.isDisabled}" ng-click="cancel()">Exit</button>
           <span><% data.message %></span>
 </form>
 

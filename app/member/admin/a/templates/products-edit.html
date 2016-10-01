@@ -1,13 +1,26 @@
-<div ng-if="isSelectorShow"><!-- product selector area -->
-  <div class="panel panel-default">
+<div class="panel panel-primary">
+  <div ng-if="isSelectorShow"><!-- product selector area -->
+    <div class="panel-heading">
+      <div class="panel-title">Current Products</div>
+    </div>
     <div class="panel-body">
+      <div><% message %></div>
+<hr class="featurette-divider">
       <product ng-repeat="item in products" data="item"
                delete="onDeleteClick({index:$index})"
                edit="onEditClick({index:$index})"></product>
-    </div>
-  </div>
-</div> 
-<div ng-if="isEditShow"><!-- products editing area -->
- <edit-product-attributes data="data" submit="update()" cancel="cancel()"></edit-product-attributes>
-</div>
+<div><a href="#/products-menu">Back</a></div>
+    </div> 
+  </div><!-- ng-if -->
 
+  <div ng-if="isEditShow"><!-- products editing area -->
+
+
+    <div class="panel-body">
+      <edit-product-attributes data="data" submit="update()" cancel="cancel()"></edit-product-attributes>
+    </div> 
+
+  </div>
+
+
+</div>

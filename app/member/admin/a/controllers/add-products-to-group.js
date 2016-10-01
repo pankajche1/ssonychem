@@ -44,7 +44,7 @@ app.controller('AddProductsToGroupController',['$scope','$http','$log', '$window
                     $scope.isSelectorShow = true;
                   };
                   $scope.onSelectProductsDone = function(selectedProductsIn){
-
+                    $scope.message="";
                     selectedProducts = selectedProductsIn;
                     $scope.isDashboardShow = true;
                     $scope.isSelectorShow = false;
@@ -84,7 +84,7 @@ app.controller('AddProductsToGroupController',['$scope','$http','$log', '$window
                   $scope.onSelectProductsCancel = function(){
                     $scope.isDashboardShow = true;
                     $scope.isSelectorShow = false;
-
+                    $scope.message="";
 
                   };//onSelectProductsCancel();
                   $scope.removeProduct = function(index){
@@ -106,6 +106,11 @@ app.controller('AddProductsToGroupController',['$scope','$http','$log', '$window
                       productsKeys.push($scope.selectedProducts[i].key);
                     }
                     */
+                    if(productsKeys.length==0){
+                      $scope.message="No products to add.";
+                      $scope.isDisabled = false;
+                      return;
+                    }
                     var dataToServer = {'topic': 'add-products', 
                                         'group': $scope.targetProductsGroup.key,
                                         'products': productsKeys

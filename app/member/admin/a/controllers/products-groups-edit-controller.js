@@ -6,13 +6,10 @@ app.controller('ProductsGroupsEditController',['$rootScope','$scope','$http', '$
       $scope.productsGroups = [];
       $scope.targetProductsGroup = null;
       $scope.ajaxMessage = "";
-      $scope.info1 = "Sunny Kailash Dagar";
       $scope.isMenuShow = true;
       $scope.isEditShow = false;        
       $scope.isEditAttributesShow = false;        
       $scope.isAddProductsShow = false;        
-      $scope.testData1 = [];
-      $scope.testData2 = [];
       $scope.showGroupsData = function(){
         $log.info('PrdtsGrpsEditCtrl groups.length:'+$scope.productsGroups.length);
 

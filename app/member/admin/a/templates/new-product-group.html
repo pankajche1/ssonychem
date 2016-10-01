@@ -1,6 +1,10 @@
-<div>
-    <h3>New Product Group</h3>
-	<div class='form-container'><!-- main -->
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+      Create New Product Group
+    </div>
+  </div>
+  	<div class='form-container panel-body'><!-- main -->
 		<div> <!-- form wrapper -->
 	<form novalidate name='myform' class="form" ng-submit="submit()" >
         <input type='text' style="display:none;" name="topic" ng-model="topic" value="<% data.topicValue %>"></input>
@@ -20,6 +24,7 @@
 
 
 </div><!-- form wrapper -->
-</div><!-- form container -->
-</div>
+</div><!-- form container panel body -->
+        <div class="panel-footer"><a href="#/products-groups">Back</a></div>
+</div><!-- panel primary -->
 

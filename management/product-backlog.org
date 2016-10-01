@@ -33,3 +33,5 @@
    CLOSED: [2016-09-28 Wed 21:59]
 ** DONE there should be a facility to see registered members list in admin a section so that these members can be updated for their levels.
    CLOSED: [2016-10-01 Sat 11:11]
+** DONE the admin-a product and group update user interface is to be improved for better user experience.
+   CLOSED: [2016-10-01 Sat 20:49]

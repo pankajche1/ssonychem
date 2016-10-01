@@ -31,6 +31,7 @@ app.controller('NewProductController',['$rootScope','$scope', 'ProductsService',
                     var dataToServer = {'topic':'new', 'product':$scope.product}
                     saveProduct(dataToServer);
                   };//submit()
+                  $scope.cancel=function(){};//cancel
                 }]
 );
 
