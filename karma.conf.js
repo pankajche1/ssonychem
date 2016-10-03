@@ -35,11 +35,11 @@ module.exports = function (config) {
       //,'app/member/general/directives/*.js'
       //,'app/member/general/controllers/*.js'
       // member admin a section:
-      ,'app/member/admin/a/templates/member-admin-a-templates.js'
-      ,'app/member/admin/a/app.js'
-      ,'app/member/admin/a/services/*.js'
-      ,'app/member/admin/a/directives/*.js'
-      ,'app/member/admin/a/controllers/*.js'
+      //,'app/member/admin/a/templates/member-admin-a-templates.js'
+      //,'app/member/admin/a/app.js'
+      //,'app/member/admin/a/services/*.js'
+      //,'app/member/admin/a/directives/*.js'
+      //,'app/member/admin/a/controllers/*.js'
 
       // angular libs etc:
       ,'node_modules/angular-mocks/angular-mocks.js'
@@ -47,13 +47,13 @@ module.exports = function (config) {
       ,'tests/js/utils/utils.js'
       // test app files:
       //1 common section:
-      //,'tests/js/unit/common/**/*.js'
+      ,'tests/js/unit/common/**/*.js'
       //2 guest section
       //,'tests/js/unit/guest/**/*.js'
       //3 member general section:
       //,'tests/js/unit/member/general/**/*.js'
       //4 member admin a:
-      ,'tests/js/unit/member/admin/a/**/*.js'
+      //,'tests/js/unit/member/admin/a/**/*.js'
     ],
     autoWatch: true,
     singleRun: false,

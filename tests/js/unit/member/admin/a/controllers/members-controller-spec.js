@@ -5,6 +5,8 @@
       beforeEach(module('app'));
       beforeEach(inject(function(_$httpBackend_, $rootScope, $controller){
         $httpBackend = _$httpBackend_;
+        // variable that will be put in the script tag in the server:
+        user = {'nickname':'pankajche1', 'key':'pankajche1-key', 'logoutUrl':'pankajche1-logout-url', 'isAdmin':true};
         getReqHandler = $httpBackend.when('GET', 
                                           /\/members/g, 
                                           undefined, 
@@ -17,10 +19,10 @@
         $scope = $rootScope.$new();
         getController = function(){
           return $controller('MembersController', {'$scope':$scope});
-
         };//getController()
 
       }));//beforeEach()
+      
       afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();

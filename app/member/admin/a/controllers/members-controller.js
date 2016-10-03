@@ -3,6 +3,7 @@ app.controller('MembersController', ['$scope', 'MembersService', '$log', functio
   $scope.data = {'isDisabled':false, 'message':'', 'members':[], 'targetMember':null};
   $scope.isSelectorShow = true;
   $scope.isMemberEditShow = false;
+  // this user variable is taken from the DOM script which was put in the server:
   $scope.isEditBtnShow = user.isAdmin;// for app admin only
   $scope.fetchMembers = function(){
     $scope.data.isDisabled=true;

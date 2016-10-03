@@ -1,8 +1,10 @@
 <div>
-  <div ng-if="isSelectorShow">
-    <div>
-      <div ng-repeat="member in data.members">
-        <span><% member.name %></span><span ng-if="isEditBtnShow"><button ng-click="onEditMemberClick($index)">Edit</button></span>
+  <div ng-if="isSelectorShow" class="panel panel-primary">
+    <div class="panel-heading"><div class="panel-title">Registered Members</div></div>
+    <div class="panel-body">
+      <div ng-repeat="member in data.members" style="border-bottom:1px solid #aaa;margin-bottom:10px;padding-bottom:5px;">
+        <span><% member.name %></span><span ng-if="isEditBtnShow">
+          <button class="btn btn-primary"  ng-click="onEditMemberClick($index)">Edit</button></span>
       </div>
     </div>
   </div><!-- members selector div -->

@@ -13,8 +13,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" ng-class="{isActive:isActive}">
       <ul class="nav navbar-nav">
-	<li ng-repeat="item in items" ng-class="{active:item.selected}" ng-click="toggleSelect(item)">
-	  <a href="<% item.page %>"><% item.label %></a>
+	<li ng-repeat="item in items" ng-class="{active:item.selected,'is-mobile':item.ismobile}" ng-click="toggleSelect(item)">
+	  <a href="<% item.data.url %>"><% item.data.label %></a>
 	</li>
       </ul>
       <div ng-transclude></div>

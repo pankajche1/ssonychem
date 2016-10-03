@@ -8,7 +8,7 @@ app.directive('navWrapper', [function(){
 	    },
 	    transclude: true,
 	    link: function ($scope, element, attrs) {
-
+              $scope.user={'nickname':user.nickname,'logoutUrl':user.logoutUrl};
 	    },
 	    templateUrl:'/member/general/templates/nav-wrapper.html'
     };

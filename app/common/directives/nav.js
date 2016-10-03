@@ -42,11 +42,19 @@ common.directive('pnav', [function(){
 	item.selected = true;
 	
       };
-      this.addItem = function(item){
+      this.addItem = function(item){// 'item' passed here is actually '$scope' from the nav-item directive.
+        //from there we have $scope.page, $scope.label, and $scope.isMobile; the last 'isMobile' can be undefined for some elements
+        //+ so test for the above.
 	// this line is for selecting the first element:
 	// but I disable it to select the first.
 	//if(!items.length) $scope.select(item);
-	//console.log('got item:'+item.label);
+	// console.log('got item:'+item.label);
+        // in case some additional data is inserted in the nav item tag:
+        // data will written with one attribute: 'url' and it will be set for its 'page'
+        if(item.data!=undefined){
+          item.page = item.data.url;
+        }
+        if(item.ismobile==undefined) item.ismobile=false;
 	item.select=function(id){
 	  //console.log('i am clicked.'+id);
 	  //console.log('i am clicked.');
@@ -65,6 +73,7 @@ common.directive('pnav', [function(){
     //repeat:false,
 
     link: function ($scope, element, attrs) {
+
       function isVisible(elem){
 	return elem && elem.style.display!='none' && elem.offsetWidth && elem.offsetHeight;
       }

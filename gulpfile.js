@@ -308,7 +308,10 @@ gulp.task('watch', function() {
   //less css
   gulp.watch('./styles/less/**/*.less', ['less']);
 });
-
+gulp.task('watch-common-template', function() {
+  gulp.watch('./app/common/templates/**/*.html', ['template-common']);
+  gulp.watch('./styles/less/**/*.less', ['less']);
+});
 gulp.task('watch-guest', function() {
   gulp.watch('app/guest/**/*.js', ['build-guest-dev']);
   gulp.watch('app/common/**/*.js', ['build-guest-dev']);

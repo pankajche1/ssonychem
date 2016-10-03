@@ -1,11 +1,8 @@
 'use-strict()';
-app.controller('WelcomeController',['$rootScope','$scope','$http', function($rootScope,$scope, $http){
+app.controller('WelcomeController',['$rootScope','$scope','$log', function($rootScope,$scope, $log){
 
-		$scope.message="Welcome From Controller on angular js on admin a section";
+  $scope.user = user;
 
-
-
-
-		
+  
 }]);
 

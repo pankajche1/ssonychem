@@ -1,8 +1,9 @@
 <pnav>
-  <p-nav-item page="#" label="Home"></p-nav-item>
-  <p-nav-item page="#/products-area" label="Products"></p-nav-item>
-  <p-nav-item page="#/members" label="Members"> </p-nav-item>
-  <p-nav-item page="#/settings" label="Settings"></p-nav-item>
+  <p-nav-item data="{'url':'#','label':'Home'}"></p-nav-item>
+  <p-nav-item data="{'url':'#/products-area', 'label':'Products'}"></p-nav-item>
+  <p-nav-item data="{'url':'#/members', 'label':'Members'}"> </p-nav-item>
+  <p-nav-item data="{'url':'#/settings', 'label':'Settings'}"></p-nav-item>
+  <p-nav-item  data="{'url':user.logoutUrl,'label':'Logout'}" ismobile="true"></p-nav-item>
 </pnav>
 
 

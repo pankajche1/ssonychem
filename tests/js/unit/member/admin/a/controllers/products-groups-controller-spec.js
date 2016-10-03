@@ -366,7 +366,7 @@
       var ctrlParent = createParentController();
       var ctrl = createController();
       $httpBackend.flush();
-      expect($scope.info1).toBe('Sunny Kailash Dagar');
+
 
     });//should varify a test message
     it('should load products groups from the server when created', function(){

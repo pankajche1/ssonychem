@@ -2,7 +2,7 @@
   <head>
     {% include "common/meta.html" %}
     <title>SSonyChem Pvt Ltd::Member Area</title>
-    <link rel="stylesheet" href="css/main.min-201608164340.css" type="text/css"></link> 
+    <link rel="stylesheet" href="css/main.min-20161001183.css" type="text/css"></link> 
     <!--  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"></link> -->
     <!--<script src='js/lib/angular-animate/angular-animate.js'> </script>--> 
     {% include "common/common-js-lib.html" %}
@@ -12,6 +12,5 @@
 
   </head>
   {% include "common/body.html" %}
-  <p>Welcome {{ user['nickname'] }}. Your level is {{ user['memberInfo']['level'] }}</p>
-  <p><a href="{{ user['logoutUrl'] }}">logout</a></p>
+
 </html>

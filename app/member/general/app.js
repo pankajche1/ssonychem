@@ -13,10 +13,10 @@ app.config(['$routeProvider',function($routeProvider){
 				templateUrl:'/member/general/templates/products-group.html',
                                 controller:'ProductsGroupController'});
 		$routeProvider.when('/contact-us',{
-				templateUrl:'/guest/general/templates/contact-us.html',
+				templateUrl:'/member/general/templates/contact-us.html',
                                 controller:'ContactUsController'});
 		$routeProvider.when('/about-us',{
-				templateUrl:'/guest/general/templates/about-us.html',
+				templateUrl:'/member/general/templates/about-us.html',
                                 controller:'AboutUsController'});
 		$routeProvider.otherwise({redirectTo:'/welcome'});
 }]);//config 
