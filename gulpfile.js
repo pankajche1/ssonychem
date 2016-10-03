@@ -79,11 +79,12 @@ var filesMemberAdminAApp = [
 // cache busting
 //browserify makes this file: 'main-guest.js'
 gulp.task('build-guest-prod',[],
-	  require('./gulp-tasks/guest-js-prod')(gulp, getStamp,del, browserify,
-                                                source, replace, buffer, uglify, ngAnnotate));
-gulp.task('build-admin-a-prod',[],
-	  require('./gulp-tasks/admin-a-js-prod')(gulp, getStamp,del, browserify,
-                                                  source, replace, buffer, uglify, ngAnnotate));
+	  require('./gulp-tasks/guest-js-prod')(gulp, getStamp, del, concat,source, replace, uglify, filesCommon, filesGuestApp));
+gulp.task('build-member-general-prod',[],
+	  require('./gulp-tasks/member-general-prod')(gulp, getStamp, del, concat,source, replace, uglify, filesCommon, filesMemberGeneralApp));
+
+gulp.task('build-member-admin-a-prod',[],
+	  require('./gulp-tasks/member-admin-a-prod')(gulp, getStamp, del, concat,source, replace, uglify, filesCommon, filesMemberAdminAApp));
 // prod mode and dev mode
 // in prod mode you don't do cache busting cz in local browser u can do ctrl+f5 to load no cache.,
 // but in dev mode you can use file?bust kind of thing to avoid ctrl+f5 things
@@ -99,6 +100,7 @@ gulp.task('build-admin-a-prod',[],
 //if it is main-guest12345.js? and can run three commands:1: build-guest-prod OK work
 //2: build-guest-dev ok
 //3: browserify-guest-dev
+/*
 gulp.task('build1-guest-dev',function(){
   // you can these formats pre existing:
   // main-guest234521.js or main-guest.js?22334 
@@ -127,6 +129,7 @@ gulp.task('build-admin-a-dev',function(){
     .pipe(replace(/main-admin-a([0-9]*).js(\?*[0-9]*)/g, fileName))
     .pipe(gulp.dest('./public/py/handlers/templates/admin/a'));
 });
+*/
 /* templates */
 gulp.task('template-common',function(){
   var concat = require('gulp-concat');
@@ -191,6 +194,7 @@ gulp.task('template-member-admin-a',function(){
  * this is in dev mode
  */
 /* external libs */
+/*
 gulp.task('browserify-lib-dev', function() {
   // Grabs the app.js file
   browserify('./app/lib/app.js')
@@ -199,7 +203,7 @@ gulp.task('browserify-lib-dev', function() {
     .pipe(gulp.dest('./public/js/'));
 
 });
-
+*/
 
 gulp.task('concat-lib-dev', function() {
   // because by browserify the underscore lib was not coming before all other libs so I simply concatnated it
@@ -246,6 +250,7 @@ gulp.task('browserify-guest-dev', function() {
     .pipe(gulp.dest('./public/py/handlers/templates/guest'));
 });
 */
+/*
 gulp.task('browserify-admin-a-dev', function() {
   // Grabs the app.js file
   browserify('./app/admin/a/app.js')
@@ -260,7 +265,7 @@ gulp.task('browserify-admin-a-dev', function() {
     .pipe(replace(/main-admin-a([0-9]*).js(\?*[0-9]*)/g, 'main-admin-a.js?' + getStamp()))
     .pipe(gulp.dest('./public/py/handlers/templates/admin/a'));
 });
-
+*/
 /* Task to compile less */
 //gulp.task('less', ['less-compile']);  
 gulp.task('less', function() {  

@@ -9,9 +9,9 @@ common.directive('pNavItem', [function(){
       ismobile:'@',
       data:'='
     },
-    controller:function($scope, $element){
+    controller:['$scope','$element',function($scope, $element){
 
-    },
+    }],
     link: function ($scope, element, attrs, navController) {
       
       navController.addItem($scope);

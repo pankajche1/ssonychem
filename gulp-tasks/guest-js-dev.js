@@ -4,7 +4,7 @@ return function(){
   files = filesCommon.concat(filesApp);
   var fileName = "main-guest.js";
   var serverDir = "./public/py/handlers/templates/guest/";
-  return gulp.src(files)
+   gulp.src(files)
     .pipe(concat(fileName))
     //.pipe(uglify())
     .pipe(gulp.dest('./public/js'));
